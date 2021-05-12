@@ -92,7 +92,7 @@
             on:click={col.sortable ? (e) => handleClickCol(e, col) : undefined}
             class:cursor-pointer={col.sortable}
             class:pr-4={columns.length - 1 === i}
-            class={`cursor-pointer ${styles.th} col.headerClass`}
+            class={`cursor-pointer ${styles.th} ${col.headerClass}`}
           >
             {col.title}
             {#if col.sortable}

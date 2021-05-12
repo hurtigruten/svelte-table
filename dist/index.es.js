@@ -873,7 +873,7 @@ function create_each_block_2(ctx) {
 			t2 = space();
 			if (if_block1) if_block1.c();
 			t3 = space();
-			attr(th, "class", th_class_value = `cursor-pointer ${/*styles*/ ctx[3].th} col.headerClass`);
+			attr(th, "class", th_class_value = `cursor-pointer ${/*styles*/ ctx[3].th} ${/*col*/ ctx[25].headerClass}`);
 			toggle_class(th, "cursor-pointer", /*col*/ ctx[25].sortable);
 			toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
 		},
@@ -945,15 +945,15 @@ function create_each_block_2(ctx) {
 				check_outros();
 			}
 
-			if (!current || dirty & /*styles*/ 8 && th_class_value !== (th_class_value = `cursor-pointer ${/*styles*/ ctx[3].th} col.headerClass`)) {
+			if (!current || dirty & /*styles, columns*/ 12 && th_class_value !== (th_class_value = `cursor-pointer ${/*styles*/ ctx[3].th} ${/*col*/ ctx[25].headerClass}`)) {
 				attr(th, "class", th_class_value);
 			}
 
-			if (dirty & /*styles, columns*/ 12) {
+			if (dirty & /*styles, columns, columns*/ 12) {
 				toggle_class(th, "cursor-pointer", /*col*/ ctx[25].sortable);
 			}
 
-			if (dirty & /*styles, columns*/ 12) {
+			if (dirty & /*styles, columns, columns*/ 12) {
 				toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
 			}
 		},

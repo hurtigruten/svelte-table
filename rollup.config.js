@@ -1,6 +1,7 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import dts from 'rollup-plugin-dts';
 import pkg from './package.json';
 
 export default [
@@ -8,21 +9,26 @@ export default [
     input: 'src/index.js',
     output: [
       { file: pkg.module, format: 'es' },
-      { file: pkg.main, format: 'umd', name: 'window', extend: true },
+      { file: pkg.main, format: 'umd', name: 'window', extend: true }
     ],
     plugins: [
       svelte({
         compilerOptions: {
           dev: false,
-          css: true,
+          css: true
         },
-        emitCss: false,
+        emitCss: false
       }),
       resolve({
         browser: true,
-        dedupe: ['svelte'],
+        dedupe: ['svelte']
       }),
-      commonjs(),
-    ],
+      commonjs()
+    ]
   },
+  {
+    input: 'src/index.d.ts',
+    output: [{ file: pkg.types, format: 'es' }],
+    plugins: [dts()]
+  }
 ];
