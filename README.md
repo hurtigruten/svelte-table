@@ -1,7 +1,7 @@
 # Svelte Table
 
 ```bash
-npm install @hurtigruten/svelte-table
+npm install git+https://github.com/hurtigruten/svelte-table.git
 ```
 
 ```js
@@ -33,3 +33,5 @@ const columns = [
 ```html
 <SvelteTable {columns} {rows} styles={{ table: 'table table-striped' }} />
 ```
+
+This is a customized "fork" of the following [repository](https://github.com/dasDaniel/svelte-table) which we customized beyond direct forking.
