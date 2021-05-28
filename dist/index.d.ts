@@ -6,7 +6,7 @@ interface SvelteTableProps {
   sortable?: boolean;
   headerClass?: string;
   class?: string;
-  renderComponent?: typeof SvelteComponent;
+  component?: typeof SvelteComponent;
   helpModal?: typeof SvelteComponent;
   value?: (v: unknown) => string;
 }
