@@ -1,7 +1,7 @@
 # Svelte Table
 
 ```bash
-npm install git+https://github.com/hurtigruten/svelte-table.git
+npm i @hurtigruten/svelte-table --save
 ```
 
 ```js
