@@ -11,8 +11,6 @@ export interface SvelteTableProps {
   value?: (v: unknown) => string;
 }
 
-declare class SvelteTable extends SvelteComponent {
+export class SvelteTable extends SvelteComponent {
   $$prop_def: SvelteTableProps;
 }
-
-export default SvelteTable;

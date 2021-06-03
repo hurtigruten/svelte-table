@@ -15,5 +15,4 @@ declare class SvelteTable extends SvelteComponent {
   $$prop_def: SvelteTableProps;
 }
 
-export default SvelteTable;
-export { SvelteTableProps };
+export { SvelteTable, SvelteTableProps };
