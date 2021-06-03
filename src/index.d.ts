@@ -1,6 +1,6 @@
 import { SvelteComponent } from 'svelte';
 
-export interface SvelteTableProps {
+interface SvelteTableColumn {
   key: string;
   title: string;
   sortable?: boolean;
@@ -11,6 +11,18 @@ export interface SvelteTableProps {
   value?: (v: unknown) => string;
 }
 
+interface SvelteTableProps {
+  columns: SvelteTableColumn[];
+  rows: unknown;
+  sortBy?: string;
+  sortOrder?: number;
+  styles?: Partial<
+    Record<'table' | 'thead' | 'th' | 'tbody' | 'tr' | 'td' | 'cell', string>
+  >;
+}
+
 export class SvelteTable extends SvelteComponent {
   $$prop_def: SvelteTableProps;
 }
+
+export { SvelteTableProps, SvelteTableColumn };
