@@ -984,7 +984,7 @@
     	};
     }
 
-    // (88:45)        
+    // (88:45)         
     function fallback_block_1(ctx) {
     	let tr;
     	let current;
@@ -1442,7 +1442,7 @@
     	};
     }
 
-    // (124:35)            
+    // (124:35)             
     function fallback_block(ctx) {
     	let tr;
     	let tr_class_value;

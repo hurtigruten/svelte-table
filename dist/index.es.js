@@ -978,7 +978,7 @@ function create_each_block_2(ctx) {
 	};
 }
 
-// (88:45)        
+// (88:45)         
 function fallback_block_1(ctx) {
 	let tr;
 	let current;
@@ -1436,7 +1436,7 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (124:35)            
+// (124:35)             
 function fallback_block(ctx) {
 	let tr;
 	let tr_class_value;
