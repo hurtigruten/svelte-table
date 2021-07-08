@@ -94,7 +94,15 @@
             class:pr-4={columns.length - 1 === i}
             class={`cursor-pointer ${styles.th} ${col.headerClass}`}
           >
-            {col.title}
+            {#if col.titleComponent}
+              <svelte:component
+                this={col.titleComponent.component || col.titleComponent}
+                {...col.titleComponent.props || {}}
+                {col}
+              />
+            {:else}
+              {col.title}
+            {/if}
             {#if col.sortable}
               {#if sortBy === col.key}
                 <IconSorting {sortOrder} />
