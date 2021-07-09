@@ -83,6 +83,7 @@
     on:toggled={({ isOpen }) => removeModal(isOpen)}
   />
 {/if}
+
 <table class={styles.table}>
   <thead class={styles.thead}>
     <slot name="header" {sortOrder} {sortBy}>
@@ -163,9 +164,11 @@
               </td>
             {/each}
           </tr>
-          {#if row['expandRow']?.show}
-            {@html row['expandRow']['component']}
-          {/if}
+          {#each columns as col}
+            {#if col.expandedRowsComponent}
+              <svelte:component this={col.expandedRowsComponent} {row} {col} />
+            {/if}
+          {/each}
         </slot>
       {/each}
     {:else}
