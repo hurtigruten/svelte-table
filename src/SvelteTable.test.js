@@ -4,9 +4,16 @@
 import { render } from '@testing-library/svelte';
 
 import SvelteTable from './SvelteTable.svelte';
+import TitleComponentMock from './mocks/TitleComponentMock.svelte';
 
 const columnsMock = [
   { key: 'title', title: 'Title', value: (v) => v.title },
+  { key: 'age', title: 'Age', value: (v) => v.age },
+  { key: 'location', title: 'Place', value: (v) => v.location }
+];
+
+const columnsWithCustomTitleMock = [
+  { key: 'title', titleComponent: TitleComponentMock, value: (v) => v.title },
   { key: 'age', title: 'Age', value: (v) => v.age },
   { key: 'location', title: 'Place', value: (v) => v.location }
 ];
@@ -41,5 +48,18 @@ describe('SvelteTable', () => {
     for (const row of rowsMock) {
       expect(getByText(Number(row.age) * 2)).toBeInTheDocument();
     }
+  });
+
+  it('should render a table with custom title', () => {
+    const { container, getByText, getByTestId } = render(SvelteTable, {
+      columns: columnsWithCustomTitleMock,
+      rows: rowsMock
+    });
+
+    expect(container).toBeInTheDocument();
+    expect(getByTestId("title-component")).toBeInTheDocument();
+    expect(getByText(rowsMock[0].title)).toBeInTheDocument();
+    expect(getByText(rowsMock[1].age)).toBeInTheDocument();
+    expect(getByText(rowsMock[2].location)).toBeInTheDocument();
   });
 });
