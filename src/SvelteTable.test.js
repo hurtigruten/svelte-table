@@ -5,6 +5,18 @@ import { render } from '@testing-library/svelte';
 
 import SvelteTable from './SvelteTable.svelte';
 import TitleComponentMock from './mocks/TitleComponentMock.svelte';
+import ExpandedRows from './mocks/ExpandedRows.svelte';
+
+const columnsWithExpandedRows = [
+  {
+    key: 'title',
+    title: 'title',
+    value: (v) => v.title,
+    expandedRowsComponent: ExpandedRows
+  },
+  { key: 'age', title: 'Age', value: (v) => v.age },
+  { key: 'location', title: 'Place', value: (v) => v.location }
+];
 
 const columnsMock = [
   { key: 'title', title: 'Title', value: (v) => v.title },
@@ -57,7 +69,20 @@ describe('SvelteTable', () => {
     });
 
     expect(container).toBeInTheDocument();
-    expect(getByTestId("title-component")).toBeInTheDocument();
+    expect(getByTestId('title-component')).toBeInTheDocument();
+    expect(getByText(rowsMock[0].title)).toBeInTheDocument();
+    expect(getByText(rowsMock[1].age)).toBeInTheDocument();
+    expect(getByText(rowsMock[2].location)).toBeInTheDocument();
+  });
+
+  it('should render the expanded rows into the table', () => {
+    const { container, getByText, getAllByText } = render(SvelteTable, {
+      columns: columnsWithExpandedRows,
+      rows: rowsMock
+    });
+
+    expect(container).toBeInTheDocument();
+    expect(getAllByText('Mocked expanded rows component').length).toBe(3);
     expect(getByText(rowsMock[0].title)).toBeInTheDocument();
     expect(getByText(rowsMock[1].age)).toBeInTheDocument();
     expect(getByText(rowsMock[2].location)).toBeInTheDocument();
