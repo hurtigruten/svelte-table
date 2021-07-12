@@ -10,6 +10,7 @@ interface SvelteTableColumnBase {
   helpModal?: typeof SvelteComponent;
   value?: (v: unknown) => string;
   titleComponent: typeof SvelteComponent;
+  expandedRowsComponent?: typeof SvelteComponent;
 }
 
 type SvelteTableColumn = Omit<SvelteTableColumnBase, 'title'> | Omit<SvelteTableColumnBase, 'titleComponent'>;

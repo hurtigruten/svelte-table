@@ -122,37 +122,6 @@
         e.initCustomEvent(type, false, false, detail);
         return e;
     }
-    class HtmlTag {
-        constructor(anchor = null) {
-            this.a = anchor;
-            this.e = this.n = null;
-        }
-        m(html, target, anchor = null) {
-            if (!this.e) {
-                this.e = element(target.nodeName);
-                this.t = target;
-                this.h(html);
-            }
-            this.i(anchor);
-        }
-        h(html) {
-            this.e.innerHTML = html;
-            this.n = Array.from(this.e.childNodes);
-        }
-        i(anchor) {
-            for (let i = 0; i < this.n.length; i += 1) {
-                insert(this.t, this.n[i], anchor);
-            }
-        }
-        p(html) {
-            this.d();
-            this.h(html);
-            this.i(this.a);
-        }
-        d() {
-            this.n.forEach(detach);
-        }
-    }
 
     let current_component;
     function set_current_component(component) {
@@ -562,17 +531,23 @@
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[25] = list[i];
-    	child_ctx[27] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[25] = list[i];
+    	child_ctx[29] = i;
     	return child_ctx;
     }
 
     const get_row_slot_changes = dirty => ({ row: dirty & /*sortedRows*/ 32 });
     const get_row_slot_context = ctx => ({ row: /*row*/ ctx[22], n: /*n*/ ctx[24] });
 
-    function get_each_context_2(ctx, list, i) {
+    function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[25] = list[i];
-    	child_ctx[27] = i;
+    	child_ctx[29] = i;
     	return child_ctx;
     }
 
@@ -655,7 +630,7 @@
     	};
     }
 
-    // (103:12) {:else}
+    // (104:12) {:else}
     function create_else_block_3(ctx) {
     	let t_value = /*col*/ ctx[25].title + "";
     	let t;
@@ -678,7 +653,7 @@
     	};
     }
 
-    // (97:12) {#if col.titleComponent}
+    // (98:12) {#if col.titleComponent}
     function create_if_block_6(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -761,7 +736,7 @@
     	};
     }
 
-    // (106:12) {#if col.sortable}
+    // (107:12) {#if col.sortable}
     function create_if_block_4(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -831,7 +806,7 @@
     	};
     }
 
-    // (109:14) {:else}
+    // (110:14) {:else}
     function create_else_block_2(ctx) {
     	let iconsorting;
     	let current;
@@ -861,7 +836,7 @@
     	};
     }
 
-    // (107:14) {#if sortBy === col.key}
+    // (108:14) {#if sortBy === col.key}
     function create_if_block_5(ctx) {
     	let iconsorting;
     	let current;
@@ -898,7 +873,7 @@
     	};
     }
 
-    // (114:12) {#if col.helpModal}
+    // (115:12) {#if col.helpModal}
     function create_if_block_3(ctx) {
     	let button;
     	let icontooltip;
@@ -957,8 +932,8 @@
     	};
     }
 
-    // (90:8) {#each columns as col, i}
-    function create_each_block_2(ctx) {
+    // (91:8) {#each columns as col, i}
+    function create_each_block_3(ctx) {
     	let th;
     	let current_block_type_index;
     	let if_block0;
@@ -997,7 +972,7 @@
     			t2 = space();
     			attr(th, "class", th_class_value = `cursor-pointer ${/*styles*/ ctx[3].th} ${/*col*/ ctx[25].headerClass}`);
     			toggle_class(th, "cursor-pointer", /*col*/ ctx[25].sortable);
-    			toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
+    			toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[29]);
     		},
     		m(target, anchor) {
     			insert(target, th, anchor);
@@ -1100,7 +1075,7 @@
     			}
 
     			if (dirty & /*styles, columns, columns*/ 12) {
-    				toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
+    				toggle_class(th, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[29]);
     			}
     		},
     		i(local) {
@@ -1127,15 +1102,15 @@
     	};
     }
 
-    // (88:45)         
+    // (89:45)         
     function fallback_block_1(ctx) {
     	let tr;
     	let current;
-    	let each_value_2 = /*columns*/ ctx[2];
+    	let each_value_3 = /*columns*/ ctx[2];
     	let each_blocks = [];
 
-    	for (let i = 0; i < each_value_2.length; i += 1) {
-    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
     	}
 
     	const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -1161,17 +1136,17 @@
     		},
     		p(ctx, dirty) {
     			if (dirty & /*styles, columns, handleClickCol, undefined, activeModal, sortOrder, sortBy*/ 159) {
-    				each_value_2 = /*columns*/ ctx[2];
+    				each_value_3 = /*columns*/ ctx[2];
     				let i;
 
-    				for (i = 0; i < each_value_2.length; i += 1) {
-    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+    				for (i = 0; i < each_value_3.length; i += 1) {
+    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
 
     					if (each_blocks[i]) {
     						each_blocks[i].p(child_ctx, dirty);
     						transition_in(each_blocks[i], 1);
     					} else {
-    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i] = create_each_block_3(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
     						each_blocks[i].m(tr, null);
@@ -1180,7 +1155,7 @@
 
     				group_outros();
 
-    				for (i = each_value_2.length; i < each_blocks.length; i += 1) {
+    				for (i = each_value_3.length; i < each_blocks.length; i += 1) {
     					out(i);
     				}
 
@@ -1190,7 +1165,7 @@
     		i(local) {
     			if (current) return;
 
-    			for (let i = 0; i < each_value_2.length; i += 1) {
+    			for (let i = 0; i < each_value_3.length; i += 1) {
     				transition_in(each_blocks[i]);
     			}
 
@@ -1212,7 +1187,7 @@
     	};
     }
 
-    // (171:4) {:else}
+    // (174:4) {:else}
     function create_else_block_1(ctx) {
     	let current;
     	const empty_slot_template = /*#slots*/ ctx[12].empty;
@@ -1251,7 +1226,7 @@
     	};
     }
 
-    // (130:4) {#if sortedRows.length}
+    // (131:4) {#if sortedRows.length}
     function create_if_block(ctx) {
     	let each_1_anchor;
     	let current;
@@ -1283,7 +1258,7 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*sortedRows, styles, handleClickRow, columns, handleClickCell, $$scope*/ 2860) {
+    			if (dirty & /*columns, sortedRows, styles, handleClickRow, handleClickCell, $$scope*/ 2860) {
     				each_value = /*sortedRows*/ ctx[5];
     				let i;
 
@@ -1335,7 +1310,7 @@
     	};
     }
 
-    // (156:16) {:else}
+    // (157:16) {:else}
     function create_else_block(ctx) {
     	let div;
 
@@ -1370,7 +1345,7 @@
     	};
     }
 
-    // (148:16) {#if col.component}
+    // (149:16) {#if col.component}
     function create_if_block_2(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -1462,8 +1437,8 @@
     	};
     }
 
-    // (140:12) {#each columns as col, i}
-    function create_each_block_1(ctx) {
+    // (141:12) {#each columns as col, i}
+    function create_each_block_2(ctx) {
     	let td;
     	let current_block_type_index;
     	let if_block;
@@ -1493,7 +1468,7 @@
     			if_block.c();
     			t = space();
     			attr(td, "class", td_class_value = `${/*col*/ ctx[25].class} ${/*styles*/ ctx[3].td}`);
-    			toggle_class(td, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
+    			toggle_class(td, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[29]);
     		},
     		m(target, anchor) {
     			insert(target, td, anchor);
@@ -1539,7 +1514,7 @@
     			}
 
     			if (dirty & /*columns, styles, columns*/ 12) {
-    				toggle_class(td, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[27]);
+    				toggle_class(td, "pr-4", /*columns*/ ctx[2].length - 1 === /*i*/ ctx[29]);
     			}
     		},
     		i(local) {
@@ -1560,32 +1535,141 @@
     	};
     }
 
-    // (166:10) {#if row['expandRow']?.show}
+    // (168:12) {#if col.expandedRowsComponent}
     function create_if_block_1(ctx) {
-    	let html_tag;
-    	let raw_value = /*row*/ ctx[22]["expandRow"]["component"] + "";
-    	let html_anchor;
+    	let switch_instance;
+    	let switch_instance_anchor;
+    	let current;
+    	var switch_value = /*col*/ ctx[25].expandedRowsComponent;
+
+    	function switch_props(ctx) {
+    		return {
+    			props: {
+    				row: /*row*/ ctx[22],
+    				col: /*col*/ ctx[25]
+    			}
+    		};
+    	}
+
+    	if (switch_value) {
+    		switch_instance = new switch_value(switch_props(ctx));
+    	}
 
     	return {
     		c() {
-    			html_anchor = empty();
-    			html_tag = new HtmlTag(html_anchor);
+    			if (switch_instance) create_component(switch_instance.$$.fragment);
+    			switch_instance_anchor = empty();
     		},
     		m(target, anchor) {
-    			html_tag.m(raw_value, target, anchor);
-    			insert(target, html_anchor, anchor);
+    			if (switch_instance) {
+    				mount_component(switch_instance, target, anchor);
+    			}
+
+    			insert(target, switch_instance_anchor, anchor);
+    			current = true;
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*sortedRows*/ 32 && raw_value !== (raw_value = /*row*/ ctx[22]["expandRow"]["component"] + "")) html_tag.p(raw_value);
+    			const switch_instance_changes = {};
+    			if (dirty & /*sortedRows*/ 32) switch_instance_changes.row = /*row*/ ctx[22];
+    			if (dirty & /*columns*/ 4) switch_instance_changes.col = /*col*/ ctx[25];
+
+    			if (switch_value !== (switch_value = /*col*/ ctx[25].expandedRowsComponent)) {
+    				if (switch_instance) {
+    					group_outros();
+    					const old_component = switch_instance;
+
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
+    					});
+
+    					check_outros();
+    				}
+
+    				if (switch_value) {
+    					switch_instance = new switch_value(switch_props(ctx));
+    					create_component(switch_instance.$$.fragment);
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+    				} else {
+    					switch_instance = null;
+    				}
+    			} else if (switch_value) {
+    				switch_instance.$set(switch_instance_changes);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+    			current = false;
     		},
     		d(detaching) {
-    			if (detaching) detach(html_anchor);
-    			if (detaching) html_tag.d();
+    			if (detaching) detach(switch_instance_anchor);
+    			if (switch_instance) destroy_component(switch_instance, detaching);
     		}
     	};
     }
 
-    // (132:35)             
+    // (167:10) {#each columns as col}
+    function create_each_block_1(ctx) {
+    	let if_block_anchor;
+    	let current;
+    	let if_block = /*col*/ ctx[25].expandedRowsComponent && create_if_block_1(ctx);
+
+    	return {
+    		c() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			if (/*col*/ ctx[25].expandedRowsComponent) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*columns*/ 4) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block_1(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach(if_block_anchor);
+    		}
+    	};
+    }
+
+    // (133:35)             
     function fallback_block(ctx) {
     	let tr;
     	let tr_class_value;
@@ -1594,6 +1678,21 @@
     	let current;
     	let mounted;
     	let dispose;
+    	let each_value_2 = /*columns*/ ctx[2];
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
+    		each_blocks_1[i] = null;
+    	});
+
+    	function click_handler_3(...args) {
+    		return /*click_handler_3*/ ctx[17](/*row*/ ctx[22], ...args);
+    	}
+
     	let each_value_1 = /*columns*/ ctx[2];
     	let each_blocks = [];
 
@@ -1601,26 +1700,24 @@
     		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
     	}
 
-    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+    	const out_1 = i => transition_out(each_blocks[i], 1, 1, () => {
     		each_blocks[i] = null;
     	});
-
-    	function click_handler_3(...args) {
-    		return /*click_handler_3*/ ctx[17](/*row*/ ctx[22], ...args);
-    	}
-
-    	let if_block = /*row*/ ctx[22]["expandRow"]?.show && create_if_block_1(ctx);
 
     	return {
     		c() {
     			tr = element("tr");
 
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			t0 = space();
+
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t0 = space();
-    			if (if_block) if_block.c();
     			t1 = space();
     			attr(tr, "class", tr_class_value = /*styles*/ ctx[3].tr);
     			toggle_class(tr, "bg-gray-100", /*row*/ ctx[22]["expandRow"]?.show);
@@ -1628,12 +1725,16 @@
     		m(target, anchor) {
     			insert(target, tr, anchor);
 
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(tr, null);
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(tr, null);
     			}
 
     			insert(target, t0, anchor);
-    			if (if_block) if_block.m(target, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
     			insert(target, t1, anchor);
     			current = true;
 
@@ -1646,26 +1747,26 @@
     			ctx = new_ctx;
 
     			if (dirty & /*columns, styles, handleClickCell, sortedRows*/ 556) {
-    				each_value_1 = /*columns*/ ctx[2];
+    				each_value_2 = /*columns*/ ctx[2];
     				let i;
 
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
 
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    						transition_in(each_blocks[i], 1);
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    						transition_in(each_blocks_1[i], 1);
     					} else {
-    						each_blocks[i] = create_each_block_1(child_ctx);
-    						each_blocks[i].c();
-    						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(tr, null);
+    						each_blocks_1[i] = create_each_block_2(child_ctx);
+    						each_blocks_1[i].c();
+    						transition_in(each_blocks_1[i], 1);
+    						each_blocks_1[i].m(tr, null);
     					}
     				}
 
     				group_outros();
 
-    				for (i = each_value_1.length; i < each_blocks.length; i += 1) {
+    				for (i = each_value_2.length; i < each_blocks_1.length; i += 1) {
     					out(i);
     				}
 
@@ -1680,21 +1781,39 @@
     				toggle_class(tr, "bg-gray-100", /*row*/ ctx[22]["expandRow"]?.show);
     			}
 
-    			if (/*row*/ ctx[22]["expandRow"]?.show) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_1(ctx);
-    					if_block.c();
-    					if_block.m(t1.parentNode, t1);
+    			if (dirty & /*columns, sortedRows*/ 36) {
+    				each_value_1 = /*columns*/ ctx[2];
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    						transition_in(each_blocks[i], 1);
+    					} else {
+    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i].c();
+    						transition_in(each_blocks[i], 1);
+    						each_blocks[i].m(t1.parentNode, t1);
+    					}
     				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+
+    				group_outros();
+
+    				for (i = each_value_1.length; i < each_blocks.length; i += 1) {
+    					out_1(i);
+    				}
+
+    				check_outros();
     			}
     		},
     		i(local) {
     			if (current) return;
+
+    			for (let i = 0; i < each_value_2.length; i += 1) {
+    				transition_in(each_blocks_1[i]);
+    			}
 
     			for (let i = 0; i < each_value_1.length; i += 1) {
     				transition_in(each_blocks[i]);
@@ -1703,6 +1822,12 @@
     			current = true;
     		},
     		o(local) {
+    			each_blocks_1 = each_blocks_1.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				transition_out(each_blocks_1[i]);
+    			}
+
     			each_blocks = each_blocks.filter(Boolean);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -1713,9 +1838,9 @@
     		},
     		d(detaching) {
     			if (detaching) detach(tr);
-    			destroy_each(each_blocks, detaching);
+    			destroy_each(each_blocks_1, detaching);
     			if (detaching) detach(t0);
-    			if (if_block) if_block.d(detaching);
+    			destroy_each(each_blocks, detaching);
     			if (detaching) detach(t1);
     			mounted = false;
     			dispose();
@@ -1723,7 +1848,7 @@
     	};
     }
 
-    // (131:6) {#each sortedRows as row, n}
+    // (132:6) {#each sortedRows as row, n}
     function create_each_block(ctx) {
     	let current;
     	const row_slot_template = /*#slots*/ ctx[12].row;
@@ -1747,7 +1872,7 @@
     					update_slot(row_slot, row_slot_template, ctx, /*$$scope*/ ctx[11], dirty, get_row_slot_changes, get_row_slot_context);
     				}
     			} else {
-    				if (row_slot_or_fallback && row_slot_or_fallback.p && dirty & /*sortedRows, styles, columns*/ 44) {
+    				if (row_slot_or_fallback && row_slot_or_fallback.p && dirty & /*columns, sortedRows, styles*/ 44) {
     					row_slot_or_fallback.p(ctx, dirty);
     				}
     			}
