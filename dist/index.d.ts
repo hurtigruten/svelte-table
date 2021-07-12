@@ -1,6 +1,6 @@
 import { SvelteComponent } from 'svelte';
 
-interface SvelteTableColumn {
+interface SvelteTableColumnBase {
   key: string;
   title: string;
   sortable?: boolean;
@@ -9,7 +9,10 @@ interface SvelteTableColumn {
   component?: typeof SvelteComponent;
   helpModal?: typeof SvelteComponent;
   value?: (v: unknown) => string;
+  titleComponent: typeof SvelteComponent;
 }
+
+type SvelteTableColumn = Omit<SvelteTableColumnBase, 'title'> | Omit<SvelteTableColumnBase, 'titleComponent'>;
 
 interface SvelteTableProps {
   columns: SvelteTableColumn[];
