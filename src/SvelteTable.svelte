@@ -119,7 +119,7 @@
                 on:click={() => (activeModal = col.helpModal)}
               >
                 <IconTooltip />
-                <span class="sr-only">Show tooltip</span>
+                <span class="sr-only">Show tooltip for {col.title}</span>
               </button>
             {/if}
           </th>
