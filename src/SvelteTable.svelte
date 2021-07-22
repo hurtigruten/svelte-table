@@ -75,6 +75,7 @@
   const handleClickCell = (event, row, key) => {
     dispatch('clickCell', { event, row, key });
   };
+  
 </script>
 
 {#if activeModal}
@@ -134,7 +135,15 @@
           <tr
             on:click={(e) => {
               handleClickRow(e, row);
+              e.currentTarget.toggleAttribute('aria-expanded');
             }}
+            on:keydown={(e) => {
+              if(e.code === 'Enter' || e.code === 'Space') {
+                handleClickRow(e, row);
+                e.currentTarget.toggleAttribute('aria-expanded');
+              }
+            }}
+            tabindex="0"
             class={styles.tr}
             class:bg-gray-100={row['expandRow']?.show}
           >
