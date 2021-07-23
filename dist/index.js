@@ -562,7 +562,7 @@
     });
 
     // (81:0) {#if activeModal}
-    function create_if_block_7(ctx) {
+    function create_if_block_9(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -631,7 +631,7 @@
     }
 
     // (105:12) {:else}
-    function create_else_block_3(ctx) {
+    function create_else_block_4(ctx) {
     	let t_value = /*col*/ ctx[26].title + "";
     	let t;
 
@@ -654,7 +654,7 @@
     }
 
     // (99:12) {#if col.titleComponent}
-    function create_if_block_6(ctx) {
+    function create_if_block_8(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -737,12 +737,12 @@
     }
 
     // (108:12) {#if col.sortable}
-    function create_if_block_4(ctx) {
+    function create_if_block_6(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_5, create_else_block_2];
+    	const if_block_creators = [create_if_block_7, create_else_block_3];
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
@@ -807,7 +807,7 @@
     }
 
     // (111:14) {:else}
-    function create_else_block_2(ctx) {
+    function create_else_block_3(ctx) {
     	let iconsorting;
     	let current;
     	iconsorting = new IconSorting({ props: { sortOrder: 0 } });
@@ -837,7 +837,7 @@
     }
 
     // (109:14) {#if sortBy === col.key}
-    function create_if_block_5(ctx) {
+    function create_if_block_7(ctx) {
     	let iconsorting;
     	let current;
 
@@ -880,12 +880,11 @@
     	let t0;
     	let span;
     	let t1;
-    	let t2_value = /*col*/ ctx[26].title + "";
-    	let t2;
     	let current;
     	let mounted;
     	let dispose;
     	icontooltip = new IconTooltip({});
+    	let if_block = (/*col*/ ctx[26].title || /*col*/ ctx[26].titleComponent) && create_if_block_4(ctx);
 
     	function click_handler() {
     		return /*click_handler*/ ctx[14](/*col*/ ctx[26]);
@@ -897,8 +896,8 @@
     			create_component(icontooltip.$$.fragment);
     			t0 = space();
     			span = element("span");
-    			t1 = text("Show tooltip for ");
-    			t2 = text(t2_value);
+    			t1 = text("Show tooltip \n                  ");
+    			if (if_block) if_block.c();
     			attr(span, "class", "sr-only");
     			attr(button, "class", "text-blue-700");
     			attr(button, "type", "button");
@@ -909,7 +908,7 @@
     			append(button, t0);
     			append(button, span);
     			append(span, t1);
-    			append(span, t2);
+    			if (if_block) if_block.m(span, null);
     			current = true;
 
     			if (!mounted) {
@@ -919,22 +918,227 @@
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if ((!current || dirty[0] & /*columns*/ 4) && t2_value !== (t2_value = /*col*/ ctx[26].title + "")) set_data(t2, t2_value);
+
+    			if (/*col*/ ctx[26].title || /*col*/ ctx[26].titleComponent) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty[0] & /*columns*/ 4) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block_4(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(span, null);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
     		},
     		i(local) {
     			if (current) return;
     			transition_in(icontooltip.$$.fragment, local);
+    			transition_in(if_block);
     			current = true;
     		},
     		o(local) {
     			transition_out(icontooltip.$$.fragment, local);
+    			transition_out(if_block);
     			current = false;
     		},
     		d(detaching) {
     			if (detaching) detach(button);
     			destroy_component(icontooltip);
+    			if (if_block) if_block.d();
     			mounted = false;
     			dispose();
+    		}
+    	};
+    }
+
+    // (124:18) {#if col.title || col.titleComponent}
+    function create_if_block_4(ctx) {
+    	let t;
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block_5, create_else_block_2];
+    	const if_blocks = [];
+
+    	function select_block_type_2(ctx, dirty) {
+    		if (/*col*/ ctx[26].titleComponent) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type_2(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	return {
+    		c() {
+    			t = text("for\n                    ");
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			insert(target, t, anchor);
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type_2(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block = if_blocks[current_block_type_index];
+
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				} else {
+    					if_block.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block, 1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(t);
+    			if_blocks[current_block_type_index].d(detaching);
+    			if (detaching) detach(if_block_anchor);
+    		}
+    	};
+    }
+
+    // (132:20) {:else}
+    function create_else_block_2(ctx) {
+    	let t_value = /*col*/ ctx[26].title + "";
+    	let t;
+
+    	return {
+    		c() {
+    			t = text(t_value);
+    		},
+    		m(target, anchor) {
+    			insert(target, t, anchor);
+    		},
+    		p(ctx, dirty) {
+    			if (dirty[0] & /*columns*/ 4 && t_value !== (t_value = /*col*/ ctx[26].title + "")) set_data(t, t_value);
+    		},
+    		i: noop,
+    		o: noop,
+    		d(detaching) {
+    			if (detaching) detach(t);
+    		}
+    	};
+    }
+
+    // (126:20) {#if col.titleComponent}
+    function create_if_block_5(ctx) {
+    	let switch_instance;
+    	let switch_instance_anchor;
+    	let current;
+    	const switch_instance_spread_levels = [/*col*/ ctx[26].titleComponent.props || {}, { col: /*col*/ ctx[26] }];
+    	var switch_value = /*col*/ ctx[26].titleComponent.component || /*col*/ ctx[26].titleComponent;
+
+    	function switch_props(ctx) {
+    		let switch_instance_props = {};
+
+    		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+    			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+    		}
+
+    		return { props: switch_instance_props };
+    	}
+
+    	if (switch_value) {
+    		switch_instance = new switch_value(switch_props());
+    	}
+
+    	return {
+    		c() {
+    			if (switch_instance) create_component(switch_instance.$$.fragment);
+    			switch_instance_anchor = empty();
+    		},
+    		m(target, anchor) {
+    			if (switch_instance) {
+    				mount_component(switch_instance, target, anchor);
+    			}
+
+    			insert(target, switch_instance_anchor, anchor);
+    			current = true;
+    		},
+    		p(ctx, dirty) {
+    			const switch_instance_changes = (dirty[0] & /*columns*/ 4)
+    			? get_spread_update(switch_instance_spread_levels, [
+    					get_spread_object(/*col*/ ctx[26].titleComponent.props || {}),
+    					{ col: /*col*/ ctx[26] }
+    				])
+    			: {};
+
+    			if (switch_value !== (switch_value = /*col*/ ctx[26].titleComponent.component || /*col*/ ctx[26].titleComponent)) {
+    				if (switch_instance) {
+    					group_outros();
+    					const old_component = switch_instance;
+
+    					transition_out(old_component.$$.fragment, 1, 0, () => {
+    						destroy_component(old_component, 1);
+    					});
+
+    					check_outros();
+    				}
+
+    				if (switch_value) {
+    					switch_instance = new switch_value(switch_props());
+    					create_component(switch_instance.$$.fragment);
+    					transition_in(switch_instance.$$.fragment, 1);
+    					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+    				} else {
+    					switch_instance = null;
+    				}
+    			} else if (switch_value) {
+    				switch_instance.$set(switch_instance_changes);
+    			}
+    		},
+    		i(local) {
+    			if (current) return;
+    			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+    			current = true;
+    		},
+    		o(local) {
+    			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+    			current = false;
+    		},
+    		d(detaching) {
+    			if (detaching) detach(switch_instance_anchor);
+    			if (switch_instance) destroy_component(switch_instance, detaching);
     		}
     	};
     }
@@ -951,7 +1155,7 @@
     	let current;
     	let mounted;
     	let dispose;
-    	const if_block_creators = [create_if_block_6, create_else_block_3];
+    	const if_block_creators = [create_if_block_8, create_else_block_4];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -961,7 +1165,7 @@
 
     	current_block_type_index = select_block_type(ctx);
     	if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-    	let if_block1 = /*col*/ ctx[26].sortable && create_if_block_4(ctx);
+    	let if_block1 = /*col*/ ctx[26].sortable && create_if_block_6(ctx);
     	let if_block2 = /*col*/ ctx[26].helpModal && create_if_block_3(ctx);
 
     	function click_handler_1(...args) {
@@ -1035,7 +1239,7 @@
     						transition_in(if_block1, 1);
     					}
     				} else {
-    					if_block1 = create_if_block_4(ctx);
+    					if_block1 = create_if_block_6(ctx);
     					if_block1.c();
     					transition_in(if_block1, 1);
     					if_block1.m(th, t1);
@@ -1194,7 +1398,7 @@
     	};
     }
 
-    // (183:4) {:else}
+    // (196:4) {:else}
     function create_else_block_1(ctx) {
     	let current;
     	const empty_slot_template = /*#slots*/ ctx[12].empty;
@@ -1233,7 +1437,7 @@
     	};
     }
 
-    // (132:4) {#if sortedRows.length}
+    // (145:4) {#if sortedRows.length}
     function create_if_block(ctx) {
     	let each_1_anchor;
     	let current;
@@ -1317,7 +1521,7 @@
     	};
     }
 
-    // (166:16) {:else}
+    // (179:16) {:else}
     function create_else_block(ctx) {
     	let div;
 
@@ -1352,7 +1556,7 @@
     	};
     }
 
-    // (158:16) {#if col.component}
+    // (171:16) {#if col.component}
     function create_if_block_2(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -1444,7 +1648,7 @@
     	};
     }
 
-    // (150:12) {#each columns as col, i}
+    // (163:12) {#each columns as col, i}
     function create_each_block_2(ctx) {
     	let td;
     	let current_block_type_index;
@@ -1457,12 +1661,12 @@
     	const if_block_creators = [create_if_block_2, create_else_block];
     	const if_blocks = [];
 
-    	function select_block_type_3(ctx, dirty) {
+    	function select_block_type_4(ctx, dirty) {
     		if (/*col*/ ctx[26].component) return 0;
     		return 1;
     	}
 
-    	current_block_type_index = select_block_type_3(ctx);
+    	current_block_type_index = select_block_type_4(ctx);
     	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	function click_handler_2(...args) {
@@ -1491,7 +1695,7 @@
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
     			let previous_block_index = current_block_type_index;
-    			current_block_type_index = select_block_type_3(ctx);
+    			current_block_type_index = select_block_type_4(ctx);
 
     			if (current_block_type_index === previous_block_index) {
     				if_blocks[current_block_type_index].p(ctx, dirty);
@@ -1542,7 +1746,7 @@
     	};
     }
 
-    // (177:12) {#if col.expandedRowsComponent}
+    // (190:12) {#if col.expandedRowsComponent}
     function create_if_block_1(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -1620,7 +1824,7 @@
     	};
     }
 
-    // (176:10) {#each columns as col}
+    // (189:10) {#each columns as col}
     function create_each_block_1(ctx) {
     	let if_block_anchor;
     	let current;
@@ -1676,7 +1880,7 @@
     	};
     }
 
-    // (134:35)            
+    // (147:35)            
     function fallback_block(ctx) {
     	let tr;
     	let tr_class_value;
@@ -1864,7 +2068,7 @@
     	};
     }
 
-    // (133:6) {#each sortedRows as row, n}
+    // (146:6) {#each sortedRows as row, n}
     function create_each_block(ctx) {
     	let current;
     	const row_slot_template = /*#slots*/ ctx[12].row;
@@ -1920,19 +2124,19 @@
     	let tbody_class_value;
     	let table_class_value;
     	let current;
-    	let if_block0 = /*activeModal*/ ctx[4] && create_if_block_7(ctx);
+    	let if_block0 = /*activeModal*/ ctx[4] && create_if_block_9(ctx);
     	const header_slot_template = /*#slots*/ ctx[12].header;
     	const header_slot = create_slot(header_slot_template, ctx, /*$$scope*/ ctx[11], get_header_slot_context);
     	const header_slot_or_fallback = header_slot || fallback_block_1(ctx);
     	const if_block_creators = [create_if_block, create_else_block_1];
     	const if_blocks = [];
 
-    	function select_block_type_2(ctx, dirty) {
+    	function select_block_type_3(ctx, dirty) {
     		if (/*sortedRows*/ ctx[5].length) return 0;
     		return 1;
     	}
 
-    	current_block_type_index = select_block_type_2(ctx);
+    	current_block_type_index = select_block_type_3(ctx);
     	if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
     	return {
@@ -1973,7 +2177,7 @@
     						transition_in(if_block0, 1);
     					}
     				} else {
-    					if_block0 = create_if_block_7(ctx);
+    					if_block0 = create_if_block_9(ctx);
     					if_block0.c();
     					transition_in(if_block0, 1);
     					if_block0.m(t0.parentNode, t0);
@@ -2003,7 +2207,7 @@
     			}
 
     			let previous_block_index = current_block_type_index;
-    			current_block_type_index = select_block_type_2(ctx);
+    			current_block_type_index = select_block_type_3(ctx);
 
     			if (current_block_type_index === previous_block_index) {
     				if_blocks[current_block_type_index].p(ctx, dirty);

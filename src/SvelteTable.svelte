@@ -120,7 +120,20 @@
                 on:click={() => (activeModal = col.helpModal)}
               >
                 <IconTooltip />
-                <span class="sr-only">Show tooltip for {col.title}</span>
+                <span class="sr-only">Show tooltip 
+                  {#if col.title || col.titleComponent}
+                  for
+                    {#if col.titleComponent}
+                      <svelte:component
+                        this={col.titleComponent.component || col.titleComponent}
+                        {...col.titleComponent.props || {}}
+                        {col}
+                      />
+                    {:else}
+                      {col.title}
+                    {/if}
+                  {/if}
+                </span>
               </button>
             {/if}
           </th>
