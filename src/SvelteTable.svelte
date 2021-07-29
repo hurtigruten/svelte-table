@@ -9,8 +9,18 @@
   export let rows;
   export let sortBy = '';
   export let sortOrder = 0;
+  export let hasPagination = false;
+  export let hasMoreItems = false;
+  export let rowsPerPage = 5;
+  export let totalItems = 0;
+  export let isDynamicLoading = false;
 
   let activeModal = null;
+
+  let totalPages = 0;
+  let activePage = 1;
+  let from = 0;
+  let to = 0;
 
   const removeModal = (state) => {
     if (!state) {
@@ -25,7 +35,8 @@
     tbody: '',
     tr: '',
     td: '',
-    cell: ''
+    cell: '',
+    paginationBtns: ''
   };
 
   let columnByKey = {};
@@ -45,17 +56,21 @@
     }
   };
 
-  $: sortedRows = rows.sort((a, b) => {
-    if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
-      return sortStrings(a[sortBy], b[sortBy]);
-    if (a[sortBy] > b[sortBy]) {
-      return sortOrder;
-    } else if (a[sortBy] < b[sortBy]) {
-      return -sortOrder;
-    }
+  const sortRows = (rows, sortOrder, from, to) => {
+    const rowsSorted = rows.sort((a, b) => {
+      if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
+        return sortStrings(a[sortBy], b[sortBy]);
+      if (a[sortBy] > b[sortBy]) {
+        return sortOrder;
+      } else if (a[sortBy] < b[sortBy]) {
+        return -sortOrder;
+      }
 
-    return 0;
-  });
+      return 0;
+    });
+    if (isDynamicLoading) return rowsSorted;
+    return rowsSorted.slice(from - (activePage && 1), to);
+  };
 
   const updateSortOrder = (colKey) =>
     colKey === sortBy
@@ -75,6 +90,50 @@
   const handleClickCell = (event, row, key) => {
     dispatch('clickCell', { event, row, key });
   };
+
+  const handleFirstPageClick = () => {
+    activePage = 1;
+    dispatch('pageChange', { activePage });
+    return;
+  };
+
+  const handlePrevPageClick = () => {
+    if (isDynamicLoading) {
+      activePage = activePage !== 1 ? (activePage -= 1) : 1;
+      dispatch('pageChange', { activePage });
+      return;
+    }
+    activePage = activePage !== 1 ? (activePage -= 1) : 1;
+  };
+
+  const handleNextPageClick = () => {
+    if (isDynamicLoading) {
+      if (hasMoreItems) activePage++;
+      dispatch('pageChange', { activePage });
+      return;
+    }
+    activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
+  };
+
+  const handleLastPageClick = () => {
+    if (!hasMoreItems && isDynamicLoading) return;
+    activePage = totalPages;
+    dispatch('pageChange', { activePage });
+    return;
+  };
+
+  const setToValue = (activePage, rowsPerPage, rows) => {
+    const totalItems = isDynamicLoading ? totalItems : rows.length;
+    return activePage * rowsPerPage > totalItems
+      ? totalItems
+      : activePage * rowsPerPage;
+  };
+
+  $: totalItems = totalItems !== 0 ? totalItems : rows.length;
+  $: totalPages = Math.ceil(totalItems / rowsPerPage);
+  $: from = activePage === 1 ? activePage : (activePage - 1) * rowsPerPage + 1;
+  $: to = setToValue(activePage, rowsPerPage, rows);
+  $: sortedRows = sortRows(rows, sortOrder, from, to);
 </script>
 
 {#if activeModal}
@@ -173,6 +232,43 @@
       {/each}
     {:else}
       <slot name="empty" />
+    {/if}
+    {#if hasPagination}
+      <tr>
+        <td colspan={columns.length}>
+          <div class="flex justify-center p-1">
+            <p
+              style="padding-right: 10px; padding-top: 6px; margin-left: -64px;"
+            >
+              {`${from}-${to} of ${totalItems}`}
+            </p>
+            <button
+              class={styles.paginationBtns}
+              type="button"
+              on:click={() => handleFirstPageClick()}
+              disabled={activePage === 1}>First</button
+            >
+            <button
+              class={styles.paginationBtns}
+              type="button"
+              on:click={() => handlePrevPageClick()}
+              disabled={activePage === 1}>Prev</button
+            >
+            <button
+              class={styles.paginationBtns}
+              type="button"
+              on:click={() => handleNextPageClick()}
+              disabled={activePage === totalPages && !hasMoreItems}>Next</button
+            >
+            <button
+              class={styles.paginationBtns}
+              type="button"
+              on:click={() => handleLastPageClick()}
+              disabled={activePage === totalPages && !hasMoreItems}>Last</button
+            >
+          </div>
+        </td>
+      </tr>
     {/if}
   </tbody>
 </table>

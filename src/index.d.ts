@@ -21,8 +21,13 @@ interface SvelteTableProps {
   sortBy?: string;
   sortOrder?: number;
   styles?: Partial<
-    Record<'table' | 'thead' | 'th' | 'tbody' | 'tr' | 'td' | 'cell', string>
+    Record<'table' | 'thead' | 'th' | 'tbody' | 'tr' | 'td' | 'cell' | 'paginationBtns', string>
   >;
+  hasPagination?: boolean;
+  rowsPerPage?: number;
+  totalItems?: number;
+  hasMoreItems?: boolean;
+  isDynamicLoading?: boolean;
 }
 
 export class SvelteTable extends SvelteComponent {
