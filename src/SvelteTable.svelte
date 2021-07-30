@@ -59,7 +59,7 @@
   };
 
   const sortRows = (rows, sortOrder, from, to) => {
-    const sortedRows = rows.sort((a, b) => {
+    rows.sort((a, b) => {
       if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
         return sortStrings(a[sortBy], b[sortBy]);
       if (a[sortBy] > b[sortBy]) {
@@ -70,8 +70,8 @@
 
       return 0;
     });
-    if (isDynamicLoading) return sortedRows;
-    return sortedRows.slice(from - (activePage && 1), to);
+    if (isDynamicLoading) return rows;
+    return rows.slice(from - (activePage && 1), to);
   };
 
   const updateSortOrder = (colKey) =>
