@@ -10,13 +10,13 @@
   export let sortBy = '';
   export let sortOrder = 0;
   export let hasPagination = false;
-  export let hasMoreItems = false;
   export let rowsPerPage = 5;
   export let totalItems = 0;
   export let isDynamicLoading = false;
 
   let activeModal = null;
 
+  let hasMoreItems = false;
   let totalPages = 0;
   let activePage = 1;
   let from = 0;
@@ -91,49 +91,35 @@
     dispatch('clickCell', { event, row, key });
   };
 
-  const handleFirstPageClick = () => {
-    activePage = 1;
-    dispatch('pageChange', { activePage });
-    return;
-  };
-
-  const handlePrevPageClick = () => {
-    if (isDynamicLoading) {
-      activePage = activePage !== 1 ? (activePage -= 1) : 1;
-      dispatch('pageChange', { activePage });
-      return;
+  const handlePageClick = (direction) => {
+    switch (direction) {
+      case 'First':
+        activePage = 1;
+        break;
+      case 'Prev':
+        activePage = activePage !== 1 ? (activePage -= 1) : 1;
+        break;
+      case 'Next':
+        activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
+        break;
+      case 'Last':
+        activePage = totalPages;
+        break;
+      default:
+        return;
     }
-    activePage = activePage !== 1 ? (activePage -= 1) : 1;
-  };
-
-  const handleNextPageClick = () => {
-    if (isDynamicLoading) {
-      if (hasMoreItems) activePage++;
-      dispatch('pageChange', { activePage });
-      return;
-    }
-    activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
-  };
-
-  const handleLastPageClick = () => {
-    if (!hasMoreItems && isDynamicLoading) return;
-    activePage = totalPages;
     dispatch('pageChange', { activePage });
-    return;
-  };
-
-  const setToValue = (activePage, rowsPerPage, rows) => {
-    const totalItems = isDynamicLoading ? totalItems : rows.length;
-    return activePage * rowsPerPage > totalItems
-      ? totalItems
-      : activePage * rowsPerPage;
   };
 
   $: totalItems = totalItems !== 0 ? totalItems : rows.length;
   $: totalPages = Math.ceil(totalItems / rowsPerPage);
   $: from = activePage === 1 ? activePage : (activePage - 1) * rowsPerPage + 1;
-  $: to = setToValue(activePage, rowsPerPage, rows);
+  $: to =
+    activePage * rowsPerPage > totalItems
+      ? totalItems
+      : activePage * rowsPerPage;
   $: sortedRows = sortRows(rows, sortOrder, from, to);
+  $: hasMoreItems = from + rowsPerPage < totalItems;
 </script>
 
 {#if activeModal}
@@ -245,25 +231,25 @@
             <button
               class={styles.paginationBtns}
               type="button"
-              on:click={() => handleFirstPageClick()}
+              on:click={() => handlePageClick('First')}
               disabled={activePage === 1}>First</button
             >
             <button
               class={styles.paginationBtns}
               type="button"
-              on:click={() => handlePrevPageClick()}
+              on:click={() => handlePageClick('Prev')}
               disabled={activePage === 1}>Prev</button
             >
             <button
               class={styles.paginationBtns}
               type="button"
-              on:click={() => handleNextPageClick()}
+              on:click={() => handlePageClick('Next')}
               disabled={activePage === totalPages && !hasMoreItems}>Next</button
             >
             <button
               class={styles.paginationBtns}
               type="button"
-              on:click={() => handleLastPageClick()}
+              on:click={() => handlePageClick('Last')}
               disabled={activePage === totalPages && !hasMoreItems}>Last</button
             >
           </div>

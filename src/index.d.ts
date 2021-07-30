@@ -26,7 +26,6 @@ interface SvelteTableProps {
   hasPagination?: boolean;
   rowsPerPage?: number;
   totalItems?: number;
-  hasMoreItems?: boolean;
   isDynamicLoading?: boolean;
 }
 
