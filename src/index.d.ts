@@ -33,7 +33,7 @@ interface SvelteTableProps {
       | 'cell'
       | 'paginationContainer'
       | 'paginationInfo'
-      | 'paginationBtns',
+      | 'paginationButtons',
       string
     >
   >;

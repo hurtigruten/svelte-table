@@ -38,7 +38,7 @@
     cell: '',
     paginationContainer: '',
     paginationInfo: '',
-    paginationBtns: ''
+    paginationButtons: ''
   };
 
   let columnByKey = {};
@@ -59,7 +59,7 @@
   };
 
   const sortRows = (rows, sortOrder, from, to) => {
-    const rowsSorted = rows.sort((a, b) => {
+    const sortedRows = rows.sort((a, b) => {
       if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
         return sortStrings(a[sortBy], b[sortBy]);
       if (a[sortBy] > b[sortBy]) {
@@ -70,8 +70,8 @@
 
       return 0;
     });
-    if (isDynamicLoading) return rowsSorted;
-    return rowsSorted.slice(from - (activePage && 1), to);
+    if (isDynamicLoading) return sortedRows;
+    return sortedRows.slice(from - (activePage && 1), to);
   };
 
   const updateSortOrder = (colKey) =>
@@ -93,7 +93,7 @@
     dispatch('clickCell', { event, row, key });
   };
 
-  const handlePageClick = (direction) => {
+  const handleClickPage = (direction) => {
     switch (direction) {
       case 'First':
         activePage = 1;
@@ -110,7 +110,7 @@
       default:
         return;
     }
-    dispatch('pageChange', { activePage });
+    dispatch('changePage', { activePage });
   };
 
   $: totalItems = totalItems !== 0 ? totalItems : rows.length;
@@ -229,27 +229,27 @@
               {`${from}-${to} of ${totalItems}`}
             </p>
             <button
-              class={styles.paginationBtns}
+              class={styles.paginationButtons}
               type="button"
-              on:click={() => handlePageClick('First')}
+              on:click={() => handleClickPage('First')}
               disabled={activePage === 1}>First</button
             >
             <button
-              class={styles.paginationBtns}
+              class={styles.paginationButtons}
               type="button"
-              on:click={() => handlePageClick('Prev')}
+              on:click={() => handleClickPage('Prev')}
               disabled={activePage === 1}>Prev</button
             >
             <button
-              class={styles.paginationBtns}
+              class={styles.paginationButtons}
               type="button"
-              on:click={() => handlePageClick('Next')}
+              on:click={() => handleClickPage('Next')}
               disabled={activePage === totalPages && !hasMoreItems}>Next</button
             >
             <button
-              class={styles.paginationBtns}
+              class={styles.paginationButtons}
               type="button"
-              on:click={() => handlePageClick('Last')}
+              on:click={() => handleClickPage('Last')}
               disabled={activePage === totalPages && !hasMoreItems}>Last</button
             >
           </div>
