@@ -9,18 +9,18 @@
   export let rows;
   export let sortBy = '';
   export let sortOrder = 0;
-  export let hasPagination = false;
   export let rowsPerPage = 5;
   export let totalItems = 0;
+  export let hasPagination = false;
   export let isDynamicLoading = false;
 
   let activeModal = null;
 
-  let hasMoreItems = false;
-  let totalPages = 0;
   let activePage = 1;
   let from = 0;
   let to = 0;
+  let totalPages = 0;
+  let hasMoreItems = false;
 
   const removeModal = (state) => {
     if (!state) {
@@ -36,6 +36,8 @@
     tr: '',
     td: '',
     cell: '',
+    paginationContainer: '',
+    paginationInfo: '',
     paginationBtns: ''
   };
 
@@ -222,10 +224,8 @@
     {#if hasPagination}
       <tr>
         <td colspan={columns.length}>
-          <div class="flex justify-center p-1">
-            <p
-              style="padding-right: 10px; padding-top: 6px; margin-left: -64px;"
-            >
+          <div class={styles.paginationContainer}>
+            <p class={styles.paginationInfo}>
               {`${from}-${to} of ${totalItems}`}
             </p>
             <button
