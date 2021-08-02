@@ -221,40 +221,36 @@
     {:else}
       <slot name="empty" />
     {/if}
-    {#if hasPagination}
-      <tr>
-        <td colspan={columns.length}>
-          <div class={styles.paginationContainer}>
-            <p class={styles.paginationInfo}>
-              {`${from}-${to} of ${totalItems}`}
-            </p>
-            <button
-              class={styles.paginationButtons}
-              type="button"
-              on:click={() => handleClickPage('First')}
-              disabled={activePage === 1}>First</button
-            >
-            <button
-              class={styles.paginationButtons}
-              type="button"
-              on:click={() => handleClickPage('Prev')}
-              disabled={activePage === 1}>Prev</button
-            >
-            <button
-              class={styles.paginationButtons}
-              type="button"
-              on:click={() => handleClickPage('Next')}
-              disabled={activePage === totalPages && !hasMoreItems}>Next</button
-            >
-            <button
-              class={styles.paginationButtons}
-              type="button"
-              on:click={() => handleClickPage('Last')}
-              disabled={activePage === totalPages && !hasMoreItems}>Last</button
-            >
-          </div>
-        </td>
-      </tr>
-    {/if}
   </tbody>
 </table>
+{#if hasPagination}
+  <div class={styles.paginationContainer}>
+    <p class={styles.paginationInfo}>
+      {`${from}-${to} of ${totalItems}`}
+    </p>
+    <button
+      class={styles.paginationButtons}
+      type="button"
+      on:click={() => handleClickPage('First')}
+      disabled={activePage === 1}>First</button
+    >
+    <button
+      class={styles.paginationButtons}
+      type="button"
+      on:click={() => handleClickPage('Prev')}
+      disabled={activePage === 1}>Prev</button
+    >
+    <button
+      class={styles.paginationButtons}
+      type="button"
+      on:click={() => handleClickPage('Next')}
+      disabled={activePage === totalPages && !hasMoreItems}>Next</button
+    >
+    <button
+      class={styles.paginationButtons}
+      type="button"
+      on:click={() => handleClickPage('Last')}
+      disabled={activePage === totalPages && !hasMoreItems}>Last</button
+    >
+  </div>
+{/if}
