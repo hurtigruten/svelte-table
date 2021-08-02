@@ -122,7 +122,12 @@
 
   $: totalItems = setTotalItems(totalItems, rows);
   $: totalPages = Math.ceil(totalItems / rowsPerPage);
-  $: from = activePage === 1 ? activePage : (activePage - 1) * rowsPerPage + 1;
+  $: from =
+    activePage === 1
+      ? rows.length
+        ? 1
+        : 0
+      : (activePage - 1) * rowsPerPage + 1;
   $: to =
     activePage * rowsPerPage > totalItems
       ? totalItems
