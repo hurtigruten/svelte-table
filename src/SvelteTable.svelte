@@ -244,25 +244,27 @@
       class={styles.paginationButtons}
       type="button"
       on:click={() => handleClickPage('First')}
-      disabled={activePage === 1}>First</button
+      disabled={activePage === 1 || !rows.length}>First</button
     >
     <button
       class={styles.paginationButtons}
       type="button"
       on:click={() => handleClickPage('Prev')}
-      disabled={activePage === 1}>Prev</button
+      disabled={activePage === 1 || !rows.length}>Prev</button
     >
     <button
       class={styles.paginationButtons}
       type="button"
       on:click={() => handleClickPage('Next')}
-      disabled={activePage === totalPages && !hasMoreItems}>Next</button
+      disabled={(activePage === totalPages && !hasMoreItems) || !rows.length}
+      >Next</button
     >
     <button
       class={styles.paginationButtons}
       type="button"
       on:click={() => handleClickPage('Last')}
-      disabled={activePage === totalPages && !hasMoreItems}>Last</button
+      disabled={(activePage === totalPages && !hasMoreItems) || !rows.length}
+      >Last</button
     >
   </div>
 {/if}
