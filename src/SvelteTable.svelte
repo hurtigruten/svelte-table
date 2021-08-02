@@ -113,7 +113,14 @@
     dispatch('changePage', { activePage });
   };
 
-  $: totalItems = totalItems !== 0 ? totalItems : rows.length;
+  const setTotalItems = (totalItems, rows) => {
+    if (isDynamicLoading) {
+      return totalItems !== 0 ? totalItems : rows.length;
+    }
+    return rows.length;
+  };
+
+  $: totalItems = setTotalItems(totalItems, rows);
   $: totalPages = Math.ceil(totalItems / rowsPerPage);
   $: from = activePage === 1 ? activePage : (activePage - 1) * rowsPerPage + 1;
   $: to =
