@@ -69,7 +69,7 @@
 
       return 0;
     });
-    if (isDynamicLoading || !hasPagination) return rows;
+    if (isDynamicLoading || !shouldPaginate) return rows;
     return rows.slice(from - (activePage && 1), to);
   };
 
@@ -100,6 +100,7 @@
   };
 
   $: totalItems = setTotalItems(totalItems, rows);
+  $: shouldPaginate = hasPagination && totalItems > rowsPerPage;
   $: sortedRows = sortRows(rows, sortOrder, from, to);
   $: dispatch('changePage', { activePage });
 </script>
@@ -203,7 +204,7 @@
     {/if}
   </tbody>
 </table>
-{#if hasPagination && totalItems > rowsPerPage}
+{#if shouldPaginate}
   <Pagination
     {rowsPerPage}
     {styles}
