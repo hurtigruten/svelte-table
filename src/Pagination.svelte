@@ -1,18 +1,47 @@
 <script>
-  export let activePage;
-  export let from;
-  export let handleClickPage;
+  export let activePage = 1;
+  export let from = 0;
   export let rowsPerPage;
   export let styles;
-  export let to;
+  export let to = 0;
   export let totalItems;
+  export let rows;
 
   let totalPages = 0;
+
+  const handleClickPage = (direction, totalPages) => {
+    switch (direction) {
+      case 'First':
+        activePage = 1;
+        break;
+      case 'Prev':
+        activePage = activePage !== 1 ? (activePage -= 1) : 1;
+        break;
+      case 'Next':
+        activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
+        break;
+      case 'Last':
+        activePage = totalPages;
+        break;
+      default:
+        return;
+    }
+  };
 
   $: hasMoreItems = from + rowsPerPage < totalItems;
   $: isPrevDisabled = activePage === 1;
   $: isNextDisabled = activePage === totalPages && !hasMoreItems;
   $: totalPages = Math.ceil(totalItems / rowsPerPage);
+  $: from =
+    activePage === 1
+      ? rows.length
+        ? 1
+        : 0
+      : (activePage - 1) * rowsPerPage + 1;
+  $: to =
+    activePage * rowsPerPage > totalItems
+      ? totalItems
+      : activePage * rowsPerPage;
 </script>
 
 <nav

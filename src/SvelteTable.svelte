@@ -92,26 +92,6 @@
     dispatch('clickCell', { event, row, key });
   };
 
-  const handleClickPage = (direction, totalPages) => {
-    switch (direction) {
-      case 'First':
-        activePage = 1;
-        break;
-      case 'Prev':
-        activePage = activePage !== 1 ? (activePage -= 1) : 1;
-        break;
-      case 'Next':
-        activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
-        break;
-      case 'Last':
-        activePage = totalPages;
-        break;
-      default:
-        return;
-    }
-    dispatch('changePage', { activePage });
-  };
-
   const setTotalItems = (totalItems, rows) => {
     if (isDynamicLoading) {
       return totalItems !== 0 ? totalItems : rows.length;
@@ -120,17 +100,8 @@
   };
 
   $: totalItems = setTotalItems(totalItems, rows);
-  $: from =
-    activePage === 1
-      ? rows.length
-        ? 1
-        : 0
-      : (activePage - 1) * rowsPerPage + 1;
-  $: to =
-    activePage * rowsPerPage > totalItems
-      ? totalItems
-      : activePage * rowsPerPage;
   $: sortedRows = sortRows(rows, sortOrder, from, to);
+  $: dispatch('changePage', { activePage });
 </script>
 
 {#if activeModal}
@@ -234,12 +205,12 @@
 </table>
 {#if hasPagination && totalItems > rowsPerPage}
   <Pagination
-    {activePage}
-    {from}
-    {handleClickPage}
     {rowsPerPage}
     {styles}
-    {to}
     {totalItems}
+    {rows}
+    bind:activePage
+    bind:from
+    bind:to
   />
 {/if}
