@@ -29,8 +29,9 @@
   };
 
   $: hasMoreItems = from + rowsPerPage < totalItems;
-  $: isPrevDisabled = activePage === 1;
-  $: isNextDisabled = activePage === totalPages && !hasMoreItems;
+  $: isPrevDisabled = activePage === 1 || !rows.length;
+  $: isNextDisabled =
+    (activePage === totalPages && !hasMoreItems) || !rows.length;
   $: totalPages = Math.ceil(totalItems / rowsPerPage);
   $: from =
     activePage === 1
