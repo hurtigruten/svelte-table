@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import IconSorting from './icons/IconSorting.svelte';
   import IconTooltip from './icons/IconTooltip.svelte';
+  import Pagination from './Pagination.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -19,8 +20,6 @@
   let activePage = 1;
   let from = 0;
   let to = 0;
-  let totalPages = 0;
-  let hasMoreItems = false;
 
   const removeModal = (state) => {
     if (!state) {
@@ -70,7 +69,7 @@
 
       return 0;
     });
-    if (isDynamicLoading) return rows;
+    if (isDynamicLoading || !hasPagination) return rows;
     return rows.slice(from - (activePage && 1), to);
   };
 
@@ -93,7 +92,7 @@
     dispatch('clickCell', { event, row, key });
   };
 
-  const handleClickPage = (direction) => {
+  const handleClickPage = (direction, totalPages) => {
     switch (direction) {
       case 'First':
         activePage = 1;
@@ -121,7 +120,6 @@
   };
 
   $: totalItems = setTotalItems(totalItems, rows);
-  $: totalPages = Math.ceil(totalItems / rowsPerPage);
   $: from =
     activePage === 1
       ? rows.length
@@ -133,7 +131,6 @@
       ? totalItems
       : activePage * rowsPerPage;
   $: sortedRows = sortRows(rows, sortOrder, from, to);
-  $: hasMoreItems = from + rowsPerPage < totalItems;
 </script>
 
 {#if activeModal}
@@ -235,36 +232,14 @@
     {/if}
   </tbody>
 </table>
-{#if hasPagination}
-  <div class={styles.paginationContainer}>
-    <p class={styles.paginationInfo}>
-      {`${from}-${to} of ${totalItems}`}
-    </p>
-    <button
-      class={styles.paginationButtons}
-      type="button"
-      on:click={() => handleClickPage('First')}
-      disabled={activePage === 1 || !rows.length}>First</button
-    >
-    <button
-      class={styles.paginationButtons}
-      type="button"
-      on:click={() => handleClickPage('Prev')}
-      disabled={activePage === 1 || !rows.length}>Prev</button
-    >
-    <button
-      class={styles.paginationButtons}
-      type="button"
-      on:click={() => handleClickPage('Next')}
-      disabled={(activePage === totalPages && !hasMoreItems) || !rows.length}
-      >Next</button
-    >
-    <button
-      class={styles.paginationButtons}
-      type="button"
-      on:click={() => handleClickPage('Last')}
-      disabled={(activePage === totalPages && !hasMoreItems) || !rows.length}
-      >Last</button
-    >
-  </div>
+{#if hasPagination && totalItems > rowsPerPage}
+  <Pagination
+    {activePage}
+    {from}
+    {handleClickPage}
+    {rowsPerPage}
+    {styles}
+    {to}
+    {totalItems}
+  />
 {/if}
