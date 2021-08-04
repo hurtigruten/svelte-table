@@ -1,5 +1,7 @@
 # Svelte Table
 
+[![Build Status](https://travis-ci.com/hurtigruten/pg-mock-api.svg?token=dt9eZZg7uCGHjmBA774z&branch=main)](https://travis-ci.com/hurtigruten/pg-mock-api)
+
 ```bash
 npm i @hurtigruten/svelte-table --save
 ```
@@ -45,9 +47,7 @@ const columns = [
   export let col = {};
 </script>
 
-<span>
-  {row.FirstName} {row.LastName}
-</span>
+<span> {row.FirstName} {row.LastName} </span>
 ```
 
 ```js
