@@ -75,6 +75,7 @@
   const handleClickCell = (event, row, key) => {
     dispatch('clickCell', { event, row, key });
   };
+  
 </script>
 
 {#if activeModal}
@@ -119,7 +120,20 @@
                 on:click={() => (activeModal = col.helpModal)}
               >
                 <IconTooltip />
-                <span class="sr-only">Show tooltip</span>
+                <span class="sr-only">Show tooltip 
+                  {#if col.title || col.titleComponent}
+                  for
+                    {#if col.titleComponent}
+                      <svelte:component
+                        this={col.titleComponent.component || col.titleComponent}
+                        {...col.titleComponent.props || {}}
+                        {col}
+                      />
+                    {:else}
+                      {col.title}
+                    {/if}
+                  {/if}
+                </span>
               </button>
             {/if}
           </th>
@@ -134,7 +148,15 @@
           <tr
             on:click={(e) => {
               handleClickRow(e, row);
+              e.currentTarget.toggleAttribute('aria-expanded');
             }}
+            on:keydown={(e) => {
+              if(e.code === 'Enter' || e.code === 'Space') {
+                handleClickRow(e, row);
+                e.currentTarget.toggleAttribute('aria-expanded');
+              }
+            }}
+            tabindex="0"
             class={styles.tr}
             class:bg-gray-100={row['expandRow']?.show}
           >
