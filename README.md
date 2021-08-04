@@ -1,6 +1,6 @@
 # Svelte Table
 
-[![Build Status](https://travis-ci.com/hurtigruten/pg-mock-api.svg?token=dt9eZZg7uCGHjmBA774z&branch=main)](https://travis-ci.com/hurtigruten/pg-mock-api)
+[![Build Status](https://travis-ci.com/hurtigruten/svelte-table.svg?branch=main)](https://travis-ci.com/hurtigruten/svelte-table)
 
 ```bash
 npm i @hurtigruten/svelte-table --save
