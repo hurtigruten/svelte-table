@@ -13,7 +13,9 @@ interface SvelteTableColumnBase {
   expandedRowsComponent?: typeof SvelteComponent;
 }
 
-type SvelteTableColumn = Omit<SvelteTableColumnBase, 'title'> | Omit<SvelteTableColumnBase, 'titleComponent'>;
+type SvelteTableColumn =
+  | Omit<SvelteTableColumnBase, 'title'>
+  | Omit<SvelteTableColumnBase, 'titleComponent'>;
 
 interface SvelteTableProps {
   columns: SvelteTableColumn[];
@@ -21,8 +23,24 @@ interface SvelteTableProps {
   sortBy?: string;
   sortOrder?: number;
   styles?: Partial<
-    Record<'table' | 'thead' | 'th' | 'tbody' | 'tr' | 'td' | 'cell', string>
+    Record<
+      | 'table'
+      | 'thead'
+      | 'th'
+      | 'tbody'
+      | 'tr'
+      | 'td'
+      | 'cell'
+      | 'paginationContainer'
+      | 'paginationInfo'
+      | 'paginationButtons',
+      string
+    >
   >;
+  hasPagination?: boolean;
+  rowsPerPage?: number;
+  totalItems?: number;
+  isDynamicLoading?: boolean;
 }
 
 declare class SvelteTable extends SvelteComponent {
