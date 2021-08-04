@@ -1,10 +1,14 @@
 <script>
   export let activePage = 1;
   export let from = 0;
-  export let rowsPerPage;
-  export let styles;
+  export let rowsPerPage = 5;
+  export let styles = {
+    paginationContainer: '',
+    paginationInfo: '',
+    paginationButtons: ''
+  };
   export let to = 0;
-  export let totalItems;
+  export let totalItems = 0;
   export let rows;
 
   let totalPages = 0;
@@ -68,7 +72,8 @@
     tabIndex={isPrevDisabled ? -1 : 0}
     disabled={isPrevDisabled}
     aria-disabled={isPrevDisabled}
-    aria-label="Previous page">Prev</button
+    aria-label="Previous page"
+    data-testid="previous-button">Prev</button
   >
   <button
     class={styles.paginationButtons}
@@ -77,7 +82,8 @@
     tabIndex={isNextDisabled ? -1 : 0}
     disabled={isNextDisabled}
     aria-disabled={isNextDisabled}
-    aria-label="Next page">Next</button
+    aria-label="Next page"
+    data-testid="next-button">Next</button
   >
   <button
     class={styles.paginationButtons}
