@@ -41,10 +41,30 @@ interface SvelteTableProps {
   rowsPerPage?: number;
   totalItems?: number;
   isDynamicLoading?: boolean;
+  activePage?: number;
+}
+
+interface PaginationProps {
+  rows: unknown;
+  styles?: Partial<
+    Record<
+      'paginationContainer' | 'paginationInfo' | 'paginationButtons',
+      string
+    >
+  >;
+  activePage?: number;
+  rowsPerPage?: number;
+  totalItems?: number;
+  from?: number;
+  to?: number;
 }
 
 export class SvelteTable extends SvelteComponent {
   $$prop_def: SvelteTableProps;
+}
+
+export class Pagination extends SvelteComponent {
+  $$prop_def: PaginationProps;
 }
 
 export { SvelteTableProps, SvelteTableColumn };

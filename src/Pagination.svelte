@@ -53,9 +53,6 @@
   class={styles.paginationContainer}
   aria-label={`Navigation pagination, showing items ${from} to ${to} of total ${totalItems} items`}
 >
-  <p class={styles.paginationInfo} aria-hidden="true">
-    {`${from}-${to} of ${totalItems}`}
-  </p>
   <button
     class={styles.paginationButtons}
     type="button"
@@ -75,6 +72,9 @@
     aria-label="Previous page"
     data-testid="previous-button">Prev</button
   >
+  <p class={styles.paginationInfo} aria-hidden="true">
+    {`${from}-${to} of ${totalItems}`}
+  </p>
   <button
     class={styles.paginationButtons}
     type="button"

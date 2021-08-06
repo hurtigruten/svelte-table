@@ -14,10 +14,10 @@
   export let totalItems = 0;
   export let hasPagination = false;
   export let isDynamicLoading = false;
+  export let activePage = 1;
 
   let activeModal = null;
 
-  let activePage = 1;
   let from = 0;
   let to = 0;
 
