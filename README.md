@@ -1,5 +1,7 @@
 # Svelte Table
 
+[![Build Status](https://travis-ci.com/hurtigruten/svelte-table.svg?branch=main)](https://travis-ci.com/hurtigruten/svelte-table)
+
 ```bash
 npm i @hurtigruten/svelte-table --save
 ```
@@ -45,9 +47,7 @@ const columns = [
   export let col = {};
 </script>
 
-<span>
-  {row.FirstName} {row.LastName}
-</span>
+<span> {row.FirstName} {row.LastName} </span>
 ```
 
 ```js
