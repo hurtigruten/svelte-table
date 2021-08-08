@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import IconSorting from './icons/IconSorting.svelte';
   import IconTooltip from './icons/IconTooltip.svelte';
+  import Pagination from './Pagination.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -9,8 +10,16 @@
   export let rows;
   export let sortBy = '';
   export let sortOrder = 0;
+  export let rowsPerPage = 5;
+  export let totalItems = 0;
+  export let hasPagination = false;
+  export let isDynamicLoading = false;
+  export let activePage = 1;
 
   let activeModal = null;
+
+  let from = 0;
+  let to = 0;
 
   const removeModal = (state) => {
     if (!state) {
@@ -25,7 +34,10 @@
     tbody: '',
     tr: '',
     td: '',
-    cell: ''
+    cell: '',
+    paginationContainer: '',
+    paginationInfo: '',
+    paginationButtons: ''
   };
 
   let columnByKey = {};
@@ -45,17 +57,21 @@
     }
   };
 
-  $: sortedRows = rows.sort((a, b) => {
-    if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
-      return sortStrings(a[sortBy], b[sortBy]);
-    if (a[sortBy] > b[sortBy]) {
-      return sortOrder;
-    } else if (a[sortBy] < b[sortBy]) {
-      return -sortOrder;
-    }
+  const sortRows = (rows, sortOrder, from, to) => {
+    rows.sort((a, b) => {
+      if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
+        return sortStrings(a[sortBy], b[sortBy]);
+      if (a[sortBy] > b[sortBy]) {
+        return sortOrder;
+      } else if (a[sortBy] < b[sortBy]) {
+        return -sortOrder;
+      }
 
-    return 0;
-  });
+      return 0;
+    });
+    if (isDynamicLoading || !shouldPaginate) return rows;
+    return rows.slice(from - (activePage && 1), to);
+  };
 
   const updateSortOrder = (colKey) =>
     colKey === sortBy
@@ -75,7 +91,18 @@
   const handleClickCell = (event, row, key) => {
     dispatch('clickCell', { event, row, key });
   };
-  
+
+  const setTotalItems = (totalItems, rows) => {
+    if (isDynamicLoading) {
+      return totalItems !== 0 ? totalItems : rows.length;
+    }
+    return rows.length;
+  };
+
+  $: totalItems = setTotalItems(totalItems, rows);
+  $: shouldPaginate = hasPagination && totalItems > rowsPerPage;
+  $: sortedRows = sortRows(rows, sortOrder, from, to);
+  $: dispatch('changePage', { activePage });
 </script>
 
 {#if activeModal}
@@ -120,12 +147,14 @@
                 on:click={() => (activeModal = col.helpModal)}
               >
                 <IconTooltip />
-                <span class="sr-only">Show tooltip 
+                <span class="sr-only"
+                  >Show tooltip
                   {#if col.title || col.titleComponent}
-                  for
+                    for
                     {#if col.titleComponent}
                       <svelte:component
-                        this={col.titleComponent.component || col.titleComponent}
+                        this={col.titleComponent.component ||
+                          col.titleComponent}
                         {...col.titleComponent.props || {}}
                         {col}
                       />
@@ -151,7 +180,7 @@
               e.currentTarget.toggleAttribute('aria-expanded');
             }}
             on:keydown={(e) => {
-              if(e.code === 'Enter' || e.code === 'Space') {
+              if (e.code === 'Enter' || e.code === 'Space') {
                 handleClickRow(e, row);
                 e.currentTarget.toggleAttribute('aria-expanded');
               }
@@ -198,3 +227,14 @@
     {/if}
   </tbody>
 </table>
+{#if shouldPaginate}
+  <Pagination
+    {rowsPerPage}
+    {styles}
+    {totalItems}
+    {rows}
+    bind:activePage
+    bind:from
+    bind:to
+  />
+{/if}
