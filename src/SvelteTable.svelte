@@ -142,7 +142,7 @@
 
             {#if col.helpModal}
               <button
-                class="text-blue-700"
+                class="text-blue-700 no-outline"
                 type="button"
                 on:click={() => (activeModal = col.helpModal)}
               >
