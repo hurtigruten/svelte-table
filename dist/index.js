@@ -532,20 +532,20 @@
 
     function create_fragment$1(ctx) {
     	let nav;
-    	let p;
-    	let t0_value = `${/*from*/ ctx[0]}-${/*to*/ ctx[1]} of ${/*totalItems*/ ctx[3]}` + "";
-    	let t0;
-    	let p_class_value;
-    	let t1;
     	let button0;
-    	let t2;
+    	let t0;
     	let button0_class_value;
     	let button0_tabindex_value;
-    	let t3;
+    	let t1;
     	let button1;
-    	let t4;
+    	let t2;
     	let button1_class_value;
     	let button1_tabindex_value;
+    	let t3;
+    	let p;
+    	let t4_value = `${/*from*/ ctx[0]}-${/*to*/ ctx[1]} of ${/*totalItems*/ ctx[3]}` + "";
+    	let t4;
+    	let p_class_value;
     	let t5;
     	let button2;
     	let t6;
@@ -564,22 +564,20 @@
     	return {
     		c() {
     			nav = element("nav");
-    			p = element("p");
-    			t0 = text(t0_value);
-    			t1 = space();
     			button0 = element("button");
-    			t2 = text("First");
-    			t3 = space();
+    			t0 = text("First");
+    			t1 = space();
     			button1 = element("button");
-    			t4 = text("Prev");
+    			t2 = text("Prev");
+    			t3 = space();
+    			p = element("p");
+    			t4 = text(t4_value);
     			t5 = space();
     			button2 = element("button");
     			t6 = text("Next");
     			t7 = space();
     			button3 = element("button");
     			t8 = text("Last");
-    			attr(p, "class", p_class_value = /*styles*/ ctx[2].paginationInfo);
-    			attr(p, "aria-hidden", "true");
     			attr(button0, "class", button0_class_value = /*styles*/ ctx[2].paginationButtons);
     			attr(button0, "type", "button");
     			attr(button0, "tabindex", button0_tabindex_value = /*isPrevDisabled*/ ctx[5] ? -1 : 0);
@@ -593,6 +591,8 @@
     			attr(button1, "aria-disabled", /*isPrevDisabled*/ ctx[5]);
     			attr(button1, "aria-label", "Previous page");
     			attr(button1, "data-testid", "previous-button");
+    			attr(p, "class", p_class_value = /*styles*/ ctx[2].paginationInfo);
+    			attr(p, "aria-hidden", "true");
     			attr(button2, "class", button2_class_value = /*styles*/ ctx[2].paginationButtons);
     			attr(button2, "type", "button");
     			attr(button2, "tabindex", button2_tabindex_value = /*isNextDisabled*/ ctx[6] ? -1 : 0);
@@ -611,14 +611,14 @@
     		},
     		m(target, anchor) {
     			insert(target, nav, anchor);
-    			append(nav, p);
-    			append(p, t0);
-    			append(nav, t1);
     			append(nav, button0);
-    			append(button0, t2);
-    			append(nav, t3);
+    			append(button0, t0);
+    			append(nav, t1);
     			append(nav, button1);
-    			append(button1, t4);
+    			append(button1, t2);
+    			append(nav, t3);
+    			append(nav, p);
+    			append(p, t4);
     			append(nav, t5);
     			append(nav, button2);
     			append(button2, t6);
@@ -638,12 +638,6 @@
     			}
     		},
     		p(ctx, [dirty]) {
-    			if (dirty & /*from, to, totalItems*/ 11 && t0_value !== (t0_value = `${/*from*/ ctx[0]}-${/*to*/ ctx[1]} of ${/*totalItems*/ ctx[3]}` + "")) set_data(t0, t0_value);
-
-    			if (dirty & /*styles*/ 4 && p_class_value !== (p_class_value = /*styles*/ ctx[2].paginationInfo)) {
-    				attr(p, "class", p_class_value);
-    			}
-
     			if (dirty & /*styles*/ 4 && button0_class_value !== (button0_class_value = /*styles*/ ctx[2].paginationButtons)) {
     				attr(button0, "class", button0_class_value);
     			}
@@ -674,6 +668,12 @@
 
     			if (dirty & /*isPrevDisabled*/ 32) {
     				attr(button1, "aria-disabled", /*isPrevDisabled*/ ctx[5]);
+    			}
+
+    			if (dirty & /*from, to, totalItems*/ 11 && t4_value !== (t4_value = `${/*from*/ ctx[0]}-${/*to*/ ctx[1]} of ${/*totalItems*/ ctx[3]}` + "")) set_data(t4, t4_value);
+
+    			if (dirty & /*styles*/ 4 && p_class_value !== (p_class_value = /*styles*/ ctx[2].paginationInfo)) {
+    				attr(p, "class", p_class_value);
     			}
 
     			if (dirty & /*styles*/ 4 && button2_class_value !== (button2_class_value = /*styles*/ ctx[2].paginationButtons)) {
@@ -883,15 +883,15 @@
 
     const get_header_slot_changes = dirty => ({
     	sortOrder: dirty[0] & /*sortOrder*/ 1,
-    	sortBy: dirty[0] & /*sortBy*/ 4
+    	sortBy: dirty[0] & /*sortBy*/ 8
     });
 
     const get_header_slot_context = ctx => ({
     	sortOrder: /*sortOrder*/ ctx[0],
-    	sortBy: /*sortBy*/ ctx[2]
+    	sortBy: /*sortBy*/ ctx[3]
     });
 
-    // (108:0) {#if activeModal}
+    // (109:0) {#if activeModal}
     function create_if_block_10(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -960,7 +960,7 @@
     	};
     }
 
-    // (132:12) {:else}
+    // (133:12) {:else}
     function create_else_block_4(ctx) {
     	let t_value = /*col*/ ctx[39].title + "";
     	let t;
@@ -973,7 +973,7 @@
     			insert(target, t, anchor);
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*columns*/ 8 && t_value !== (t_value = /*col*/ ctx[39].title + "")) set_data(t, t_value);
+    			if (dirty[0] & /*columns*/ 16 && t_value !== (t_value = /*col*/ ctx[39].title + "")) set_data(t, t_value);
     		},
     		i: noop,
     		o: noop,
@@ -983,7 +983,7 @@
     	};
     }
 
-    // (126:12) {#if col.titleComponent}
+    // (127:12) {#if col.titleComponent}
     function create_if_block_9(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -1019,7 +1019,7 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			const switch_instance_changes = (dirty[0] & /*columns*/ 8)
+    			const switch_instance_changes = (dirty[0] & /*columns*/ 16)
     			? get_spread_update(switch_instance_spread_levels, [
     					get_spread_object(/*col*/ ctx[39].titleComponent.props || {}),
     					{ col: /*col*/ ctx[39] }
@@ -1066,7 +1066,7 @@
     	};
     }
 
-    // (135:12) {#if col.sortable}
+    // (136:12) {#if col.sortable}
     function create_if_block_7(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -1076,7 +1076,7 @@
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*sortBy*/ ctx[2] === /*col*/ ctx[39].key) return 0;
+    		if (/*sortBy*/ ctx[3] === /*col*/ ctx[39].key) return 0;
     		return 1;
     	}
 
@@ -1136,7 +1136,7 @@
     	};
     }
 
-    // (138:14) {:else}
+    // (139:14) {:else}
     function create_else_block_3(ctx) {
     	let iconsorting;
     	let current;
@@ -1166,7 +1166,7 @@
     	};
     }
 
-    // (136:14) {#if sortBy === col.key}
+    // (137:14) {#if sortBy === col.key}
     function create_if_block_8(ctx) {
     	let iconsorting;
     	let current;
@@ -1203,13 +1203,14 @@
     	};
     }
 
-    // (143:12) {#if col.helpModal}
+    // (144:12) {#if col.helpModal}
     function create_if_block_4(ctx) {
     	let button;
     	let icontooltip;
     	let t0;
     	let span;
     	let t1;
+    	let button_class_value;
     	let current;
     	let mounted;
     	let dispose;
@@ -1229,7 +1230,7 @@
     			t1 = text("Show tooltip\r\n                  ");
     			if (if_block) if_block.c();
     			attr(span, "class", "sr-only");
-    			attr(button, "class", "text-blue-700");
+    			attr(button, "class", button_class_value = /*styles*/ ctx[7].helpButton);
     			attr(button, "type", "button");
     		},
     		m(target, anchor) {
@@ -1253,7 +1254,7 @@
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty[0] & /*columns*/ 8) {
+    					if (dirty[0] & /*columns*/ 16) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -1270,6 +1271,10 @@
     				});
 
     				check_outros();
+    			}
+
+    			if (!current || dirty[0] & /*styles*/ 128 && button_class_value !== (button_class_value = /*styles*/ ctx[7].helpButton)) {
+    				attr(button, "class", button_class_value);
     			}
     		},
     		i(local) {
@@ -1293,7 +1298,7 @@
     	};
     }
 
-    // (152:18) {#if col.title || col.titleComponent}
+    // (153:18) {#if col.title || col.titleComponent}
     function create_if_block_5(ctx) {
     	let t;
     	let current_block_type_index;
@@ -1367,7 +1372,7 @@
     	};
     }
 
-    // (161:20) {:else}
+    // (162:20) {:else}
     function create_else_block_2(ctx) {
     	let t_value = /*col*/ ctx[39].title + "";
     	let t;
@@ -1380,7 +1385,7 @@
     			insert(target, t, anchor);
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*columns*/ 8 && t_value !== (t_value = /*col*/ ctx[39].title + "")) set_data(t, t_value);
+    			if (dirty[0] & /*columns*/ 16 && t_value !== (t_value = /*col*/ ctx[39].title + "")) set_data(t, t_value);
     		},
     		i: noop,
     		o: noop,
@@ -1390,7 +1395,7 @@
     	};
     }
 
-    // (154:20) {#if col.titleComponent}
+    // (155:20) {#if col.titleComponent}
     function create_if_block_6(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -1426,7 +1431,7 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			const switch_instance_changes = (dirty[0] & /*columns*/ 8)
+    			const switch_instance_changes = (dirty[0] & /*columns*/ 16)
     			? get_spread_update(switch_instance_spread_levels, [
     					get_spread_object(/*col*/ ctx[39].titleComponent.props || {}),
     					{ col: /*col*/ ctx[39] }
@@ -1473,7 +1478,7 @@
     	};
     }
 
-    // (119:8) {#each columns as col, i}
+    // (120:8) {#each columns as col, i}
     function create_each_block_3(ctx) {
     	let th;
     	let current_block_type_index;
@@ -1511,9 +1516,9 @@
     			t1 = space();
     			if (if_block2) if_block2.c();
     			t2 = space();
-    			attr(th, "class", th_class_value = `cursor-pointer ${/*styles*/ ctx[6].th} ${/*col*/ ctx[39].headerClass}`);
+    			attr(th, "class", th_class_value = `cursor-pointer ${/*styles*/ ctx[7].th} ${/*col*/ ctx[39].headerClass}`);
     			toggle_class(th, "cursor-pointer", /*col*/ ctx[39].sortable);
-    			toggle_class(th, "pr-4", /*columns*/ ctx[3].length - 1 === /*i*/ ctx[43]);
+    			toggle_class(th, "pr-4", /*columns*/ ctx[4].length - 1 === /*i*/ ctx[43]);
     		},
     		m(target, anchor) {
     			insert(target, th, anchor);
@@ -1565,7 +1570,7 @@
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
 
-    					if (dirty[0] & /*columns*/ 8) {
+    					if (dirty[0] & /*columns*/ 16) {
     						transition_in(if_block1, 1);
     					}
     				} else {
@@ -1588,7 +1593,7 @@
     				if (if_block2) {
     					if_block2.p(ctx, dirty);
 
-    					if (dirty[0] & /*columns*/ 8) {
+    					if (dirty[0] & /*columns*/ 16) {
     						transition_in(if_block2, 1);
     					}
     				} else {
@@ -1607,16 +1612,16 @@
     				check_outros();
     			}
 
-    			if (!current || dirty[0] & /*styles, columns*/ 72 && th_class_value !== (th_class_value = `cursor-pointer ${/*styles*/ ctx[6].th} ${/*col*/ ctx[39].headerClass}`)) {
+    			if (!current || dirty[0] & /*styles, columns*/ 144 && th_class_value !== (th_class_value = `cursor-pointer ${/*styles*/ ctx[7].th} ${/*col*/ ctx[39].headerClass}`)) {
     				attr(th, "class", th_class_value);
     			}
 
-    			if (dirty[0] & /*styles, columns, columns*/ 72) {
+    			if (dirty[0] & /*styles, columns, columns*/ 144) {
     				toggle_class(th, "cursor-pointer", /*col*/ ctx[39].sortable);
     			}
 
-    			if (dirty[0] & /*styles, columns, columns*/ 72) {
-    				toggle_class(th, "pr-4", /*columns*/ ctx[3].length - 1 === /*i*/ ctx[43]);
+    			if (dirty[0] & /*styles, columns, columns*/ 144) {
+    				toggle_class(th, "pr-4", /*columns*/ ctx[4].length - 1 === /*i*/ ctx[43]);
     			}
     		},
     		i(local) {
@@ -1643,11 +1648,11 @@
     	};
     }
 
-    // (117:45)         
+    // (118:45)         
     function fallback_block_1(ctx) {
     	let tr;
     	let current;
-    	let each_value_3 = /*columns*/ ctx[3];
+    	let each_value_3 = /*columns*/ ctx[4];
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_3.length; i += 1) {
@@ -1676,8 +1681,8 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*styles, columns, handleClickCol, activeModal, sortOrder, sortBy*/ 17485) {
-    				each_value_3 = /*columns*/ ctx[3];
+    			if (dirty[0] & /*styles, columns, handleClickCol, activeModal, sortOrder, sortBy*/ 17561) {
+    				each_value_3 = /*columns*/ ctx[4];
     				let i;
 
     				for (i = 0; i < each_value_3.length; i += 1) {
@@ -1728,7 +1733,7 @@
     	};
     }
 
-    // (225:4) {:else}
+    // (226:4) {:else}
     function create_else_block_1(ctx) {
     	let current;
     	const empty_slot_template = /*#slots*/ ctx[20].empty;
@@ -1767,7 +1772,7 @@
     	};
     }
 
-    // (174:4) {#if sortedRows.length}
+    // (175:4) {#if sortedRows.length}
     function create_if_block_1(ctx) {
     	let each_1_anchor;
     	let current;
@@ -1799,7 +1804,7 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*columns, sortedRows, styles, handleClickRow, handleClickCell, $$scope*/ 626760) {
+    			if (dirty[0] & /*columns, sortedRows, styles, handleClickRow, handleClickCell, $$scope*/ 626832) {
     				each_value = /*sortedRows*/ ctx[12];
     				let i;
 
@@ -1851,7 +1856,7 @@
     	};
     }
 
-    // (208:16) {:else}
+    // (209:16) {:else}
     function create_else_block(ctx) {
     	let div;
 
@@ -1864,17 +1869,17 @@
     	return {
     		c() {
     			div = element("div");
-    			attr(div, "class", div_class_value = /*styles*/ ctx[6].cell);
+    			attr(div, "class", div_class_value = /*styles*/ ctx[7].cell);
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
     			div.innerHTML = raw_value;
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*columns, sortedRows*/ 4104 && raw_value !== (raw_value = (/*col*/ ctx[39].renderValue
+    			if (dirty[0] & /*columns, sortedRows*/ 4112 && raw_value !== (raw_value = (/*col*/ ctx[39].renderValue
     			? /*col*/ ctx[39].renderValue(/*row*/ ctx[36])
     			: /*col*/ ctx[39].value(/*row*/ ctx[36]) || "") + "")) div.innerHTML = raw_value;
-    			if (dirty[0] & /*styles*/ 64 && div_class_value !== (div_class_value = /*styles*/ ctx[6].cell)) {
+    			if (dirty[0] & /*styles*/ 128 && div_class_value !== (div_class_value = /*styles*/ ctx[7].cell)) {
     				attr(div, "class", div_class_value);
     			}
     		},
@@ -1886,14 +1891,14 @@
     	};
     }
 
-    // (200:16) {#if col.component}
+    // (201:16) {#if col.component}
     function create_if_block_3(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
 
     	const switch_instance_spread_levels = [
-    		{ class: /*styles*/ ctx[6].cell },
+    		{ class: /*styles*/ ctx[7].cell },
     		/*col*/ ctx[39].component.props || {},
     		{ row: /*row*/ ctx[36] },
     		{ col: /*col*/ ctx[39] }
@@ -1929,12 +1934,12 @@
     			current = true;
     		},
     		p(ctx, dirty) {
-    			const switch_instance_changes = (dirty[0] & /*styles, columns, sortedRows*/ 4168)
+    			const switch_instance_changes = (dirty[0] & /*styles, columns, sortedRows*/ 4240)
     			? get_spread_update(switch_instance_spread_levels, [
-    					dirty[0] & /*styles*/ 64 && { class: /*styles*/ ctx[6].cell },
-    					dirty[0] & /*columns*/ 8 && get_spread_object(/*col*/ ctx[39].component.props || {}),
+    					dirty[0] & /*styles*/ 128 && { class: /*styles*/ ctx[7].cell },
+    					dirty[0] & /*columns*/ 16 && get_spread_object(/*col*/ ctx[39].component.props || {}),
     					dirty[0] & /*sortedRows*/ 4096 && { row: /*row*/ ctx[36] },
-    					dirty[0] & /*columns*/ 8 && { col: /*col*/ ctx[39] }
+    					dirty[0] & /*columns*/ 16 && { col: /*col*/ ctx[39] }
     				])
     			: {};
 
@@ -1978,7 +1983,7 @@
     	};
     }
 
-    // (192:12) {#each columns as col, i}
+    // (193:12) {#each columns as col, i}
     function create_each_block_2(ctx) {
     	let td;
     	let current_block_type_index;
@@ -2008,8 +2013,8 @@
     			td = element("td");
     			if_block.c();
     			t = space();
-    			attr(td, "class", td_class_value = `${/*col*/ ctx[39].class} ${/*styles*/ ctx[6].td}`);
-    			toggle_class(td, "pr-4", /*columns*/ ctx[3].length - 1 === /*i*/ ctx[43]);
+    			attr(td, "class", td_class_value = `${/*col*/ ctx[39].class} ${/*styles*/ ctx[7].td}`);
+    			toggle_class(td, "pr-4", /*columns*/ ctx[4].length - 1 === /*i*/ ctx[43]);
     		},
     		m(target, anchor) {
     			insert(target, td, anchor);
@@ -2050,12 +2055,12 @@
     				if_block.m(td, t);
     			}
 
-    			if (!current || dirty[0] & /*columns, styles*/ 72 && td_class_value !== (td_class_value = `${/*col*/ ctx[39].class} ${/*styles*/ ctx[6].td}`)) {
+    			if (!current || dirty[0] & /*columns, styles*/ 144 && td_class_value !== (td_class_value = `${/*col*/ ctx[39].class} ${/*styles*/ ctx[7].td}`)) {
     				attr(td, "class", td_class_value);
     			}
 
-    			if (dirty[0] & /*columns, styles, columns*/ 72) {
-    				toggle_class(td, "pr-4", /*columns*/ ctx[3].length - 1 === /*i*/ ctx[43]);
+    			if (dirty[0] & /*columns, styles, columns*/ 144) {
+    				toggle_class(td, "pr-4", /*columns*/ ctx[4].length - 1 === /*i*/ ctx[43]);
     			}
     		},
     		i(local) {
@@ -2076,7 +2081,7 @@
     	};
     }
 
-    // (219:12) {#if col.expandedRowsComponent}
+    // (220:12) {#if col.expandedRowsComponent}
     function create_if_block_2(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
@@ -2112,7 +2117,7 @@
     		p(ctx, dirty) {
     			const switch_instance_changes = {};
     			if (dirty[0] & /*sortedRows*/ 4096) switch_instance_changes.row = /*row*/ ctx[36];
-    			if (dirty[0] & /*columns*/ 8) switch_instance_changes.col = /*col*/ ctx[39];
+    			if (dirty[0] & /*columns*/ 16) switch_instance_changes.col = /*col*/ ctx[39];
 
     			if (switch_value !== (switch_value = /*col*/ ctx[39].expandedRowsComponent)) {
     				if (switch_instance) {
@@ -2154,7 +2159,7 @@
     	};
     }
 
-    // (218:10) {#each columns as col}
+    // (219:10) {#each columns as col}
     function create_each_block_1(ctx) {
     	let if_block_anchor;
     	let current;
@@ -2175,7 +2180,7 @@
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty[0] & /*columns*/ 8) {
+    					if (dirty[0] & /*columns*/ 16) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -2210,7 +2215,7 @@
     	};
     }
 
-    // (176:35)             
+    // (177:35)             
     function fallback_block(ctx) {
     	let tr;
     	let tr_class_value;
@@ -2219,7 +2224,7 @@
     	let current;
     	let mounted;
     	let dispose;
-    	let each_value_2 = /*columns*/ ctx[3];
+    	let each_value_2 = /*columns*/ ctx[4];
     	let each_blocks_1 = [];
 
     	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -2238,7 +2243,7 @@
     		return /*keydown_handler*/ ctx[26](/*row*/ ctx[36], ...args);
     	}
 
-    	let each_value_1 = /*columns*/ ctx[3];
+    	let each_value_1 = /*columns*/ ctx[4];
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -2265,7 +2270,7 @@
 
     			t1 = space();
     			attr(tr, "tabindex", "0");
-    			attr(tr, "class", tr_class_value = /*styles*/ ctx[6].tr);
+    			attr(tr, "class", tr_class_value = /*styles*/ ctx[7].tr);
     			toggle_class(tr, "bg-gray-100", /*row*/ ctx[36]["expandRow"]?.show);
     		},
     		m(target, anchor) {
@@ -2296,8 +2301,8 @@
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty[0] & /*columns, styles, handleClickCell, sortedRows*/ 69704) {
-    				each_value_2 = /*columns*/ ctx[3];
+    			if (dirty[0] & /*columns, styles, handleClickCell, sortedRows*/ 69776) {
+    				each_value_2 = /*columns*/ ctx[4];
     				let i;
 
     				for (i = 0; i < each_value_2.length; i += 1) {
@@ -2323,16 +2328,16 @@
     				check_outros();
     			}
 
-    			if (!current || dirty[0] & /*styles*/ 64 && tr_class_value !== (tr_class_value = /*styles*/ ctx[6].tr)) {
+    			if (!current || dirty[0] & /*styles*/ 128 && tr_class_value !== (tr_class_value = /*styles*/ ctx[7].tr)) {
     				attr(tr, "class", tr_class_value);
     			}
 
-    			if (dirty[0] & /*styles, sortedRows*/ 4160) {
+    			if (dirty[0] & /*styles, sortedRows*/ 4224) {
     				toggle_class(tr, "bg-gray-100", /*row*/ ctx[36]["expandRow"]?.show);
     			}
 
-    			if (dirty[0] & /*columns, sortedRows*/ 4104) {
-    				each_value_1 = /*columns*/ ctx[3];
+    			if (dirty[0] & /*columns, sortedRows*/ 4112) {
+    				each_value_1 = /*columns*/ ctx[4];
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
@@ -2398,7 +2403,7 @@
     	};
     }
 
-    // (175:6) {#each sortedRows as row, n}
+    // (176:6) {#each sortedRows as row, n}
     function create_each_block(ctx) {
     	let current;
     	const row_slot_template = /*#slots*/ ctx[20].row;
@@ -2422,7 +2427,7 @@
     					update_slot(row_slot, row_slot_template, ctx, /*$$scope*/ ctx[19], dirty, get_row_slot_changes, get_row_slot_context);
     				}
     			} else {
-    				if (row_slot_or_fallback && row_slot_or_fallback.p && dirty[0] & /*columns, sortedRows, styles*/ 4168) {
+    				if (row_slot_or_fallback && row_slot_or_fallback.p && dirty[0] & /*columns, sortedRows, styles*/ 4240) {
     					row_slot_or_fallback.p(ctx, dirty);
     				}
     			}
@@ -2442,7 +2447,7 @@
     	};
     }
 
-    // (230:0) {#if shouldPaginate}
+    // (231:0) {#if shouldPaginate}
     function create_if_block(ctx) {
     	let pagination;
     	let updating_activePage;
@@ -2463,14 +2468,14 @@
     	}
 
     	let pagination_props = {
-    		rowsPerPage: /*rowsPerPage*/ ctx[5],
-    		styles: /*styles*/ ctx[6],
+    		rowsPerPage: /*rowsPerPage*/ ctx[6],
+    		styles: /*styles*/ ctx[7],
     		totalItems: /*totalItems*/ ctx[1],
-    		rows: /*rows*/ ctx[4]
+    		rows: /*rows*/ ctx[5]
     	};
 
-    	if (/*activePage*/ ctx[7] !== void 0) {
-    		pagination_props.activePage = /*activePage*/ ctx[7];
+    	if (/*activePage*/ ctx[2] !== void 0) {
+    		pagination_props.activePage = /*activePage*/ ctx[2];
     	}
 
     	if (/*from*/ ctx[8] !== void 0) {
@@ -2496,14 +2501,14 @@
     		},
     		p(ctx, dirty) {
     			const pagination_changes = {};
-    			if (dirty[0] & /*rowsPerPage*/ 32) pagination_changes.rowsPerPage = /*rowsPerPage*/ ctx[5];
-    			if (dirty[0] & /*styles*/ 64) pagination_changes.styles = /*styles*/ ctx[6];
+    			if (dirty[0] & /*rowsPerPage*/ 64) pagination_changes.rowsPerPage = /*rowsPerPage*/ ctx[6];
+    			if (dirty[0] & /*styles*/ 128) pagination_changes.styles = /*styles*/ ctx[7];
     			if (dirty[0] & /*totalItems*/ 2) pagination_changes.totalItems = /*totalItems*/ ctx[1];
-    			if (dirty[0] & /*rows*/ 16) pagination_changes.rows = /*rows*/ ctx[4];
+    			if (dirty[0] & /*rows*/ 32) pagination_changes.rows = /*rows*/ ctx[5];
 
-    			if (!updating_activePage && dirty[0] & /*activePage*/ 128) {
+    			if (!updating_activePage && dirty[0] & /*activePage*/ 4) {
     				updating_activePage = true;
-    				pagination_changes.activePage = /*activePage*/ ctx[7];
+    				pagination_changes.activePage = /*activePage*/ ctx[2];
     				add_flush_callback(() => updating_activePage = false);
     			}
 
@@ -2579,9 +2584,9 @@
     			t2 = space();
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
-    			attr(thead, "class", thead_class_value = /*styles*/ ctx[6].thead);
-    			attr(tbody, "class", tbody_class_value = /*styles*/ ctx[6].tbody);
-    			attr(table, "class", table_class_value = /*styles*/ ctx[6].table);
+    			attr(thead, "class", thead_class_value = /*styles*/ ctx[7].thead);
+    			attr(tbody, "class", tbody_class_value = /*styles*/ ctx[7].tbody);
+    			attr(table, "class", table_class_value = /*styles*/ ctx[7].table);
     		},
     		m(target, anchor) {
     			if (if_block0) if_block0.m(target, anchor);
@@ -2626,16 +2631,16 @@
     			}
 
     			if (header_slot) {
-    				if (header_slot.p && (!current || dirty[0] & /*$$scope, sortOrder, sortBy*/ 524293)) {
+    				if (header_slot.p && (!current || dirty[0] & /*$$scope, sortOrder, sortBy*/ 524297)) {
     					update_slot(header_slot, header_slot_template, ctx, /*$$scope*/ ctx[19], dirty, get_header_slot_changes, get_header_slot_context);
     				}
     			} else {
-    				if (header_slot_or_fallback && header_slot_or_fallback.p && dirty[0] & /*columns, styles, activeModal, sortOrder, sortBy*/ 1101) {
+    				if (header_slot_or_fallback && header_slot_or_fallback.p && dirty[0] & /*columns, styles, activeModal, sortOrder, sortBy*/ 1177) {
     					header_slot_or_fallback.p(ctx, dirty);
     				}
     			}
 
-    			if (!current || dirty[0] & /*styles*/ 64 && thead_class_value !== (thead_class_value = /*styles*/ ctx[6].thead)) {
+    			if (!current || dirty[0] & /*styles*/ 128 && thead_class_value !== (thead_class_value = /*styles*/ ctx[7].thead)) {
     				attr(thead, "class", thead_class_value);
     			}
 
@@ -2665,11 +2670,11 @@
     				if_block1.m(tbody, null);
     			}
 
-    			if (!current || dirty[0] & /*styles*/ 64 && tbody_class_value !== (tbody_class_value = /*styles*/ ctx[6].tbody)) {
+    			if (!current || dirty[0] & /*styles*/ 128 && tbody_class_value !== (tbody_class_value = /*styles*/ ctx[7].tbody)) {
     				attr(tbody, "class", tbody_class_value);
     			}
 
-    			if (!current || dirty[0] & /*styles*/ 64 && table_class_value !== (table_class_value = /*styles*/ ctx[6].table)) {
+    			if (!current || dirty[0] & /*styles*/ 128 && table_class_value !== (table_class_value = /*styles*/ ctx[7].table)) {
     				attr(table, "class", table_class_value);
     			}
 
@@ -2737,8 +2742,8 @@
     	let { totalItems = 0 } = $$props;
     	let { hasPagination = false } = $$props;
     	let { isDynamicLoading = false } = $$props;
+    	let { activePage = 1 } = $$props;
     	let activeModal = null;
-    	let activePage = 1;
     	let from = 0;
     	let to = 0;
 
@@ -2756,6 +2761,7 @@
     		tr: "",
     		td: "",
     		cell: "",
+    		helpButton: "",
     		paginationContainer: "",
     		paginationInfo: "",
     		paginationButtons: ""
@@ -2801,7 +2807,7 @@
 
     	const handleClickCol = (event, col) => {
     		updateSortOrder(col.key);
-    		$$invalidate(2, sortBy = col.key);
+    		$$invalidate(3, sortBy = col.key);
     		dispatch("clickCol", { event, col, key: col.key });
     	};
 
@@ -2843,7 +2849,7 @@
 
     	function pagination_activePage_binding(value) {
     		activePage = value;
-    		$$invalidate(7, activePage);
+    		$$invalidate(2, activePage);
     	}
 
     	function pagination_from_binding(value) {
@@ -2857,32 +2863,33 @@
     	}
 
     	$$self.$$set = $$props => {
-    		if ("columns" in $$props) $$invalidate(3, columns = $$props.columns);
-    		if ("rows" in $$props) $$invalidate(4, rows = $$props.rows);
-    		if ("sortBy" in $$props) $$invalidate(2, sortBy = $$props.sortBy);
+    		if ("columns" in $$props) $$invalidate(4, columns = $$props.columns);
+    		if ("rows" in $$props) $$invalidate(5, rows = $$props.rows);
+    		if ("sortBy" in $$props) $$invalidate(3, sortBy = $$props.sortBy);
     		if ("sortOrder" in $$props) $$invalidate(0, sortOrder = $$props.sortOrder);
-    		if ("rowsPerPage" in $$props) $$invalidate(5, rowsPerPage = $$props.rowsPerPage);
+    		if ("rowsPerPage" in $$props) $$invalidate(6, rowsPerPage = $$props.rowsPerPage);
     		if ("totalItems" in $$props) $$invalidate(1, totalItems = $$props.totalItems);
     		if ("hasPagination" in $$props) $$invalidate(17, hasPagination = $$props.hasPagination);
     		if ("isDynamicLoading" in $$props) $$invalidate(18, isDynamicLoading = $$props.isDynamicLoading);
-    		if ("styles" in $$props) $$invalidate(6, styles = $$props.styles);
+    		if ("activePage" in $$props) $$invalidate(2, activePage = $$props.activePage);
+    		if ("styles" in $$props) $$invalidate(7, styles = $$props.styles);
     		if ("$$scope" in $$props) $$invalidate(19, $$scope = $$props.$$scope);
     	};
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*totalItems, rows*/ 18) {
+    		if ($$self.$$.dirty[0] & /*totalItems, rows*/ 34) {
     			$$invalidate(1, totalItems = setTotalItems(totalItems, rows));
     		}
 
-    		if ($$self.$$.dirty[0] & /*hasPagination, totalItems, rowsPerPage*/ 131106) {
+    		if ($$self.$$.dirty[0] & /*hasPagination, totalItems, rowsPerPage*/ 131138) {
     			$$invalidate(11, shouldPaginate = hasPagination && totalItems > rowsPerPage);
     		}
 
-    		if ($$self.$$.dirty[0] & /*rows, sortOrder, from, to*/ 785) {
+    		if ($$self.$$.dirty[0] & /*rows, sortOrder, from, to*/ 801) {
     			$$invalidate(12, sortedRows = sortRows(rows, sortOrder, from, to));
     		}
 
-    		if ($$self.$$.dirty[0] & /*activePage*/ 128) {
+    		if ($$self.$$.dirty[0] & /*activePage*/ 4) {
     			dispatch("changePage", { activePage });
     		}
     	};
@@ -2890,12 +2897,12 @@
     	return [
     		sortOrder,
     		totalItems,
+    		activePage,
     		sortBy,
     		columns,
     		rows,
     		rowsPerPage,
     		styles,
-    		activePage,
     		from,
     		to,
     		activeModal,
@@ -2932,15 +2939,16 @@
     			create_fragment,
     			safe_not_equal,
     			{
-    				columns: 3,
-    				rows: 4,
-    				sortBy: 2,
+    				columns: 4,
+    				rows: 5,
+    				sortBy: 3,
     				sortOrder: 0,
-    				rowsPerPage: 5,
+    				rowsPerPage: 6,
     				totalItems: 1,
     				hasPagination: 17,
     				isDynamicLoading: 18,
-    				styles: 6
+    				activePage: 2,
+    				styles: 7
     			},
     			[-1, -1]
     		);
