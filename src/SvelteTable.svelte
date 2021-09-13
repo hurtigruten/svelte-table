@@ -35,6 +35,7 @@
     tr: '',
     td: '',
     cell: '',
+    helpButton: '',
     paginationContainer: '',
     paginationInfo: '',
     paginationButtons: ''
@@ -142,7 +143,7 @@
 
             {#if col.helpModal}
               <button
-                class="text-blue-700"
+                class={styles.helpButton}
                 type="button"
                 on:click={() => (activeModal = col.helpModal)}
               >
