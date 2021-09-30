@@ -32,6 +32,7 @@ interface SvelteTableProps {
       | 'td'
       | 'cell'
       | 'helpButton'
+      | 'sortingButton'
       | 'paginationContainer'
       | 'paginationInfo'
       | 'paginationButtons',

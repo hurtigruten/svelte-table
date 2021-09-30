@@ -36,6 +36,7 @@
     td: '',
     cell: '',
     helpButton: '',
+    sortingButton: '',
     paginationContainer: '',
     paginationInfo: '',
     paginationButtons: ''
@@ -134,13 +135,10 @@
               {col.title}
             {/if}
             {#if col.sortable}
-              {#if sortBy === col.key}
-                <IconSorting {sortOrder} />
-              {:else}
-                <IconSorting sortOrder={0} />
-              {/if}
+              <button class={styles.sortingButton}>
+                <IconSorting sortOrder={sortBy === col.key ? sortOrder : 0} />
+              </button>
             {/if}
-
             {#if col.helpModal}
               <button
                 class={styles.helpButton}
