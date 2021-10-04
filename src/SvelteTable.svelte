@@ -135,7 +135,7 @@
               {col.title}
             {/if}
             {#if col.sortable}
-              <button class={styles.sortingButton}>
+              <button type="button" class={styles.sortingButton}>
                 <IconSorting sortOrder={sortBy === col.key ? sortOrder : 0} />
               </button>
             {/if}
