@@ -1079,6 +1079,7 @@ function create_if_block_7(ctx) {
 		c() {
 			button = element("button");
 			create_component(iconsorting.$$.fragment);
+			attr(button, "type", "button");
 			attr(button, "class", button_class_value = /*styles*/ ctx[7].sortingButton);
 		},
 		m(target, anchor) {
