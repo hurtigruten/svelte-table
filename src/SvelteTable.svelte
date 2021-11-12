@@ -1,239 +1,111 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import IconSorting from './icons/IconSorting.svelte';
-  import IconTooltip from './icons/IconTooltip.svelte';
-  import Pagination from './Pagination.svelte';
-
-  const dispatch = createEventDispatcher();
-
-  export let columns;
-  export let rows;
-  export let sortBy = '';
-  export let sortOrder = 0;
-  export let rowsPerPage = 5;
-  export let totalItems = 0;
-  export let hasPagination = false;
-  export let isDynamicLoading = false;
-  export let activePage = 1;
-
-  let activeModal = null;
-
-  let from = 0;
-  let to = 0;
-
-  const removeModal = (state) => {
-    if (!state) {
-      activeModal = null;
-    }
-  };
-
-  export let styles = {
+  export let columns = [];
+  export let rows = [];
+  export let classes = {
     table: '',
     thead: '',
-    th: '',
     tbody: '',
     tr: '',
-    td: '',
-    cell: '',
-    helpButton: '',
-    sortingButton: '',
-    paginationContainer: '',
-    paginationInfo: '',
-    paginationButtons: ''
+    th: '',
+    td: ''
+  };
+  export let isSortable = true;
+
+  let lastSortedKey = '';
+  let sortDescending = false;
+
+  let hoverColumn = -1;
+  let hoverRow = -1;
+
+  const setHovered = (colIdx, rowIdx) => {
+    hoverColumn = colIdx;
+    hoverRow = rowIdx;
   };
 
-  let columnByKey = {};
+  const sortRowsBy = (key) => {
+    if (!isSortable) return;
 
-  columns.forEach((col) => {
-    columnByKey[col.key] = col;
-  });
+    const columnData = columns.find((column) => column.key === key);
+    if (columnData.sortable === false) return;
 
-  const sortStrings = (a, b) => {
-    if (!a) return -sortOrder;
-    if (!b) return sortOrder;
-
-    if (sortOrder > 0) {
-      return a.localeCompare(b);
+    if (lastSortedKey === key) {
+      sortDescending = !sortDescending;
     } else {
-      return b.localeCompare(a);
+      sortDescending = false;
     }
-  };
 
-  const sortRows = (rows, sortOrder, from, to) => {
-    rows.sort((a, b) => {
-      if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
-        return sortStrings(a[sortBy], b[sortBy]);
-      if (a[sortBy] > b[sortBy]) {
-        return sortOrder;
-      } else if (a[sortBy] < b[sortBy]) {
-        return -sortOrder;
-      }
+    lastSortedKey = key;
 
-      return 0;
+    if (columnData.sortBy) {
+      rows = [...rows].sort((a, b) => sortBy(a, b, sortDescending));
+      return;
+    }
+
+    rows = [...rows].sort((a, b) => {
+      [a, b] = [a[key], b[key]];
+      if (sortDescending) [b, a] = [a, b];
+      if (typeof a === 'number') return a - b;
+      return a.localeCompare(b);
     });
-    if (isDynamicLoading || !shouldPaginate) return rows;
-    return rows.slice(from - (activePage && 1), to);
   };
-
-  const updateSortOrder = (colKey) =>
-    colKey === sortBy
-      ? (sortOrder = sortOrder === 1 ? -1 : 1)
-      : (sortOrder = 1);
-
-  const handleClickCol = (event, col) => {
-    updateSortOrder(col.key);
-    sortBy = col.key;
-    dispatch('clickCol', { event, col, key: col.key });
-  };
-
-  const handleClickRow = (event, row) => {
-    dispatch('clickRow', { event, row });
-  };
-
-  const handleClickCell = (event, row, key) => {
-    dispatch('clickCell', { event, row, key });
-  };
-
-  const setTotalItems = (totalItems, rows) => {
-    if (isDynamicLoading) {
-      return totalItems !== 0 ? totalItems : rows.length;
-    }
-    return rows.length;
-  };
-
-  $: totalItems = setTotalItems(totalItems, rows);
-  $: shouldPaginate = hasPagination && totalItems > rowsPerPage;
-  $: sortedRows = sortRows(rows, sortOrder, from, to);
-  $: dispatch('changePage', { activePage });
 </script>
 
-{#if activeModal}
-  <svelte:component
-    this={activeModal}
-    on:toggled={({ isOpen }) => removeModal(isOpen)}
-  />
-{/if}
-
-<table class={styles.table}>
-  <thead class={styles.thead}>
-    <slot name="header" {sortOrder} {sortBy}>
-      <tr>
-        {#each columns as col, i}
-          <th
-            on:click={col.sortable ? (e) => handleClickCol(e, col) : undefined}
-            class:cursor-pointer={col.sortable}
-            class:pr-4={columns.length - 1 === i}
-            class={`cursor-pointer ${styles.th} ${col.headerClass}`}
+<table
+  class={classes.table}
+  cellspacing="0"
+  on:mouseleave={() => setHovered(-1, -1)}
+>
+  <thead class={classes.thead}>
+    <tr class={classes.tr}>
+      {#each columns as column, colIdx}
+        <th
+          class={classes.th}
+          on:click={() => sortRowsBy(column.key)}
+          on:mouseenter={() => setHovered(colIdx, -1)}
+        >
+          <slot
+            name="head"
+            {column}
+            isColumnHovered={hoverColumn === colIdx}
+            isSorted={lastSortedKey === column.key}
+            {sortDescending}
+            sortable={isSortable && column.sortable !== false}
+          />
+        </th>
+      {/each}
+    </tr>
+  </thead>
+  <tbody class={classes.tbody}>
+    {#each rows as row, rowIndex}
+      <tr class={classes.tr}>
+        {#each columns as column, columnIndex}
+          <td
+            class={classes.td}
+            on:mouseenter={() => setHovered(columnIndex, rowIndex)}
           >
-            {#if col.titleComponent}
-              <svelte:component
-                this={col.titleComponent.component || col.titleComponent}
-                {...col.titleComponent.props || {}}
-                {col}
-              />
-            {:else}
-              {col.title}
-            {/if}
-            {#if col.sortable}
-              <button type="button" class={styles.sortingButton}>
-                <IconSorting sortOrder={sortBy === col.key ? sortOrder : 0} />
-              </button>
-            {/if}
-            {#if col.helpModal}
-              <button
-                class={styles.helpButton}
-                type="button"
-                on:click={() => (activeModal = col.helpModal)}
-              >
-                <IconTooltip />
-                <span class="sr-only"
-                  >Show tooltip
-                  {#if col.title || col.titleComponent}
-                    for
-                    {#if col.titleComponent}
-                      <svelte:component
-                        this={col.titleComponent.component ||
-                          col.titleComponent}
-                        {...col.titleComponent.props || {}}
-                        {col}
-                      />
-                    {:else}
-                      {col.title}
-                    {/if}
-                  {/if}
-                </span>
-              </button>
-            {/if}
-          </th>
+            <slot
+              name="cell"
+              {row}
+              {column}
+              cell={row[column.key]}
+              isRowHovered={hoverRow === rowIndex}
+              isColumnHovered={hoverColumn === columnIndex}
+            />
+          </td>
         {/each}
       </tr>
-    </slot>
-  </thead>
-  <tbody class={styles.tbody}>
-    {#if sortedRows.length}
-      {#each sortedRows as row, n}
-        <slot name="row" {row} {n}>
-          <tr
-            on:click={(e) => {
-              handleClickRow(e, row);
-              e.currentTarget.toggleAttribute('aria-expanded');
-            }}
-            on:keydown={(e) => {
-              if (e.code === 'Enter' || e.code === 'Space') {
-                handleClickRow(e, row);
-                e.currentTarget.toggleAttribute('aria-expanded');
-              }
-            }}
-            tabindex="0"
-            class={styles.tr}
-            class:bg-gray-100={row['expandRow']?.show}
-          >
-            {#each columns as col, i}
-              <td
-                on:click={(e) => {
-                  handleClickCell(e, row, col.key);
-                }}
-                class={`${col.class} ${styles.td}`}
-                class:pr-4={columns.length - 1 === i}
-              >
-                {#if col.component}
-                  <svelte:component
-                    this={col.component.component || col.component}
-                    class={styles.cell}
-                    {...col.component.props || {}}
-                    {row}
-                    {col}
-                  />
-                {:else}
-                  <div class={styles.cell}>
-                    {@html col.renderValue
-                      ? col.renderValue(row)
-                      : col.value(row) || ''}
-                  </div>
-                {/if}
-              </td>
-            {/each}
-          </tr>
-          {#each columns as col}
-            {#if col.expandedRowsComponent}
-              <svelte:component this={col.expandedRowsComponent} {row} {col} />
-            {/if}
-          {/each}
-        </slot>
-      {/each}
-    {:else}
-      <slot name="empty" />
-    {/if}
+    {/each}
   </tbody>
 </table>
-{#if shouldPaginate}
-  <Pagination
-    {rowsPerPage}
-    {styles}
-    {totalItems}
-    {rows}
-    bind:activePage
-    bind:from
-    bind:to
-  />
-{/if}
+
+<style scoped>
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    border: none;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+</style>
