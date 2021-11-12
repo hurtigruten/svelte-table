@@ -29,7 +29,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -cw",
-    "test": "jest src"
+    "test": "jest src",
+    "test:watch": "jest src --watchAll"
   },
   "author": "Hurtigruten",
   "license": "MIT"
