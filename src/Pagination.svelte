@@ -1,97 +1,58 @@
 <script>
-  export let activePage = 1;
-  export let from = 0;
-  export let rowsPerPage = 5;
-  export let styles = {
+  export let classes = {
     paginationContainer: '',
     paginationInfo: '',
     paginationButtons: ''
   };
-  export let to = 0;
-  export let totalItems = 0;
-  export let rows;
-
-  let totalPages = 0;
-
-  const handleClickPage = (direction, totalPages) => {
-    switch (direction) {
-      case 'First':
-        activePage = 1;
-        break;
-      case 'Prev':
-        activePage = activePage !== 1 ? (activePage -= 1) : 1;
-        break;
-      case 'Next':
-        activePage = activePage !== totalPages ? (activePage += 1) : totalPages;
-        break;
-      case 'Last':
-        activePage = totalPages;
-        break;
-      default:
-        return;
-    }
-  };
-
-  $: hasMoreItems = from + rowsPerPage < totalItems;
-  $: isPrevDisabled = activePage === 1 || !rows.length;
-  $: isNextDisabled =
-    (activePage === totalPages && !hasMoreItems) || !rows.length;
-  $: totalPages = Math.ceil(totalItems / rowsPerPage);
-  $: from =
-    activePage === 1
-      ? rows.length
-        ? 1
-        : 0
-      : (activePage - 1) * rowsPerPage + 1;
-  $: to =
-    activePage * rowsPerPage > totalItems
-      ? totalItems
-      : activePage * rowsPerPage;
+  export let to;
+  export let from;
+  export let nextPage;
+  export let prevPage;
+  export let firstPage;
+  export let lastPage;
+  export let totalItems;
+  export let enabled;
 </script>
 
 <nav
-  class={styles.paginationContainer}
+  class={classes.paginationContainer}
   aria-label={`Navigation pagination, showing items ${from} to ${to} of total ${totalItems} items`}
 >
   <button
-    class={styles.paginationButtons}
+    class={classes.paginationButtons}
     type="button"
-    on:click={() => handleClickPage('First', totalPages)}
-    tabIndex={isPrevDisabled ? -1 : 0}
-    disabled={isPrevDisabled}
-    aria-disabled={isPrevDisabled}
+    on:click={firstPage}
+    disabled={!enabled.firstPage}
+    aria-disabled={!enabled.firstPage}
     aria-label="First page">First</button
   >
   <button
-    class={styles.paginationButtons}
+    class={classes.paginationButtons}
     type="button"
-    on:click={() => handleClickPage('Prev', totalPages)}
-    tabIndex={isPrevDisabled ? -1 : 0}
-    disabled={isPrevDisabled}
-    aria-disabled={isPrevDisabled}
+    on:click={prevPage}
+    disabled={!enabled.prevPage}
+    aria-disabled={!enabled.prevPage}
     aria-label="Previous page"
     data-testid="previous-button">Prev</button
   >
-  <p class={styles.paginationInfo} aria-hidden="true">
+  <p class={classes.paginationInfo} aria-hidden="true">
     {`${from}-${to} of ${totalItems}`}
   </p>
   <button
-    class={styles.paginationButtons}
+    class={classes.paginationButtons}
     type="button"
-    on:click={() => handleClickPage('Next', totalPages)}
-    tabIndex={isNextDisabled ? -1 : 0}
-    disabled={isNextDisabled}
-    aria-disabled={isNextDisabled}
+    on:click={nextPage}
+    disabled={!enabled.nextPage}
+    aria-disabled={!enabled.nextPage}
     aria-label="Next page"
     data-testid="next-button">Next</button
   >
   <button
-    class={styles.paginationButtons}
+    class={classes.paginationButtons}
     type="button"
-    on:click={() => handleClickPage('Last', totalPages)}
-    tabIndex={isNextDisabled ? -1 : 0}
-    disabled={isNextDisabled}
-    aria-disabled={isNextDisabled}
+    on:click={lastPage}
+    disabled={!enabled.lastPage}
+    aria-disabled={!enabled.lastPage}
     aria-label="Last page">Last</button
   >
 </nav>
