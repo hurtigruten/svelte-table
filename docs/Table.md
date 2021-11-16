@@ -25,34 +25,11 @@
 
 ### Slots
 
-```html
-[slot="head"] => Defines how a table head cell will render [slot="cell"] =>
-Defines how a table body cell will render
-```
-
-#### Slot variables
-
-When using slot you can reach each slots variable by using the `let:` directive on the parent componet.
-
-```ts
-  column: Array<{
-    key: string,
-    title: string,
-    sortable?: boolean
-  }> // represents the current column
-  isColumnHovered: boolean // true if any element of current column is currently being hovered
-
-  // slot="head" specific vars:
-  isSorted: boolean // if true it means it is the column that table is currently sorted by
-  sortable: boolean // true means the column is sortable
-  sortDescending: boolean // represents which direction the current sorting works
-
-  // slot="cell" specific vars:
-  row: any // represents the current row
-  cell: any // simply an alias for row[column.key]
-  isRowHovered: boolean // true if any element of current row is currently being hovered
-
-```
+- [head](./Slot-head.md)
+- [cell](./Slot-cell.md)
+- [expanded](./Slot-expanded.md)
+- [pagination](./Slot-pagination.md)
+- [empty](./Slot-empty.md)
 
 ---
 

@@ -25,8 +25,13 @@ npm i @hurtigruten/svelte-table --save
 
 ### Read more
 
-- [Table component and customizing](docs/Table.md)
+- [Table component](docs/Table.md)
 - [Pagination](docs/Pagination.md)
+- [head slot](./Slot-head.md)
+- [cell slot](./Slot-cell.md)
+- [expanded slot](./Slot-expanded.md)
+- [pagination slot](./Slot-pagination.md)
+- [empty slot](./Slot-empty.md)
 
 ---
 

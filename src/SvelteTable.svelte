@@ -180,6 +180,8 @@
                   name="cell"
                   {row}
                   {column}
+                  handleExpand={() =>
+                    (row.isExpanded = row.isExpanded ? !row.isExpanded : true)}
                   cell={row[column.key]}
                   isRowHovered={hoverRow === rowIndex}
                   isColumnHovered={hoverColumn === columnIndex}
@@ -190,6 +192,11 @@
             </td>
           {/each}
         </tr>
+        {#if row.isExpanded}
+          <tr class={classes.tr} on:click={() => dispatch('clickRow', row)}>
+            <slot name="expanded" {row} />
+          </tr>
+        {/if}
       {:else}
         <slot name="empty" />
       {/each}
@@ -210,6 +217,7 @@
         {totalItems}
         {from}
         {to}
+        {goTo}
       />
     {:else}
       <Pagination
