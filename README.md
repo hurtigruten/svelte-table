@@ -2,76 +2,37 @@
 
 [![Build Status](https://travis-ci.com/hurtigruten/svelte-table.svg?branch=main)](https://travis-ci.com/hurtigruten/svelte-table)
 
+## Quick start
+
 ```bash
 npm i @hurtigruten/svelte-table --save
 ```
 
-### Simple table
-
-```js
-import { SvelteTable } from '@hurtigruten/svelte-table';
-
-let rows = [];
-const columns = [
-  {
-    key: 'Id',
-    title: 'ID',
-    value: (v) => v.Id,
-    sortable: true
-  },
-  {
-    key: 'FirstName',
-    title: 'First name',
-    value: (v) => v.FirstName,
-    sortable: true
-  },
-  {
-    key: 'LastName',
-    title: 'Last name',
-    value: (v) => v.LastName,
-    sortable: true
-  }
-];
-```
+### Simple example
 
 ```html
-<SvelteTable {columns} {rows} styles={{ table: 'table table-striped' }} />
+<SvelteTable {rows} {columns} />
 ```
 
-### Table with components
+### Table with custom components
 
 ```html
-<!-- FullName component -->
-<script>
-  export let row = {};
-  export let col = {};
-</script>
-
-<span> {row.FirstName} {row.LastName} </span>
+<SvelteTable {rows} {columns} let:cell let:column>
+  <span class="text-white bg-gray-800" slot="head">{column.title}</span>
+  <span class="flex items-center bg-blue-100" slot="cell">{cell}</span>
+</SvelteTable>
 ```
 
-```js
-import { SvelteTable } from '@hurtigruten/svelte-table';
-import FullName from './FullName.svelte';
+### Read more
 
-let rows = [];
-const columns = [
-  {
-    key: 'Id',
-    title: 'ID',
-    value: (v) => v.Id,
-    sortable: true
-  },
-  {
-    key: 'FullName',
-    title: 'Full name',
-    component: FullName
-  }
-];
-```
+- [Table component](docs/Table.md)
+- [Pagination](docs/Pagination.md)
+- [head slot](./Slot-head.md)
+- [cell slot](./Slot-cell.md)
+- [expanded slot](./Slot-expanded.md)
+- [pagination slot](./Slot-pagination.md)
+- [empty slot](./Slot-empty.md)
 
-```html
-<SvelteTable {columns} {rows} styles={{ table: 'table table-striped' }} />
-```
+---
 
 This is a customized "fork" of the following [repository](https://github.com/dasDaniel/svelte-table) which we customized beyond direct forking.

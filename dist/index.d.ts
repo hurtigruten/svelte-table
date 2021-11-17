@@ -4,13 +4,6 @@ interface SvelteTableColumnBase {
   key: string;
   title: string;
   sortable?: boolean;
-  headerClass?: string;
-  class?: string;
-  component?: typeof SvelteComponent;
-  helpModal?: typeof SvelteComponent;
-  value?: (v: unknown) => string;
-  titleComponent: typeof SvelteComponent;
-  expandedRowsComponent?: typeof SvelteComponent;
 }
 
 type SvelteTableColumn =
@@ -19,10 +12,8 @@ type SvelteTableColumn =
 
 interface SvelteTableProps {
   columns: SvelteTableColumn[];
-  rows: unknown;
-  sortBy?: string;
-  sortOrder?: number;
-  styles?: Partial<
+  rows: unknown[];
+  classes?: Partial<
     Record<
       | 'table'
       | 'thead'
@@ -39,26 +30,30 @@ interface SvelteTableProps {
       string
     >
   >;
-  hasPagination?: boolean;
+  isSortable?: boolean;
   rowsPerPage?: number;
-  totalItems?: number;
-  isDynamicLoading?: boolean;
-  activePage?: number;
 }
 
 interface PaginationProps {
-  rows: unknown;
   styles?: Partial<
     Record<
       'paginationContainer' | 'paginationInfo' | 'paginationButtons',
       string
     >
   >;
-  activePage?: number;
-  rowsPerPage?: number;
-  totalItems?: number;
-  from?: number;
-  to?: number;
+  totalItems: number;
+  from: number;
+  to: number;
+  nextPage: () => void;
+  prevPage: () => void;
+  lastPage: () => void;
+  firstPage: () => void;
+  enabled: {
+    firstPage: boolean;
+    prevPage: boolean;
+    nextPage: boolean;
+    lastPage: boolean;
+  };
 }
 
 declare class SvelteTable extends SvelteComponent {

@@ -1,239 +1,247 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import IconSorting from './icons/IconSorting.svelte';
-  import IconTooltip from './icons/IconTooltip.svelte';
   import Pagination from './Pagination.svelte';
 
   const dispatch = createEventDispatcher();
 
-  export let columns;
-  export let rows;
-  export let sortBy = '';
-  export let sortOrder = 0;
-  export let rowsPerPage = 5;
-  export let totalItems = 0;
-  export let hasPagination = false;
-  export let isDynamicLoading = false;
-  export let activePage = 1;
-
-  let activeModal = null;
-
-  let from = 0;
-  let to = 0;
-
-  const removeModal = (state) => {
-    if (!state) {
-      activeModal = null;
-    }
-  };
-
-  export let styles = {
+  export let columns = [];
+  export let rows = [];
+  export let classes = {
     table: '',
     thead: '',
-    th: '',
     tbody: '',
     tr: '',
-    td: '',
-    cell: '',
-    helpButton: '',
-    sortingButton: '',
-    paginationContainer: '',
-    paginationInfo: '',
-    paginationButtons: ''
+    th: '',
+    td: ''
+  };
+  export let isSortable = true;
+  export let rowsPerPage = rows.length;
+
+  let filteredRows = [...rows];
+
+  let currentPage = 1;
+  let from = 1;
+  let to = rowsPerPage;
+  let totalItems = 0;
+  let totalPages = Math.ceil(rows.length / rowsPerPage);
+  let enabled = {
+    nextPage: false,
+    lastPage: false,
+    firstPage: false,
+    prevPage: false
   };
 
-  let columnByKey = {};
+  const goTo = (id) => {
+    currentPage = id;
+    updateFromToValues();
+  };
 
-  columns.forEach((col) => {
-    columnByKey[col.key] = col;
-  });
+  const nextPage = () => {
+    if (!enabled.nextPage) return;
+    currentPage += 1;
+    updateFromToValues();
+  };
+  const prevPage = () => {
+    if (!enabled.prevPage) return;
+    currentPage -= 1;
+    updateFromToValues();
+  };
 
-  const sortStrings = (a, b) => {
-    if (!a) return -sortOrder;
-    if (!b) return sortOrder;
+  const firstPage = () => {
+    if (!enabled.firstPage) return;
+    currentPage = 1;
+    updateFromToValues();
+  };
 
-    if (sortOrder > 0) {
-      return a.localeCompare(b);
+  const lastPage = () => {
+    if (!enabled.lastPage) return;
+    currentPage = totalPages;
+    updateFromToValues();
+  };
+
+  const updateFromToValues = () => {
+    from = (currentPage - 1) * rowsPerPage + 1;
+    to = Math.min(from + rowsPerPage - 1, totalItems);
+
+    enabled.nextPage = currentPage < totalPages;
+    enabled.prevPage = currentPage > 1;
+    enabled.firstPage = currentPage > 1;
+    enabled.lastPage = currentPage < totalPages;
+  };
+
+  let lastSortedKey = '';
+  let sortDescending = false;
+
+  let hoverColumn = -1;
+  let hoverRow = -1;
+
+  const setHovered = (colIdx, rowIdx) => {
+    hoverColumn = colIdx;
+    hoverRow = rowIdx;
+  };
+
+  const sortRowsBy = (key) => {
+    if (!isSortable) return;
+
+    const columnData = columns.find((column) => column.key === key);
+    if (columnData.sortable === false) return;
+
+    if (lastSortedKey === key) {
+      sortDescending = !sortDescending;
     } else {
-      return b.localeCompare(a);
+      sortDescending = false;
     }
-  };
 
-  const sortRows = (rows, sortOrder, from, to) => {
-    rows.sort((a, b) => {
-      if (typeof a[sortBy] === 'string' || typeof b[sortBy] === 'string')
-        return sortStrings(a[sortBy], b[sortBy]);
-      if (a[sortBy] > b[sortBy]) {
-        return sortOrder;
-      } else if (a[sortBy] < b[sortBy]) {
-        return -sortOrder;
-      }
+    lastSortedKey = key;
 
-      return 0;
+    if (columnData.sortBy) {
+      rows = [...rows].sort((a, b) => sortBy(a, b, sortDescending));
+      return;
+    }
+
+    rows = [...rows].sort((a, b) => {
+      [a, b] = [a[key], b[key]];
+      if (sortDescending) [b, a] = [a, b];
+      if (typeof a === 'number') return a - b;
+      return a.localeCompare(b);
     });
-    if (isDynamicLoading || !shouldPaginate) return rows;
-    return rows.slice(from - (activePage && 1), to);
+
+    slicePaginated();
   };
 
-  const updateSortOrder = (colKey) =>
-    colKey === sortBy
-      ? (sortOrder = sortOrder === 1 ? -1 : 1)
-      : (sortOrder = 1);
-
-  const handleClickCol = (event, col) => {
-    updateSortOrder(col.key);
-    sortBy = col.key;
-    dispatch('clickCol', { event, col, key: col.key });
+  const slicePaginated = () => {
+    filteredRows = rows.slice(from - 1, to);
   };
 
-  const handleClickRow = (event, row) => {
-    dispatch('clickRow', { event, row });
-  };
+  if (rowsPerPage) {
+    totalItems = rows.length;
+  }
 
-  const handleClickCell = (event, row, key) => {
-    dispatch('clickCell', { event, row, key });
-  };
+  $: if (rows && currentPage && rowsPerPage) {
+    updateFromToValues();
+    slicePaginated();
+  }
 
-  const setTotalItems = (totalItems, rows) => {
-    if (isDynamicLoading) {
-      return totalItems !== 0 ? totalItems : rows.length;
-    }
-    return rows.length;
-  };
-
-  $: totalItems = setTotalItems(totalItems, rows);
-  $: shouldPaginate = hasPagination && totalItems > rowsPerPage;
-  $: sortedRows = sortRows(rows, sortOrder, from, to);
-  $: dispatch('changePage', { activePage });
+  $: totalPages = Math.ceil(totalItems / rowsPerPage);
 </script>
 
-{#if activeModal}
-  <svelte:component
-    this={activeModal}
-    on:toggled={({ isOpen }) => removeModal(isOpen)}
-  />
-{/if}
-
-<table class={styles.table}>
-  <thead class={styles.thead}>
-    <slot name="header" {sortOrder} {sortBy}>
-      <tr>
-        {#each columns as col, i}
+<div class="wrapper">
+  <table
+    class={classes.table}
+    cellspacing="0"
+    on:mouseleave={() => setHovered(-1, -1)}
+  >
+    <thead class={classes.thead}>
+      <tr class={classes.tr}>
+        {#each columns as column, colIdx}
           <th
-            on:click={col.sortable ? (e) => handleClickCol(e, col) : undefined}
-            class:cursor-pointer={col.sortable}
-            class:pr-4={columns.length - 1 === i}
-            class={`cursor-pointer ${styles.th} ${col.headerClass}`}
+            class={classes.th}
+            on:click={(event) => {
+              dispatch('clickCol', { event, column });
+              sortRowsBy(column.key);
+            }}
+            on:mouseenter={() => setHovered(colIdx, -1)}
           >
-            {#if col.titleComponent}
-              <svelte:component
-                this={col.titleComponent.component || col.titleComponent}
-                {...col.titleComponent.props || {}}
-                {col}
+            {#if $$slots.head}
+              <slot
+                name="head"
+                {column}
+                isColumnHovered={hoverColumn === colIdx}
+                isSorted={lastSortedKey === column.key}
+                {sortDescending}
+                sortable={isSortable && column.sortable !== false}
               />
             {:else}
-              {col.title}
-            {/if}
-            {#if col.sortable}
-              <button type="button" class={styles.sortingButton}>
-                <IconSorting sortOrder={sortBy === col.key ? sortOrder : 0} />
-              </button>
-            {/if}
-            {#if col.helpModal}
-              <button
-                class={styles.helpButton}
-                type="button"
-                on:click={() => (activeModal = col.helpModal)}
-              >
-                <IconTooltip />
-                <span class="sr-only"
-                  >Show tooltip
-                  {#if col.title || col.titleComponent}
-                    for
-                    {#if col.titleComponent}
-                      <svelte:component
-                        this={col.titleComponent.component ||
-                          col.titleComponent}
-                        {...col.titleComponent.props || {}}
-                        {col}
-                      />
-                    {:else}
-                      {col.title}
-                    {/if}
-                  {/if}
-                </span>
-              </button>
+              <span>{column.title}</span>
             {/if}
           </th>
         {/each}
       </tr>
-    </slot>
-  </thead>
-  <tbody class={styles.tbody}>
-    {#if sortedRows.length}
-      {#each sortedRows as row, n}
-        <slot name="row" {row} {n}>
-          <tr
-            on:click={(e) => {
-              handleClickRow(e, row);
-              e.currentTarget.toggleAttribute('aria-expanded');
-            }}
-            on:keydown={(e) => {
-              if (e.code === 'Enter' || e.code === 'Space') {
-                handleClickRow(e, row);
-                e.currentTarget.toggleAttribute('aria-expanded');
-              }
-            }}
-            tabindex="0"
-            class={styles.tr}
-            class:bg-gray-100={row['expandRow']?.show}
-          >
-            {#each columns as col, i}
-              <td
-                on:click={(e) => {
-                  handleClickCell(e, row, col.key);
-                }}
-                class={`${col.class} ${styles.td}`}
-                class:pr-4={columns.length - 1 === i}
-              >
-                {#if col.component}
-                  <svelte:component
-                    this={col.component.component || col.component}
-                    class={styles.cell}
-                    {...col.component.props || {}}
-                    {row}
-                    {col}
-                  />
-                {:else}
-                  <div class={styles.cell}>
-                    {@html col.renderValue
-                      ? col.renderValue(row)
-                      : col.value(row) || ''}
-                  </div>
-                {/if}
-              </td>
-            {/each}
-          </tr>
-          {#each columns as col}
-            {#if col.expandedRowsComponent}
-              <svelte:component this={col.expandedRowsComponent} {row} {col} />
-            {/if}
+    </thead>
+    <tbody class={classes.tbody}>
+      {#each filteredRows as row, rowIndex}
+        <tr class={classes.tr} on:click={() => dispatch('clickRow', row)}>
+          {#each columns as column, columnIndex}
+            <td
+              class={classes.td}
+              on:click={(event) => {
+                dispatch('clickCol', { event, column });
+                dispatch('clickCell', {
+                  event,
+                  column,
+                  row,
+                  cell: row[column.key]
+                });
+              }}
+              on:mouseenter={() => setHovered(columnIndex, rowIndex)}
+            >
+              {#if $$slots.cell}
+                <slot
+                  name="cell"
+                  {row}
+                  {column}
+                  handleExpand={() =>
+                    (row.isExpanded = row.isExpanded ? !row.isExpanded : true)}
+                  cell={row[column.key]}
+                  isRowHovered={hoverRow === rowIndex}
+                  isColumnHovered={hoverColumn === columnIndex}
+                />
+              {:else}
+                <span>{row[column.key]}</span>
+              {/if}
+            </td>
           {/each}
-        </slot>
+        </tr>
+        {#if row.isExpanded}
+          <tr class={classes.tr} on:click={() => dispatch('clickRow', row)}>
+            <slot name="expanded" {row} />
+          </tr>
+        {/if}
+      {:else}
+        <slot name="empty" />
       {/each}
+    </tbody>
+  </table>
+  {#if rowsPerPage}
+    {#if $$slots.pagination}
+      <slot
+        name="pagination"
+        {rows}
+        {firstPage}
+        {lastPage}
+        {prevPage}
+        {nextPage}
+        {enabled}
+        {totalPages}
+        {currentPage}
+        {totalItems}
+        {from}
+        {to}
+        {goTo}
+      />
     {:else}
-      <slot name="empty" />
+      <Pagination
+        {firstPage}
+        {lastPage}
+        {prevPage}
+        {nextPage}
+        {enabled}
+        {totalItems}
+        {from}
+        {to}
+      />
     {/if}
-  </tbody>
-</table>
-{#if shouldPaginate}
-  <Pagination
-    {rowsPerPage}
-    {styles}
-    {totalItems}
-    {rows}
-    bind:activePage
-    bind:from
-    bind:to
-  />
-{/if}
+  {/if}
+</div>
+
+<style scoped>
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    border: none;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+</style>
