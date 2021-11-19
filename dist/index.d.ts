@@ -4,6 +4,7 @@ interface SvelteTableColumnBase {
   key: string;
   title: string;
   sortable?: boolean;
+  sortBy?: (a: any, b: any, sortDescending: boolean) => number;
 }
 
 type SvelteTableColumn =
@@ -17,9 +18,11 @@ interface SvelteTableProps {
     Record<
       | 'table'
       | 'thead'
+      | 'headtr'
       | 'th'
       | 'tbody'
       | 'tr'
+      | 'tr-expanded'
       | 'td'
       | 'cell'
       | 'helpButton'
@@ -32,10 +35,16 @@ interface SvelteTableProps {
   >;
   isSortable?: boolean;
   rowsPerPage?: number;
+  currentPage?: number;
+  asyncPagination?: boolean;
+  from?: number;
+  to?: number;
+  totalItems?: number;
+  totalPages?: number;
 }
 
 interface PaginationProps {
-  styles?: Partial<
+  classes?: Partial<
     Record<
       'paginationContainer' | 'paginationInfo' | 'paginationButtons',
       string

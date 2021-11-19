@@ -15,21 +15,26 @@
     td: ''
   };
   export let isSortable = true;
+  export let asyncPagination = false;
   export let rowsPerPage = rows.length;
 
-  let filteredRows = [...rows];
+  export let currentPage = 1;
+  export let from = 1;
+  export let to = rowsPerPage;
+  export let totalItems = 0;
+  export let totalPages = Math.ceil(totalItems / rowsPerPage);
 
-  let currentPage = 1;
-  let from = 1;
-  let to = rowsPerPage;
-  let totalItems = 0;
-  let totalPages = Math.ceil(rows.length / rowsPerPage);
   let enabled = {
     nextPage: false,
     lastPage: false,
     firstPage: false,
     prevPage: false
   };
+
+  let lastSortedKey = '';
+  let sortDescending = false;
+  let hoverColumn = -1;
+  let hoverRow = -1;
 
   const goTo = (id) => {
     currentPage = id;
@@ -69,12 +74,6 @@
     enabled.lastPage = currentPage < totalPages;
   };
 
-  let lastSortedKey = '';
-  let sortDescending = false;
-
-  let hoverColumn = -1;
-  let hoverRow = -1;
-
   const setHovered = (colIdx, rowIdx) => {
     hoverColumn = colIdx;
     hoverRow = rowIdx;
@@ -95,7 +94,8 @@
     lastSortedKey = key;
 
     if (columnData.sortBy) {
-      rows = [...rows].sort((a, b) => sortBy(a, b, sortDescending));
+      rows = [...rows].sort((a, b) => columnData.sortBy(a, b, sortDescending));
+      slicePaginated();
       return;
     }
 
@@ -103,26 +103,28 @@
       [a, b] = [a[key], b[key]];
       if (sortDescending) [b, a] = [a, b];
       if (typeof a === 'number') return a - b;
-      return a.localeCompare(b);
+      if (typeof a === 'boolean') return a ? -1 : 1;
+      return a?.localeCompare(b);
     });
 
     slicePaginated();
   };
 
   const slicePaginated = () => {
-    filteredRows = rows.slice(from - 1, to);
+    filteredRows = asyncPagination ? [...rows] : rows.slice(from - 1, to);
   };
 
-  if (rowsPerPage) {
-    totalItems = rows.length;
+  $: filteredRows = [...rows];
+
+  $: if (rows || rowsPerPage) {
+    totalItems = totalItems || rows.length;
+    totalPages = Math.ceil(totalItems / rowsPerPage);
   }
 
-  $: if (rows && currentPage && rowsPerPage) {
+  $: if (rows && filteredRows && currentPage && rowsPerPage) {
     updateFromToValues();
     slicePaginated();
   }
-
-  $: totalPages = Math.ceil(totalItems / rowsPerPage);
 </script>
 
 <div class="wrapper">
@@ -132,7 +134,7 @@
     on:mouseleave={() => setHovered(-1, -1)}
   >
     <thead class={classes.thead}>
-      <tr class={classes.tr}>
+      <tr class={classes.headtr}>
         {#each columns as column, colIdx}
           <th
             class={classes.th}
@@ -160,7 +162,10 @@
     </thead>
     <tbody class={classes.tbody}>
       {#each filteredRows as row, rowIndex}
-        <tr class={classes.tr} on:click={() => dispatch('clickRow', row)}>
+        <tr
+          class={`${classes.tr} ${row.isExpanded && classes['tr-expanded']}`}
+          on:click={(event) => dispatch('clickRow', { event, row })}
+        >
           {#each columns as column, columnIndex}
             <td
               class={classes.td}
@@ -193,16 +198,19 @@
           {/each}
         </tr>
         {#if row.isExpanded}
-          <tr class={classes.tr} on:click={() => dispatch('clickRow', row)}>
-            <slot name="expanded" {row} />
-          </tr>
+          <slot
+            name="expanded"
+            {classes}
+            handleClick={(event) => dispatch('clickRow', { event, row })}
+            {row}
+          />
         {/if}
       {:else}
         <slot name="empty" />
       {/each}
     </tbody>
   </table>
-  {#if rowsPerPage}
+  {#if rowsPerPage && totalPages > 1}
     {#if $$slots.pagination}
       <slot
         name="pagination"
@@ -221,6 +229,7 @@
       />
     {:else}
       <Pagination
+        {classes}
         {firstPage}
         {lastPage}
         {prevPage}
@@ -238,9 +247,6 @@
   *,
   *::after,
   *::before {
-    margin: 0;
-    border: none;
-    padding: 0;
     border-spacing: 0;
     border-collapse: collapse;
   }
