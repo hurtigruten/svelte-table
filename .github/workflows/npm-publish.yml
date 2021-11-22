@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: 'npm'
       - run: npm ci
       - run: npm test
       - run: npm run build
@@ -31,6 +32,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+          cache: 'npm'
       - run: npm ci
       - uses: codfish/semantic-release-action@v1
         id: semantic
@@ -46,7 +48,7 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+          fields: repo,message,author
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()

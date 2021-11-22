@@ -25,11 +25,11 @@
 
 ### Slots
 
-- [head](./Slot-head.md)
-- [cell](./Slot-cell.md)
-- [expanded](./Slot-expanded.md)
-- [pagination](./Slot-pagination.md)
-- [empty](./Slot-empty.md)
+- [head](/slots/head)
+- [cell](/slots/cell)
+- [expanded](/slots/expanded)
+- [pagination](/slots/pagination)
+- [empty](/slots/empty)
 
 ---
 

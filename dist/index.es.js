@@ -766,7 +766,7 @@ const get_head_slot_context = ctx => ({
 	sortable: /*isSortable*/ ctx[8] && /*column*/ ctx[41].sortable !== false
 });
 
-// (156:12) {:else}
+// (157:12) {:else}
 function create_else_block_3(ctx) {
 	let span;
 	let t_value = /*column*/ ctx[41].title + "";
@@ -793,7 +793,7 @@ function create_else_block_3(ctx) {
 	};
 }
 
-// (147:12) {#if $$slots.head}
+// (148:12) {#if $$slots.head}
 function create_if_block_4(ctx) {
 	let current;
 	const head_slot_template = /*#slots*/ ctx[27].head;
@@ -841,7 +841,7 @@ function create_if_block_4(ctx) {
 	};
 }
 
-// (138:8) {#each columns as column, colIdx}
+// (139:8) {#each columns as column, colIdx}
 function create_each_block_2(ctx) {
 	let th;
 	let current_block_type_index;
@@ -942,7 +942,7 @@ function create_each_block_2(ctx) {
 	};
 }
 
-// (208:6) {:else}
+// (209:6) {:else}
 function create_else_block_2(ctx) {
 	let current;
 	const empty_slot_template = /*#slots*/ ctx[27].empty;
@@ -990,7 +990,7 @@ function create_else_block_2(ctx) {
 	};
 }
 
-// (194:14) {:else}
+// (195:14) {:else}
 function create_else_block_1(ctx) {
 	let span;
 	let t_value = /*row*/ ctx[38][/*column*/ ctx[41].key] + "";
@@ -1017,7 +1017,7 @@ function create_else_block_1(ctx) {
 	};
 }
 
-// (183:14) {#if $$slots.cell}
+// (184:14) {#if $$slots.cell}
 function create_if_block_3(ctx) {
 	let current;
 	const cell_slot_template = /*#slots*/ ctx[27].cell;
@@ -1065,7 +1065,7 @@ function create_if_block_3(ctx) {
 	};
 }
 
-// (169:10) {#each columns as column, columnIndex}
+// (170:10) {#each columns as column, columnIndex}
 function create_each_block_1(ctx) {
 	let td;
 	let current_block_type_index;
@@ -1166,7 +1166,7 @@ function create_each_block_1(ctx) {
 	};
 }
 
-// (200:8) {#if row.isExpanded}
+// (201:8) {#if row.isExpanded}
 function create_if_block_2(ctx) {
 	let current;
 	const expanded_slot_template = /*#slots*/ ctx[27].expanded;
@@ -1214,7 +1214,7 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (164:6) {#each filteredRows as row, rowIndex}
+// (165:6) {#each filteredRows as row, rowIndex}
 function create_each_block(ctx) {
 	let tr;
 	let tr_class_value;
@@ -1359,7 +1359,7 @@ function create_each_block(ctx) {
 	};
 }
 
-// (213:2) {#if rowsPerPage && totalPages > 1}
+// (214:2) {#if rowsPerPage && totalPages > 1}
 function create_if_block(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -1429,7 +1429,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (230:4) {:else}
+// (231:4) {:else}
 function create_else_block(ctx) {
 	let pagination;
 	let current;
@@ -1480,7 +1480,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (214:4) {#if $$slots.pagination}
+// (215:4) {#if $$slots.pagination}
 function create_if_block_1(ctx) {
 	let current;
 	const pagination_slot_template = /*#slots*/ ctx[27].pagination;
@@ -1797,6 +1797,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	let { classes = {
 		table: '',
+		headtr: '',
 		thead: '',
 		tbody: '',
 		tr: '',

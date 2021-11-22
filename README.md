@@ -23,14 +23,6 @@ npm i @hurtigruten/svelte-table --save
 
 ### Read more
 
-- [Table component](docs/Table.md)
-- [Pagination](docs/Pagination.md)
-- [head slot](./Slot-head.md)
-- [cell slot](./Slot-cell.md)
-- [expanded slot](./Slot-expanded.md)
-- [pagination slot](./Slot-pagination.md)
-- [empty slot](./Slot-empty.md)
-
----
-
-This is a customized "fork" of the following [repository](https://github.com/dasDaniel/svelte-table) which we customized beyond direct forking.
+- [Table component](https://hurtigruten.github.io/svelte-table/)
+- [Pagination](https://hurtigruten.github.io/svelte-table/pagination)
+- [Slots](https://hurtigruten.github.io/svelte-table/slots)

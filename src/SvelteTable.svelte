@@ -8,6 +8,7 @@
   export let rows = [];
   export let classes = {
     table: '',
+    headtr: '',
     thead: '',
     tbody: '',
     tr: '',

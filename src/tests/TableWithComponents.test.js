@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { render, fireEvent } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 
 import Table from '../mocks/TableWithComponents.svelte';
 
