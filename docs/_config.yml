@@ -1,1 +1,6 @@
 theme: jekyll-theme-cayman
+title: svelte-table
+tagline: A simple, sortable svelte table component
+author:
+  name: Hurtigruten
+  url: https://hurtigruten.com

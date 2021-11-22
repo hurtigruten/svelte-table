@@ -46,7 +46,7 @@ const classes = {
 
 If you want more customization options for the pagination component you can insert your own component in a `pagination` slot.
 
-[Read more about the pagination slot](./Slot-pagination.md)
+[Read more about the pagination slot](./slots/pagination.md)
 
 ### Example
 
