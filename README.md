@@ -1,6 +1,6 @@
 # Svelte Table
 
-https://hurtigturen.github.io/svelte-table/
+https://hurtigruten.github.io/svelte-table/
 
 ## Quick start
 
