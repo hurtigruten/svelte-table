@@ -9,7 +9,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-test:
+    name: Test and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +22,8 @@ jobs:
       - run: npm run build
 
   publish-npm:
-    needs: build
+    name: Release
+    needs: build-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,11 +37,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   slack:
+    name: Notification
     needs: publish-npm
     runs-on: ubuntu-latest
     steps:
