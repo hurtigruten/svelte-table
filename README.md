@@ -1,7 +1,5 @@
 # Svelte Table
 
-[![Build Status](https://travis-ci.com/hurtigruten/svelte-table.svg?branch=main)](https://travis-ci.com/hurtigruten/svelte-table)
-
 ## Quick start
 
 ```bash
