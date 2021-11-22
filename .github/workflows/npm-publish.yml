@@ -6,6 +6,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Publish manually'
+        required: false
 
 jobs:
   build:
