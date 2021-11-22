@@ -4,13 +4,7 @@ interface SvelteTableColumnBase {
   key: string;
   title: string;
   sortable?: boolean;
-  headerClass?: string;
-  class?: string;
-  component?: typeof SvelteComponent;
-  helpModal?: typeof SvelteComponent;
-  value?: (v: unknown) => string;
-  titleComponent: typeof SvelteComponent;
-  expandedRowsComponent?: typeof SvelteComponent;
+  sortBy?: (a: any, b: any, sortDescending: boolean) => number;
 }
 
 type SvelteTableColumn =
@@ -19,16 +13,16 @@ type SvelteTableColumn =
 
 interface SvelteTableProps {
   columns: SvelteTableColumn[];
-  rows: unknown;
-  sortBy?: string;
-  sortOrder?: number;
-  styles?: Partial<
+  rows: unknown[];
+  classes?: Partial<
     Record<
       | 'table'
       | 'thead'
+      | 'headtr'
       | 'th'
       | 'tbody'
       | 'tr'
+      | 'tr-expanded'
       | 'td'
       | 'cell'
       | 'helpButton'
@@ -39,34 +33,44 @@ interface SvelteTableProps {
       string
     >
   >;
-  hasPagination?: boolean;
+  isSortable?: boolean;
   rowsPerPage?: number;
+  currentPage?: number;
+  asyncPagination?: boolean;
+  from?: number;
+  to?: number;
   totalItems?: number;
-  isDynamicLoading?: boolean;
-  activePage?: number;
+  totalPages?: number;
 }
 
 interface PaginationProps {
-  rows: unknown;
-  styles?: Partial<
+  classes?: Partial<
     Record<
       'paginationContainer' | 'paginationInfo' | 'paginationButtons',
       string
     >
   >;
-  activePage?: number;
-  rowsPerPage?: number;
-  totalItems?: number;
-  from?: number;
-  to?: number;
+  totalItems: number;
+  from: number;
+  to: number;
+  nextPage: () => void;
+  prevPage: () => void;
+  lastPage: () => void;
+  firstPage: () => void;
+  enabled: {
+    firstPage: boolean;
+    prevPage: boolean;
+    nextPage: boolean;
+    lastPage: boolean;
+  };
 }
 
-export class SvelteTable extends SvelteComponent {
+declare class SvelteTable extends SvelteComponent {
   $$prop_def: SvelteTableProps;
 }
 
-export class Pagination extends SvelteComponent {
+declare class Pagination extends SvelteComponent {
   $$prop_def: PaginationProps;
 }
 
-export { SvelteTableProps, SvelteTableColumn };
+export { Pagination, SvelteTable, SvelteTableColumn, SvelteTableProps };
