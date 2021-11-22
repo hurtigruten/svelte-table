@@ -1,5 +1,7 @@
 # Svelte Table
 
+https://hurtigturen.github.io/svelte-table/
+
 ## Quick start
 
 ```bash
@@ -20,9 +22,3 @@ npm i @hurtigruten/svelte-table --save
   <span class="flex items-center bg-blue-100" slot="cell">{cell}</span>
 </SvelteTable>
 ```
-
-### Read more
-
-- [Table component](https://hurtigruten.github.io/svelte-table/)
-- [Pagination](https://hurtigruten.github.io/svelte-table/pagination)
-- [Slots](https://hurtigruten.github.io/svelte-table/slots)

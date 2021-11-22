@@ -23,6 +23,10 @@
   isSortable?: boolean // if set to false will disable sorting on _all_ columns
 ```
 
+### Pagination
+
+- [Pagination](./pagination)
+
 ### Slots
 
 - [head](./slots/head)
