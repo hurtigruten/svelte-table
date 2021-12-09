@@ -95,7 +95,10 @@
     lastSortedKey = key;
 
     if (columnData.sortBy) {
-      rows = [...rows].sort((a, b) => columnData.sortBy(a, b, sortDescending));
+      rows = [...rows].sort((a, b) => {
+        [a, b] = sortDescending ? [a, b] : [b, a];
+        return columnData.sortBy(a, b);
+      });
       slicePaginated();
       return;
     }
