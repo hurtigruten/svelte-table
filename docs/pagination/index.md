@@ -46,7 +46,7 @@ const classes = {
 
 If you want more customization options for the pagination component you can insert your own component in a `pagination` slot.
 
-[Read more about the pagination slot](./slots/pagination.md)
+[Read more about the pagination slot](../slots/pagination.md)
 
 ### Example
 
@@ -69,4 +69,39 @@ If you want more customization options for the pagination component you can inse
     <button disabled="{!enabled.nextPage}" on:click="{nextPage}">Next</button>
   </div>
 </SvelteTable>
+```
+
+## Async pagination example
+
+In order to manage a server-side pagination, where you fire a request each time the user changes the page you will need to control the `totalItems` and `currentPage` props manually. `asyncPagination` prop must be set to `true`, so the table doesn't just slice the received rows, but waits for an update instead. You can then listen on changes made to `currentPage` and react to them.
+
+### Example
+
+```html
+<script>
+  const columns = [......];
+  let rows = [......];
+  let currentPage = 1;
+  let totalItems = 0;
+  let rowsPerPage = 5;
+
+  const handlePageChange = async (page) => {
+    const skip = (page - 1) * rowsPerPage;
+    const response = await fetch(`YOUR_API?skip=${skip}&take=${rowsPerPage}`);
+
+    rows = response.data;
+    totalItems = response.totalCount;
+  };
+
+  $: handlePageChange(currentPage);
+</script>
+
+<SvelteTable
+  asyncPagination
+  bind:currentPage
+  {totalItems}
+  {rowsPerPage}
+  {rows}
+  {columns}
+/>
 ```

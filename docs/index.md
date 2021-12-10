@@ -6,21 +6,37 @@
   columns: Array<{
     key: string,
     title: string,
-    sortable?: boolean // set to false to disable sorting for one column
+    sortable?: boolean // set to false to disable sorting for one column (default: true)
+    sortBy?: (a,b) => number // set custom sorting method
   }>
 
-  rows: Array<any>
+  rows: Array<T = unknown>
 
   classes?: {
-    table: string,
-    thead: string,
-    tbody: string,
-    tr: string,
-    th: string,
-    td: string
+      'table'?: string
+      'thead'?: string
+      'headtr'?: string
+      'th'?: string
+      'tbody'?: string
+      'tr'?: string
+      'tr-expanded'?: string
+      'td'?: string
+      'cell'?: string
+      'helpButton'?: string
+      'sortingButton'?: string
+      'paginationContainer'?: string
+      'paginationInfo'?: string
+      'paginationButtons'?: string,
   }
 
-  isSortable?: boolean // if set to false will disable sorting on _all_ columns
+  isSortable?: boolean // if set to false will disable sorting on _all_ columns (default true)
+  rowsPerPage?: number // used to enable pagination
+  currentPage?: number // used to manually overwrite (see async pagination)
+  asyncPagination?: boolean // used to disable slicing of rows array in order to simulate pagination
+  from?: number // used to manually overwrite (see async pagination)
+  to?: number // used to manually overwrite (see async pagination)
+  totalItems?: number // used to manually overwrite (see async pagination)
+  totalPages?: number // used to manually overwrite (see async pagination)
 ```
 
 ### Pagination

@@ -1,19 +1,15 @@
 import { SvelteComponent } from 'svelte';
 
-interface SvelteTableColumnBase {
+interface SvelteTableColumn<T = unknown> {
   key: string;
   title: string;
   sortable?: boolean;
-  sortBy?: (a: any, b: any, sortDescending: boolean) => number;
+  sortBy?: (a: T, b: T) => number;
 }
 
-type SvelteTableColumn =
-  | Omit<SvelteTableColumnBase, 'title'>
-  | Omit<SvelteTableColumnBase, 'titleComponent'>;
-
-interface SvelteTableProps {
-  columns: SvelteTableColumn[];
-  rows: unknown[];
+interface SvelteTableProps<T = unknown> {
+  columns: SvelteTableColumn<T>[];
+  rows: T[];
   classes?: Partial<
     Record<
       | 'table'
@@ -66,7 +62,7 @@ interface PaginationProps {
 }
 
 declare class SvelteTable extends SvelteComponent {
-  $$prop_def: SvelteTableProps;
+  $$prop_def: SvelteTableProps<unknown>;
 }
 
 declare class Pagination extends SvelteComponent {
