@@ -10,12 +10,12 @@
   "module": "dist/index.es.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "7.16.7",
     "@babel/preset-env": "7.16.8",
     "@rollup/plugin-commonjs": "21.0.1",
     "@rollup/plugin-node-resolve": "13.1.3",
+    "@semantic-release/git": "10.0.1",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/svelte": "3.0.3",
     "babel-jest": "27.4.6",
@@ -26,6 +26,7 @@
     "rollup": "2.63.0",
     "rollup-plugin-dts": "4.1.0",
     "rollup-plugin-svelte": "7.1.0",
+    "semantic-release": "18.0.1",
     "svelte": "3.46.1",
     "svelte-jester": "2.1.5",
     "typescript": "4.5.4"
@@ -43,6 +44,9 @@
     "branches": [
       "main",
       "next"
+    ],
+    "plugins": [
+      "@semantic-release/git"
     ]
   }
 }
