@@ -1,6 +1,6 @@
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json'
   },
@@ -26,5 +26,8 @@ module.exports = {
         'no-multiple-empty-lines': 0
       }
     }
-  ]
+  ],
+  rules: {
+    semi: 'always'
+  }
 };

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.0.3
+
+- add scope for th
+- add classes for even/odd rows
+- fix `undefined` as classes when property isn't set
+
 ## 2.0.2
 
 - update docs on asyncPagination, sorting and types
