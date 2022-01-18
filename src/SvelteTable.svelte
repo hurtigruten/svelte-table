@@ -6,15 +6,21 @@
 
   export let columns = [];
   export let rows = [];
-  export let classes = {
+
+  const defaultClasses = {
     table: '',
     headtr: '',
     thead: '',
     tbody: '',
     tr: '',
+    'tr-expanded': '',
+    'tr-odd': '',
+    'tr-even': '',
     th: '',
     td: ''
   };
+  export let classes = defaultClasses;
+
   export let isSortable = true;
   export let asyncPagination = false;
   export let rowsPerPage = rows.length;
@@ -120,6 +126,8 @@
 
   $: filteredRows = [...rows];
 
+  $: assignedClasses = { ...defaultClasses, ...classes };
+
   $: if (rows || rowsPerPage) {
     totalItems = totalItems || rows.length;
     totalPages = Math.ceil(totalItems / rowsPerPage);
@@ -133,15 +141,16 @@
 
 <div class="wrapper">
   <table
-    class={classes.table}
+    class={assignedClasses.table}
     cellspacing="0"
     on:mouseleave={() => setHovered(-1, -1)}
   >
-    <thead class={classes.thead}>
-      <tr class={classes.headtr}>
+    <thead class={assignedClasses.thead}>
+      <tr class={assignedClasses.headtr}>
         {#each columns as column, colIdx}
           <th
-            class={classes.th}
+            scope="col"
+            class={assignedClasses.th}
             on:click={(event) => {
               dispatch('clickCol', { event, column });
               sortRowsBy(column.key);
@@ -164,15 +173,20 @@
         {/each}
       </tr>
     </thead>
-    <tbody class={classes.tbody}>
+    <tbody class={assignedClasses.tbody}>
       {#each filteredRows as row, rowIndex}
+        {@const isExpanded = row.isExpanded
+          ? assignedClasses['tr-expanded']
+          : ''}
+        {@const isEvenOrOdd =
+          rowIndex % 2 ? assignedClasses['tr-even'] : assignedClasses['tr-odd']}
         <tr
-          class={`${classes.tr} ${row.isExpanded && classes['tr-expanded']}`}
+          class={`${assignedClasses.tr} ${isExpanded} ${isEvenOrOdd}`}
           on:click={(event) => dispatch('clickRow', { event, row })}
         >
           {#each columns as column, columnIndex}
             <td
-              class={classes.td}
+              class={assignedClasses.td}
               on:click={(event) => {
                 dispatch('clickCol', { event, column });
                 dispatch('clickCell', {
@@ -204,7 +218,7 @@
         {#if row.isExpanded}
           <slot
             name="expanded"
-            {classes}
+            classes={assignedClasses}
             handleClick={(event) => dispatch('clickRow', { event, row })}
             {row}
           />
@@ -233,7 +247,7 @@
       />
     {:else}
       <Pagination
-        {classes}
+        classes={assignedClasses}
         {firstPage}
         {lastPage}
         {prevPage}

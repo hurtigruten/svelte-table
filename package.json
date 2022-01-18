@@ -2,9 +2,13 @@
   "name": "@hurtigruten/svelte-table",
   "version": "0.0.0-development",
   "description": "A simple, sortable svelte table component",
+  "keywords": ["svelte", "sveltejs", "table"],
   "repository": {
     "type": "git",
     "url": "https://github.com/hurtigruten/svelte-table.git"
+  },
+  "bugs": {
+     "url": "https://github.com/hurtigruten/svelte-table/issues"
   },
   "svelte": "src/index.js",
   "module": "dist/index.es.js",
@@ -23,11 +27,11 @@
     "eslint-config-standard-with-typescript": "21.0.1",
     "eslint-plugin-svelte3": "3.4.0",
     "jest": "27.4.7",
-    "rollup": "2.63.0",
+    "rollup": "2.64.0",
     "rollup-plugin-dts": "4.1.0",
     "rollup-plugin-svelte": "7.1.0",
-    "semantic-release": "18.0.1",
-    "svelte": "3.46.1",
+    "semantic-release": "19.0.2",
+    "svelte": "3.46.2",
     "svelte-jester": "2.1.5",
     "typescript": "4.5.4"
   },
