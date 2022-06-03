@@ -1,6 +1,8 @@
 # Svelte Table
 
-https://hurtigruten.github.io/svelte-table/
+[Documentation](https://hurtigruten.github.io/svelte-table/)
+
+[Live Demo](https://svelte.dev/repl/235af12d2e8a4d5991a19f77e1cbfd24?version=3.48.0)
 
 ## Quick start
 
