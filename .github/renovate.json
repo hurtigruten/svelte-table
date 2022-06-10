@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "config:base",
+    "group:all"
+  ],
+  "timezone": "Europe/Oslo",
+  "schedule": ["every weekend"]
+}

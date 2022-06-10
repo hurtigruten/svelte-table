@@ -53,6 +53,7 @@
     currentPage += 1;
     updateFromToValues();
   };
+
   const prevPage = () => {
     if (!enabled.prevPage) return;
     currentPage -= 1;
