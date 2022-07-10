@@ -9,23 +9,23 @@ describe('SvelteTable - expanded rows', () => {
   it('should render a table', () => {
     const { getByText } = render(Table);
 
-    expect(getByText(/name/gi)).toBeInTheDocument();
-    expect(getByText(/adam/gi)).toBeInTheDocument();
+    expect(getByText(/name/i)).toBeInTheDocument();
+    expect(getByText(/adam/i)).toBeInTheDocument();
   });
 
   it('should expand a row when clicked on a cell and close when clicked again', async () => {
     const { queryByText, getByText } = render(Table);
 
-    expect(queryByText(/active/gi)).not.toBeInTheDocument();
+    expect(queryByText(/active/i)).not.toBeInTheDocument();
 
-    await fireEvent.click(getByText(/adam/gi));
-    expect(queryByText(/inactive/gi)).toBeInTheDocument();
-    expect(queryByText(/^active/gi)).not.toBeInTheDocument();
+    await fireEvent.click(getByText(/adam/i));
+    expect(queryByText(/inactive/i)).toBeInTheDocument();
+    expect(queryByText(/^active/i)).not.toBeInTheDocument();
 
-    await fireEvent.click(getByText(/david/gi));
-    expect(queryByText(/inactive/gi)).toBeInTheDocument();
+    await fireEvent.click(getByText(/david/i));
+    expect(queryByText(/inactive/i)).toBeInTheDocument();
 
-    await fireEvent.click(getByText(/adam/gi));
-    expect(queryByText(/inactive/gi)).not.toBeInTheDocument();
+    await fireEvent.click(getByText(/adam/i));
+    expect(queryByText(/inactive/i)).not.toBeInTheDocument();
   });
 });

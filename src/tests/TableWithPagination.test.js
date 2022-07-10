@@ -9,50 +9,50 @@ describe('SvelteTable - pagination', () => {
   it('should render a table with a pagination', () => {
     const { getByText } = render(Table);
 
-    expect(getByText(/name/gi)).toBeInTheDocument();
-    expect(getByText(/adam/gi)).toBeInTheDocument();
-    expect(getByText(/\d+-\d+ of \d+/gi)).toBeInTheDocument();
+    expect(getByText(/name/i)).toBeInTheDocument();
+    expect(getByText(/adam/i)).toBeInTheDocument();
+    expect(getByText(/\d+-\d+ of \d+/i)).toBeInTheDocument();
   });
 
   it('should be able to change pages', async () => {
     const { queryByText, getByText } = render(Table);
 
-    expect(getByText(/1-2 of 7/gi)).toBeInTheDocument();
-    expect(getByText(/adam/gi)).toBeInTheDocument();
-    expect(queryByText(/john/gi)).not.toBeInTheDocument();
-    expect(getByText(/prev/gi)).toBeDisabled();
-    expect(getByText(/first/gi)).toBeDisabled();
+    expect(getByText(/1-2 of 7/i)).toBeInTheDocument();
+    expect(getByText(/adam/i)).toBeInTheDocument();
+    expect(queryByText(/john/i)).not.toBeInTheDocument();
+    expect(getByText(/prev/i)).toBeDisabled();
+    expect(getByText(/first/i)).toBeDisabled();
 
-    await fireEvent.click(getByText(/next/gi));
+    await fireEvent.click(getByText(/next/i));
 
-    expect(getByText(/3-4 of 7/gi)).toBeInTheDocument();
-    expect(queryByText(/adam/gi)).not.toBeInTheDocument();
-    expect(getByText(/john/gi)).toBeInTheDocument();
+    expect(getByText(/3-4 of 7/i)).toBeInTheDocument();
+    expect(queryByText(/adam/i)).not.toBeInTheDocument();
+    expect(getByText(/john/i)).toBeInTheDocument();
 
-    await fireEvent.click(getByText(/last/gi));
+    await fireEvent.click(getByText(/last/i));
 
-    expect(getByText(/next/gi)).toBeDisabled();
-    expect(getByText(/last/gi)).toBeDisabled();
-    expect(getByText(/7-7 of 7/gi)).toBeInTheDocument();
-    expect(queryByText(/adam/gi)).not.toBeInTheDocument();
-    expect(queryByText(/john/gi)).not.toBeInTheDocument();
-    expect(getByText(/stephen/gi)).toBeInTheDocument();
+    expect(getByText(/next/i)).toBeDisabled();
+    expect(getByText(/last/i)).toBeDisabled();
+    expect(getByText(/7-7 of 7/i)).toBeInTheDocument();
+    expect(queryByText(/adam/i)).not.toBeInTheDocument();
+    expect(queryByText(/john/i)).not.toBeInTheDocument();
+    expect(getByText(/stephen/i)).toBeInTheDocument();
 
-    await fireEvent.click(getByText(/prev/gi));
+    await fireEvent.click(getByText(/prev/i));
 
-    expect(getByText(/5-6 of 7/gi)).toBeInTheDocument();
-    expect(queryByText(/stephen/gi)).not.toBeInTheDocument();
-    expect(getByText(/mannuel/gi)).toBeInTheDocument();
+    expect(getByText(/5-6 of 7/i)).toBeInTheDocument();
+    expect(queryByText(/stephen/i)).not.toBeInTheDocument();
+    expect(getByText(/mannuel/i)).toBeInTheDocument();
 
-    await fireEvent.click(getByText(/first/gi));
+    await fireEvent.click(getByText(/first/i));
 
-    expect(getByText(/1-2 of 7/gi)).toBeInTheDocument();
-    expect(queryByText(/mannuel/gi)).not.toBeInTheDocument();
-    expect(getByText(/bartek/gi)).toBeInTheDocument();
-    expect(getByText(/adam/gi)).toBeInTheDocument();
-    expect(getByText(/prev/gi)).toBeDisabled();
-    expect(getByText(/first/gi)).toBeDisabled();
-    expect(getByText(/next/gi)).not.toBeDisabled();
-    expect(getByText(/last/gi)).not.toBeDisabled();
+    expect(getByText(/1-2 of 7/i)).toBeInTheDocument();
+    expect(queryByText(/mannuel/i)).not.toBeInTheDocument();
+    expect(getByText(/bartek/i)).toBeInTheDocument();
+    expect(getByText(/adam/i)).toBeInTheDocument();
+    expect(getByText(/prev/i)).toBeDisabled();
+    expect(getByText(/first/i)).toBeDisabled();
+    expect(getByText(/next/i)).not.toBeDisabled();
+    expect(getByText(/last/i)).not.toBeDisabled();
   });
 });
