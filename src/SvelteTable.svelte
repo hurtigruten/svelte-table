@@ -87,14 +87,16 @@
     hoverRow = rowIdx;
   };
 
-  const sortRowsBy = (key) => {
+  const sortRowsBy = (key, descendingOverride) => {
     if (!isSortable) return;
 
     const columnData = columns.find((column) => column.key === key);
     if (columnData.sortable === false) return;
 
-    if (lastSortedKey === key) {
+    if (typeof descendingOverride === 'undefined' && lastSortedKey === key) {
       sortDescending = !sortDescending;
+    } else if (typeof descendingOverride !== 'undefined') {
+      sortDescending = descendingOverride;
     } else {
       sortDescending = false;
     }
@@ -125,7 +127,10 @@
     filteredRows = asyncPagination ? [...rows] : rows.slice(from - 1, to);
   };
 
-  $: filteredRows = [...rows];
+  $: filteredRows = (() => {
+    lastSortedKey ? sortRowsBy(lastSortedKey, sortDescending) : undefined;
+    return [...rows];
+  })();
 
   $: assignedClasses = { ...defaultClasses, ...classes };
 
