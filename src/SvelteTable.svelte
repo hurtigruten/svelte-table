@@ -87,19 +87,13 @@
     hoverRow = rowIdx;
   };
 
-  const sortRowsBy = (key, descendingOverride) => {
+  const sortRowsBy = (key, override = false) => {
     if (!isSortable) return;
 
     const columnData = columns.find((column) => column.key === key);
     if (columnData.sortable === false) return;
 
-    if (typeof descendingOverride === 'undefined' && lastSortedKey === key) {
-      sortDescending = !sortDescending;
-    } else if (typeof descendingOverride !== 'undefined') {
-      sortDescending = descendingOverride;
-    } else {
-      sortDescending = false;
-    }
+    sortDescending = getSortingOrder(key, override);
 
     lastSortedKey = key;
 
@@ -123,12 +117,18 @@
     slicePaginated();
   };
 
+  const getSortingOrder = (key, override = false) => {
+    if(override) return sortDescending;
+    if(lastSortedKey === key) return !sortDescending;
+    return false;
+  }
+
   const slicePaginated = () => {
     filteredRows = asyncPagination ? [...rows] : rows.slice(from - 1, to);
   };
 
   $: filteredRows = (() => {
-    lastSortedKey ? sortRowsBy(lastSortedKey, sortDescending) : undefined;
+    if(lastSortedKey) sortRowsBy(lastSortedKey, true);
     return [...rows];
   })();
 
