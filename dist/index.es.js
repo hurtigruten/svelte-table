@@ -686,7 +686,7 @@ function add_css(target) {
 
 const get_pagination_slot_changes = dirty => ({
 	rows: dirty[0] & /*rows*/ 1,
-	enabled: dirty[0] & /*enabled*/ 4096,
+	enabled: dirty[0] & /*enabled*/ 2048,
 	totalPages: dirty[0] & /*totalPages*/ 32,
 	currentPage: dirty[0] & /*currentPage*/ 2,
 	totalItems: dirty[0] & /*totalItems*/ 4,
@@ -700,7 +700,7 @@ const get_pagination_slot_context = ctx => ({
 	lastPage: /*lastPage*/ ctx[21],
 	prevPage: /*prevPage*/ ctx[19],
 	nextPage: /*nextPage*/ ctx[18],
-	enabled: /*enabled*/ ctx[12],
+	enabled: /*enabled*/ ctx[11],
 	totalPages: /*totalPages*/ ctx[5],
 	currentPage: /*currentPage*/ ctx[1],
 	totalItems: /*totalItems*/ ctx[2],
@@ -711,30 +711,30 @@ const get_pagination_slot_context = ctx => ({
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i];
+	child_ctx[41] = list[i];
 
-	child_ctx[50] = function func() {
-		return /*func*/ child_ctx[31](/*row*/ child_ctx[40], /*each_value*/ child_ctx[43], /*rowIndex*/ child_ctx[44]);
+	child_ctx[51] = function func() {
+		return /*func*/ child_ctx[31](/*row*/ child_ctx[41], /*each_value*/ child_ctx[44], /*rowIndex*/ child_ctx[45]);
 	};
 
-	child_ctx[51] = function func_1(...args) {
-		return /*func_1*/ child_ctx[35](/*row*/ child_ctx[40], ...args);
+	child_ctx[52] = function func_1(...args) {
+		return /*func_1*/ child_ctx[35](/*row*/ child_ctx[41], ...args);
 	};
 
-	child_ctx[43] = list;
-	child_ctx[44] = i;
+	child_ctx[44] = list;
+	child_ctx[45] = i;
 
-	const constants_0 = /*row*/ child_ctx[40].isExpanded
+	const constants_0 = /*row*/ child_ctx[41].isExpanded
 	? /*assignedClasses*/ child_ctx[15]['tr-expanded']
 	: '';
 
-	child_ctx[41] = constants_0;
+	child_ctx[42] = constants_0;
 
-	const constants_1 = /*rowIndex*/ child_ctx[44] % 2
+	const constants_1 = /*rowIndex*/ child_ctx[45] % 2
 	? /*assignedClasses*/ child_ctx[15]['tr-even']
 	: /*assignedClasses*/ child_ctx[15]['tr-odd'];
 
-	child_ctx[42] = constants_1;
+	child_ctx[43] = constants_1;
 	return child_ctx;
 }
 
@@ -743,45 +743,45 @@ const get_empty_slot_context = ctx => ({});
 
 const get_expanded_slot_changes = dirty => ({
 	classes: dirty[0] & /*assignedClasses*/ 32768,
-	handleClick: dirty[0] & /*filteredRows*/ 2048,
-	row: dirty[0] & /*filteredRows*/ 2048
+	handleClick: dirty[0] & /*filteredRows*/ 1024,
+	row: dirty[0] & /*filteredRows*/ 1024
 });
 
 const get_expanded_slot_context = ctx => ({
 	classes: /*assignedClasses*/ ctx[15],
-	handleClick: /*func_1_func*/ ctx[51],
-	row: /*row*/ ctx[40]
+	handleClick: /*func_1_func*/ ctx[52],
+	row: /*row*/ ctx[41]
 });
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[45] = list[i];
-	child_ctx[47] = i;
+	child_ctx[46] = list[i];
+	child_ctx[48] = i;
 	return child_ctx;
 }
 
 const get_cell_slot_changes = dirty => ({
-	row: dirty[0] & /*filteredRows*/ 2048,
+	row: dirty[0] & /*filteredRows*/ 1024,
 	column: dirty[0] & /*columns*/ 64,
-	handleExpand: dirty[0] & /*filteredRows*/ 2048,
-	cell: dirty[0] & /*filteredRows, columns*/ 2112,
+	handleExpand: dirty[0] & /*filteredRows*/ 1024,
+	cell: dirty[0] & /*filteredRows, columns*/ 1088,
 	isRowHovered: dirty[0] & /*hoverRow*/ 16384,
 	isColumnHovered: dirty[0] & /*hoverColumn*/ 8192
 });
 
 const get_cell_slot_context = ctx => ({
-	row: /*row*/ ctx[40],
-	column: /*column*/ ctx[45],
-	handleExpand: /*func_func*/ ctx[50],
-	cell: /*row*/ ctx[40][/*column*/ ctx[45].key],
-	isRowHovered: /*hoverRow*/ ctx[14] === /*rowIndex*/ ctx[44],
-	isColumnHovered: /*hoverColumn*/ ctx[13] === /*columnIndex*/ ctx[47]
+	row: /*row*/ ctx[41],
+	column: /*column*/ ctx[46],
+	handleExpand: /*func_func*/ ctx[51],
+	cell: /*row*/ ctx[41][/*column*/ ctx[46].key],
+	isRowHovered: /*hoverRow*/ ctx[14] === /*rowIndex*/ ctx[45],
+	isColumnHovered: /*hoverColumn*/ ctx[13] === /*columnIndex*/ ctx[48]
 });
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[45] = list[i];
-	child_ctx[49] = i;
+	child_ctx[46] = list[i];
+	child_ctx[50] = i;
 	return child_ctx;
 }
 
@@ -789,22 +789,22 @@ const get_head_slot_changes = dirty => ({
 	column: dirty[0] & /*columns*/ 64,
 	isColumnHovered: dirty[0] & /*hoverColumn*/ 8192,
 	isSorted: dirty[0] & /*lastSortedKey, columns*/ 576,
-	sortDescending: dirty[0] & /*sortDescending*/ 1024,
+	sortDescending: dirty[0] & /*sortDescending*/ 4096,
 	sortable: dirty[0] & /*isSortable, columns*/ 192
 });
 
 const get_head_slot_context = ctx => ({
-	column: /*column*/ ctx[45],
-	isColumnHovered: /*hoverColumn*/ ctx[13] === /*colIdx*/ ctx[49],
-	isSorted: /*lastSortedKey*/ ctx[9] === /*column*/ ctx[45].key,
-	sortDescending: /*sortDescending*/ ctx[10],
-	sortable: /*isSortable*/ ctx[7] && /*column*/ ctx[45].sortable !== false
+	column: /*column*/ ctx[46],
+	isColumnHovered: /*hoverColumn*/ ctx[13] === /*colIdx*/ ctx[50],
+	isSorted: /*lastSortedKey*/ ctx[9] === /*column*/ ctx[46].key,
+	sortDescending: /*sortDescending*/ ctx[12],
+	sortable: /*isSortable*/ ctx[7] && /*column*/ ctx[46].sortable !== false
 });
 
 // (175:12) {:else}
 function create_else_block_3(ctx) {
 	let span;
-	let t_value = /*column*/ ctx[45].title + "";
+	let t_value = /*column*/ ctx[46].title + "";
 	let t;
 
 	return {
@@ -818,7 +818,7 @@ function create_else_block_3(ctx) {
 			append(span, t);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*columns*/ 64 && t_value !== (t_value = /*column*/ ctx[45].title + "")) set_data(t, t_value);
+			if (dirty[0] & /*columns*/ 64 && t_value !== (t_value = /*column*/ ctx[46].title + "")) set_data(t, t_value);
 		},
 		i: noop,
 		o: noop,
@@ -847,7 +847,7 @@ function create_if_block_4(ctx) {
 		},
 		p(ctx, dirty) {
 			if (head_slot) {
-				if (head_slot.p && (!current || dirty[0] & /*$$scope, columns, hoverColumn, lastSortedKey, sortDescending, isSortable*/ 134227648)) {
+				if (head_slot.p && (!current || dirty[0] & /*$$scope, columns, hoverColumn, lastSortedKey, sortDescending, isSortable*/ 134230720)) {
 					update_slot_base(
 						head_slot,
 						head_slot_template,
@@ -898,11 +898,11 @@ function create_each_block_2(ctx) {
 	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 	function click_handler(...args) {
-		return /*click_handler*/ ctx[29](/*column*/ ctx[45], ...args);
+		return /*click_handler*/ ctx[29](/*column*/ ctx[46], ...args);
 	}
 
 	function mouseenter_handler() {
-		return /*mouseenter_handler*/ ctx[30](/*colIdx*/ ctx[49]);
+		return /*mouseenter_handler*/ ctx[30](/*colIdx*/ ctx[50]);
 	}
 
 	return {
@@ -1029,7 +1029,7 @@ function create_else_block_2(ctx) {
 // (218:14) {:else}
 function create_else_block_1(ctx) {
 	let span;
-	let t_value = /*row*/ ctx[40][/*column*/ ctx[45].key] + "";
+	let t_value = /*row*/ ctx[41][/*column*/ ctx[46].key] + "";
 	let t;
 
 	return {
@@ -1043,7 +1043,7 @@ function create_else_block_1(ctx) {
 			append(span, t);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*filteredRows, columns*/ 2112 && t_value !== (t_value = /*row*/ ctx[40][/*column*/ ctx[45].key] + "")) set_data(t, t_value);
+			if (dirty[0] & /*filteredRows, columns*/ 1088 && t_value !== (t_value = /*row*/ ctx[41][/*column*/ ctx[46].key] + "")) set_data(t, t_value);
 		},
 		i: noop,
 		o: noop,
@@ -1072,7 +1072,7 @@ function create_if_block_3(ctx) {
 		},
 		p(ctx, dirty) {
 			if (cell_slot) {
-				if (cell_slot.p && (!current || dirty[0] & /*$$scope, filteredRows, columns, hoverRow, hoverColumn*/ 134244416)) {
+				if (cell_slot.p && (!current || dirty[0] & /*$$scope, filteredRows, columns, hoverRow, hoverColumn*/ 134243392)) {
 					update_slot_base(
 						cell_slot,
 						cell_slot_template,
@@ -1123,11 +1123,11 @@ function create_each_block_1(ctx) {
 	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 	function click_handler_1(...args) {
-		return /*click_handler_1*/ ctx[32](/*column*/ ctx[45], /*row*/ ctx[40], ...args);
+		return /*click_handler_1*/ ctx[32](/*column*/ ctx[46], /*row*/ ctx[41], ...args);
 	}
 
 	function mouseenter_handler_1() {
-		return /*mouseenter_handler_1*/ ctx[33](/*columnIndex*/ ctx[47], /*rowIndex*/ ctx[44]);
+		return /*mouseenter_handler_1*/ ctx[33](/*columnIndex*/ ctx[48], /*rowIndex*/ ctx[45]);
 	}
 
 	return {
@@ -1221,7 +1221,7 @@ function create_if_block_2(ctx) {
 		},
 		p(ctx, dirty) {
 			if (expanded_slot) {
-				if (expanded_slot.p && (!current || dirty[0] & /*$$scope, assignedClasses, filteredRows*/ 134252544)) {
+				if (expanded_slot.p && (!current || dirty[0] & /*$$scope, assignedClasses, filteredRows*/ 134251520)) {
 					update_slot_base(
 						expanded_slot,
 						expanded_slot_template,
@@ -1271,10 +1271,10 @@ function create_each_block(ctx) {
 	});
 
 	function click_handler_2(...args) {
-		return /*click_handler_2*/ ctx[34](/*row*/ ctx[40], ...args);
+		return /*click_handler_2*/ ctx[34](/*row*/ ctx[41], ...args);
 	}
 
-	let if_block = /*row*/ ctx[40].isExpanded && create_if_block_2(ctx);
+	let if_block = /*row*/ ctx[41].isExpanded && create_if_block_2(ctx);
 
 	return {
 		c() {
@@ -1287,7 +1287,7 @@ function create_each_block(ctx) {
 			t = space();
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
-			attr(tr, "class", tr_class_value = "" + (null_to_empty(`${/*assignedClasses*/ ctx[15].tr} ${/*isExpanded*/ ctx[41]} ${/*isEvenOrOdd*/ ctx[42]}`) + " svelte-u2gknh"));
+			attr(tr, "class", tr_class_value = "" + (null_to_empty(`${/*assignedClasses*/ ctx[15].tr} ${/*isExpanded*/ ctx[42]} ${/*isEvenOrOdd*/ ctx[43]}`) + " svelte-u2gknh"));
 		},
 		m(target, anchor) {
 			insert(target, tr, anchor);
@@ -1309,7 +1309,7 @@ function create_each_block(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (dirty[0] & /*assignedClasses, dispatch, columns, filteredRows, setHovered, $$scope, hoverRow, hoverColumn, $$slots*/ 155314240) {
+			if (dirty[0] & /*assignedClasses, dispatch, columns, filteredRows, setHovered, $$scope, hoverRow, hoverColumn, $$slots*/ 155313216) {
 				each_value_1 = /*columns*/ ctx[6];
 				let i;
 
@@ -1336,15 +1336,15 @@ function create_each_block(ctx) {
 				check_outros();
 			}
 
-			if (!current || dirty[0] & /*assignedClasses, filteredRows*/ 34816 && tr_class_value !== (tr_class_value = "" + (null_to_empty(`${/*assignedClasses*/ ctx[15].tr} ${/*isExpanded*/ ctx[41]} ${/*isEvenOrOdd*/ ctx[42]}`) + " svelte-u2gknh"))) {
+			if (!current || dirty[0] & /*assignedClasses, filteredRows*/ 33792 && tr_class_value !== (tr_class_value = "" + (null_to_empty(`${/*assignedClasses*/ ctx[15].tr} ${/*isExpanded*/ ctx[42]} ${/*isEvenOrOdd*/ ctx[43]}`) + " svelte-u2gknh"))) {
 				attr(tr, "class", tr_class_value);
 			}
 
-			if (/*row*/ ctx[40].isExpanded) {
+			if (/*row*/ ctx[41].isExpanded) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty[0] & /*filteredRows*/ 2048) {
+					if (dirty[0] & /*filteredRows*/ 1024) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -1477,7 +1477,7 @@ function create_else_block(ctx) {
 				lastPage: /*lastPage*/ ctx[21],
 				prevPage: /*prevPage*/ ctx[19],
 				nextPage: /*nextPage*/ ctx[18],
-				enabled: /*enabled*/ ctx[12],
+				enabled: /*enabled*/ ctx[11],
 				totalItems: /*totalItems*/ ctx[2],
 				from: /*from*/ ctx[3],
 				to: /*to*/ ctx[4]
@@ -1495,7 +1495,7 @@ function create_else_block(ctx) {
 		p(ctx, dirty) {
 			const pagination_changes = {};
 			if (dirty[0] & /*assignedClasses*/ 32768) pagination_changes.classes = /*assignedClasses*/ ctx[15];
-			if (dirty[0] & /*enabled*/ 4096) pagination_changes.enabled = /*enabled*/ ctx[12];
+			if (dirty[0] & /*enabled*/ 2048) pagination_changes.enabled = /*enabled*/ ctx[11];
 			if (dirty[0] & /*totalItems*/ 4) pagination_changes.totalItems = /*totalItems*/ ctx[2];
 			if (dirty[0] & /*from*/ 8) pagination_changes.from = /*from*/ ctx[3];
 			if (dirty[0] & /*to*/ 16) pagination_changes.to = /*to*/ ctx[4];
@@ -1535,7 +1535,7 @@ function create_if_block_1(ctx) {
 		},
 		p(ctx, dirty) {
 			if (pagination_slot) {
-				if (pagination_slot.p && (!current || dirty[0] & /*$$scope, rows, enabled, totalPages, currentPage, totalItems, from, to*/ 134221887)) {
+				if (pagination_slot.p && (!current || dirty[0] & /*$$scope, rows, enabled, totalPages, currentPage, totalItems, from, to*/ 134219839)) {
 					update_slot_base(
 						pagination_slot,
 						pagination_slot_template,
@@ -1590,7 +1590,7 @@ function create_fragment(ctx) {
 		each_blocks_1[i] = null;
 	});
 
-	let each_value = /*filteredRows*/ ctx[11];
+	let each_value = /*filteredRows*/ ctx[10];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -1671,7 +1671,7 @@ function create_fragment(ctx) {
 			}
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*assignedClasses, dispatch, columns, sortRowsBy, setHovered, $$scope, hoverColumn, lastSortedKey, sortDescending, isSortable, $$slots*/ 163686080) {
+			if (dirty[0] & /*assignedClasses, dispatch, columns, sortRowsBy, setHovered, $$scope, hoverColumn, lastSortedKey, sortDescending, isSortable, $$slots*/ 163689152) {
 				each_value_2 = /*columns*/ ctx[6];
 				let i;
 
@@ -1706,8 +1706,8 @@ function create_fragment(ctx) {
 				attr(thead, "class", thead_class_value);
 			}
 
-			if (dirty[0] & /*$$scope, assignedClasses, dispatch, filteredRows, columns, setHovered, hoverRow, hoverColumn, $$slots*/ 155314240) {
-				each_value = /*filteredRows*/ ctx[11];
+			if (dirty[0] & /*$$scope, assignedClasses, dispatch, filteredRows, columns, setHovered, hoverRow, hoverColumn, $$slots*/ 155313216) {
+				each_value = /*filteredRows*/ ctx[10];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -1899,10 +1899,10 @@ function instance($$self, $$props, $$invalidate) {
 	const updateFromToValues = () => {
 		$$invalidate(3, from = (currentPage - 1) * rowsPerPage + 1);
 		$$invalidate(4, to = Math.min(from + rowsPerPage - 1, totalItems));
-		$$invalidate(12, enabled.nextPage = currentPage < totalPages, enabled);
-		$$invalidate(12, enabled.prevPage = currentPage > 1, enabled);
-		$$invalidate(12, enabled.firstPage = currentPage > 1, enabled);
-		$$invalidate(12, enabled.lastPage = currentPage < totalPages, enabled);
+		$$invalidate(11, enabled.nextPage = currentPage < totalPages, enabled);
+		$$invalidate(11, enabled.prevPage = currentPage > 1, enabled);
+		$$invalidate(11, enabled.firstPage = currentPage > 1, enabled);
+		$$invalidate(11, enabled.lastPage = currentPage < totalPages, enabled);
 	};
 
 	const setHovered = (colIdx, rowIdx) => {
@@ -1910,19 +1910,11 @@ function instance($$self, $$props, $$invalidate) {
 		$$invalidate(14, hoverRow = rowIdx);
 	};
 
-	const sortRowsBy = (key, descendingOverride) => {
+	const sortRowsBy = (key, override = false) => {
 		if (!isSortable) return;
 		const columnData = columns.find(column => column.key === key);
 		if (columnData.sortable === false) return;
-
-		if (typeof descendingOverride === 'undefined' && lastSortedKey === key) {
-			$$invalidate(10, sortDescending = !sortDescending);
-		} else if (typeof descendingOverride !== 'undefined') {
-			$$invalidate(10, sortDescending = descendingOverride);
-		} else {
-			$$invalidate(10, sortDescending = false);
-		}
-
+		$$invalidate(12, sortDescending = getSortingOrder(key, override));
 		$$invalidate(9, lastSortedKey = key);
 
 		if (columnData.sortBy) {
@@ -1946,8 +1938,14 @@ function instance($$self, $$props, $$invalidate) {
 		slicePaginated();
 	};
 
+	const getSortingOrder = (key, override = false) => {
+		if (override) return sortDescending;
+		if (lastSortedKey === key) return !sortDescending;
+		return false;
+	};
+
 	const slicePaginated = () => {
-		$$invalidate(11, filteredRows = asyncPagination ? [...rows] : rows.slice(from - 1, to));
+		$$invalidate(10, filteredRows = asyncPagination ? [...rows] : rows.slice(from - 1, to));
 	};
 
 	const click_handler = (column, event) => {
@@ -1956,7 +1954,7 @@ function instance($$self, $$props, $$invalidate) {
 	};
 
 	const mouseenter_handler = colIdx => setHovered(colIdx, -1);
-	const func = (row, each_value, rowIndex) => $$invalidate(11, each_value[rowIndex].isExpanded = row.isExpanded ? !row.isExpanded : true, filteredRows);
+	const func = (row, each_value, rowIndex) => $$invalidate(10, each_value[rowIndex].isExpanded = row.isExpanded ? !row.isExpanded : true, filteredRows);
 
 	const click_handler_1 = (column, row, event) => {
 		dispatch('clickCol', { event, column });
@@ -1990,12 +1988,9 @@ function instance($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*lastSortedKey, sortDescending, rows*/ 1537) {
-			$$invalidate(11, filteredRows = (() => {
-				lastSortedKey
-				? sortRowsBy(lastSortedKey, sortDescending)
-				: undefined;
-
+		if ($$self.$$.dirty[0] & /*lastSortedKey, rows*/ 513) {
+			$$invalidate(10, filteredRows = (() => {
+				if (lastSortedKey) sortRowsBy(lastSortedKey, true);
 				return [...rows];
 			})());
 		}
@@ -2011,7 +2006,7 @@ function instance($$self, $$props, $$invalidate) {
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*rows, filteredRows, currentPage, rowsPerPage*/ 2307) {
+		if ($$self.$$.dirty[0] & /*rows, filteredRows, currentPage, rowsPerPage*/ 1283) {
 			if (rows && filteredRows && currentPage && rowsPerPage) {
 				updateFromToValues();
 				slicePaginated();
@@ -2030,9 +2025,9 @@ function instance($$self, $$props, $$invalidate) {
 		isSortable,
 		rowsPerPage,
 		lastSortedKey,
-		sortDescending,
 		filteredRows,
 		enabled,
+		sortDescending,
 		hoverColumn,
 		hoverRow,
 		assignedClasses,
