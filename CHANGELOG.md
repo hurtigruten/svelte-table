@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 3.0.0
+
+- migrate to kit/package
+- generate types out of component files
+- split sortBy and sortFn props
+- allow scrollable table body with _fixed_ head
+
 ## 2.0.3
 
 - add scope for th
