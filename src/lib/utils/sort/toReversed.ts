@@ -1,7 +1,7 @@
 // This is a polyfill for an API that reverts an array without mutating it
 // https://www.npmjs.com/package/array.prototype.toReverted
 
-export const toReverted = <T>(arr: T[]) => [...arr].reverse();
+export const toReverted = <T>(arr: readonly T[]) => [...arr].reverse();
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
