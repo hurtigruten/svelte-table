@@ -1,7 +1,6 @@
 export interface Column<T = unknown> {
-	key: string;
 	title: string;
+	key: (a: T) => string | number | boolean;
+	sort?: (a: T, b: T) => number;
 	sortable?: boolean;
-	sortBy?: (a: T) => string | number;
-	sortFn?: (a: T, b: T) => number;
 }
