@@ -1,47 +1,34 @@
 <script lang="ts">
-	import type { Column } from './types';
+	import type { Column, RowClickEvent, CellClickEvent, ColumnClickEvent } from './types';
 
-	import { createEventDispatcher } from 'svelte';
 	import Pagination from './Pagination.svelte';
-	import Head from './Head.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	import { sortWith } from './utils/sort/sortWith';
 	import { toSorted } from './utils/sort/toSorted';
 	import { toReverted } from './utils/sort/toReversed';
-	import HeadTr from './HeadTr.svelte';
-	import Th from './Th.svelte';
-
-	const dispatch = createEventDispatcher();
+	import SortIcon from './SortIcon.svelte';
 
 	type Row = $$Generic;
+	type $$Events = {
+		clickCol: ColumnClickEvent<Row>;
+		clickRow: RowClickEvent<Row>;
+		clickCell: CellClickEvent<Row>;
+	};
+	const dispatch = createEventDispatcher();
 
-	export let rows: readonly Row[] = [];
+	export let rows: readonly (Row & { isExpanded?: boolean })[] = [];
 	export let columns: readonly Column<Row>[] = [];
 
 	export let isSortable = true;
 	export let asyncPagination = false;
 	export let rowsPerPage = rows.length;
 
-	export let fixed = false;
 	export let currentPage = 1;
 	export let from = 1;
 	export let to = rowsPerPage;
 	export let totalItems = 0;
 	export let totalPages = Math.ceil(totalItems / rowsPerPage);
-	const defaultClasses = {
-		table: '',
-		headtr: '',
-		thead: '',
-		tbody: '',
-		tr: '',
-		'tr-expanded': '',
-		'tr-odd': '',
-		'tr-even': '',
-		th: '',
-		td: ''
-	};
-	export let classes = defaultClasses;
-	$: assignedClasses = { ...defaultClasses, ...classes };
 
 	let enabled = {
 		nextPage: false,
@@ -49,11 +36,8 @@
 		firstPage: false,
 		prevPage: false
 	};
-
 	let lastSortedTitle = '';
 	let sortDescending = false;
-	let hoverColumn = -1;
-	let hoverRow = -1;
 
 	const goTo = (id: number) => {
 		currentPage = id;
@@ -92,11 +76,6 @@
 		enabled.prevPage = currentPage > 1;
 		enabled.firstPage = currentPage > 1;
 		enabled.lastPage = currentPage < totalPages;
-	};
-
-	const setHovered = (colIdx: number, rowIdx: number) => {
-		hoverColumn = colIdx;
-		hoverRow = rowIdx;
 	};
 
 	export const sortRowsBy = (title: string, override = false) => {
@@ -150,142 +129,135 @@
 	}
 </script>
 
-<table
-	style="--cols:{columns.length}"
-	class={assignedClasses.table}
-	cellspacing="0"
-	on:mouseleave={() => setHovered(-1, -1)}
->
-	<thead class={assignedClasses.thead}>
-		<tr class={assignedClasses.headtr}>
-			{#each columns as column, colIdx}
-				{@const aria_sort =
-					lastSortedTitle === column.title ? (sortDescending ? 'descending' : 'ascending') : 'none'}
-				<th
-					scope="col"
-					aria-sort={aria_sort}
-					class={assignedClasses.th}
-					on:click={(event) => {
-						dispatch('clickCol', { event, column });
-					}}
-					on:mouseenter={() => setHovered(colIdx, -1)}
-				>
-					{#if $$slots.head}
-						<slot
-							name="head"
-							{column}
-							isColumnHovered={hoverColumn === colIdx}
-							isSorted={lastSortedTitle === column.title}
-							{sortDescending}
-							sortable={isSortable && column.sortable !== false}
-						/>
-					{:else if isSortable && column.sortable !== false}
-						{#if $$slots.sortButton}
-							<slot
-								name="sortButton"
-								{column}
-								{sortDescending}
-								isSorted={lastSortedTitle === column.title}
-							/>
-						{:else}
-							<button
-								type="button"
-								aria-label="Sort by {column.title}"
-								on:click={() => sortRowsBy(column.title)}>{column.title}</button
-							>
-						{/if}
-					{:else}
-						<span>{column.title}</span>
-					{/if}
-				</th>
-			{/each}
-		</tr>
-	</thead>
-	<tbody class={assignedClasses.tbody}>
-		{#each filteredRows as row, rowIndex}
-			{@const isExpanded = row.isExpanded ? assignedClasses['tr-expanded'] : ''}
-			{@const isEvenOrOdd = rowIndex % 2 ? assignedClasses['tr-even'] : assignedClasses['tr-odd']}
-			<tr
-				style="--cols:{columns.length}"
-				class={`${assignedClasses.tr} ${isExpanded} ${isEvenOrOdd}`}
-				on:click={(event) => dispatch('clickRow', { event, row })}
-			>
+<div class="hrg-table__container {$$props.class}">
+	<table style="--cols-length:{columns.length}" class="hrg-table" cellspacing="0">
+		<thead class="hrg-table__thead">
+			<tr class="hrg-table__thead-tr">
 				{#each columns as column, columnIndex}
-					<td
-						class={assignedClasses.td}
+					{@const ariaSort =
+						lastSortedTitle === column.title
+							? sortDescending
+								? 'descending'
+								: 'ascending'
+							: 'none'}
+					<th
+						scope="col"
+						aria-sort={ariaSort}
 						on:click={(event) => {
-							dispatch('clickCol', { event, column });
-							dispatch('clickCell', {
-								event,
-								column,
-								row,
-								cell: column.key(row)
-							});
+							dispatch('clickCol', { event, column, columnIndex });
 						}}
-						on:mouseenter={() => setHovered(columnIndex, rowIndex)}
 					>
-						{#if $$slots.cell}
+						{#if $$slots.head}
 							<slot
-								name="cell"
-								{row}
+								name="head"
 								{column}
-								handleExpand={() => (row.isExpanded = row.isExpanded ? !row.isExpanded : true)}
-								cell={column.key(row)}
-								isRowHovered={hoverRow === rowIndex}
-								isColumnHovered={hoverColumn === columnIndex}
+								isSorted={lastSortedTitle === column.title}
+								{sortDescending}
+								sortable={isSortable && column.sortable !== false}
 							/>
+						{:else if isSortable && column.sortable !== false}
+							{#if $$slots.sortButton}
+								<slot
+									name="sortButton"
+									{column}
+									{sortDescending}
+									isSorted={lastSortedTitle === column.title}
+								/>
+							{:else}
+								<button
+									type="button"
+									aria-label="Sort by {column.title}"
+									on:click={() => sortRowsBy(column.title)}
+									>{column.title}
+									<SortIcon isSorted={lastSortedTitle === column.title} {sortDescending} />
+								</button>
+							{/if}
 						{:else}
-							<span>{column.key(row)}</span>
+							<span>{column.title}</span>
 						{/if}
-					</td>
+					</th>
 				{/each}
 			</tr>
-			{#if row.isExpanded}
-				<slot
-					name="expanded"
-					classes={assignedClasses}
-					handleClick={(event) => dispatch('clickRow', { event, row })}
-					{row}
-				/>
-			{/if}
+		</thead>
+		<tbody class="hrg-table__tbody">
+			{#each filteredRows as row, rowIndex}
+				{@const isExpanded = row.isExpanded}
+				{@const isEven = rowIndex % 2 === 0}
+				<tr
+					class={`hrg-table__tr ${isExpanded}`}
+					class:hrg-table__tr-expanded={isExpanded}
+					class:hrg-table__tr-odd={!isEven}
+					class:hrg-table__tr-even={isEven}
+					on:click={(event) => dispatch('clickRow', { event, row, rowIndex })}
+				>
+					{#each columns as column, columnIndex}
+						<td
+							class="hrg-table__td"
+							on:keyup={(event) => {
+								if (event.key === 'Enter') {
+									dispatch('clickCol', { event, column, columnIndex });
+									dispatch('clickCell', {
+										event,
+										column,
+										columnIndex,
+										row,
+										rowIndex,
+										cell: column.key(row)
+									});
+								}
+							}}
+							on:click={(event) => {
+								dispatch('clickCol', { event, column, columnIndex });
+								dispatch('clickCell', {
+									event,
+									column,
+									columnIndex,
+									row,
+									rowIndex,
+									cell: column.key(row)
+								});
+							}}
+						>
+							{#if $$slots.cell}
+								<slot name="cell" {row} {column} cell={column.key(row)} />
+							{:else}
+								{column.key(row)}
+							{/if}
+						</td>
+					{/each}
+				</tr>
+				{#if row.isExpanded}
+					<slot name="expanded" handleClick={() => dispatch('clickRow', { row, rowIndex })} {row} />
+				{/if}
+			{:else}
+				<slot name="empty" />
+			{/each}
+		</tbody>
+	</table>
+	{#if rowsPerPage && totalPages > 1}
+		{#if $$slots.pagination}
+			<slot
+				name="pagination"
+				{rows}
+				{firstPage}
+				{lastPage}
+				{prevPage}
+				{nextPage}
+				{enabled}
+				{totalPages}
+				{currentPage}
+				{totalItems}
+				{from}
+				{to}
+				{goTo}
+			/>
 		{:else}
-			<slot name="empty" />
-		{/each}
-	</tbody>
-</table>
-{#if rowsPerPage && totalPages > 1}
-	{#if $$slots.pagination}
-		<slot
-			name="pagination"
-			{rows}
-			{firstPage}
-			{lastPage}
-			{prevPage}
-			{nextPage}
-			{enabled}
-			{totalPages}
-			{currentPage}
-			{totalItems}
-			{from}
-			{to}
-			{goTo}
-		/>
-	{:else}
-		<Pagination
-			classes={assignedClasses}
-			{firstPage}
-			{lastPage}
-			{prevPage}
-			{nextPage}
-			{enabled}
-			{totalItems}
-			{from}
-			{to}
-		/>
+			<Pagination {firstPage} {lastPage} {prevPage} {nextPage} {enabled} {totalItems} {from} {to} />
+		{/if}
 	{/if}
-{/if}
+</div>
 
-<style scoped>
+<style>
 	*,
 	*::after,
 	*::before {
@@ -300,20 +272,11 @@
 		margin: 0;
 	}
 
-	button {
-		background: transparent;
-		border: none;
-	}
-
-	.fixed_header {
-		height: 50px;
-	}
-
 	table {
 		display: grid;
 		border-collapse: collapse;
 		min-width: 100%;
-		grid-template-columns: repeat(var(--cols), auto);
+		grid-template-columns: repeat(var(--cols-length), auto);
 	}
 
 	thead,
@@ -322,16 +285,29 @@
 		display: contents;
 	}
 
-	th,
 	td {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
+	button {
+		background: transparent;
+		border: none;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
 	th {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		position: sticky;
 		top: 0;
 		text-align: left;
+	}
+
+	tbody {
+		height: var(--height);
 	}
 </style>

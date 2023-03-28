@@ -1,9 +1,4 @@
 <script lang="ts">
-	export let classes = {
-		paginationContainer: '',
-		paginationInfo: '',
-		paginationButtons: ''
-	};
 	export let to: number;
 	export let from: number;
 	export let nextPage: () => void;
@@ -20,11 +15,11 @@
 </script>
 
 <nav
-	class={classes.paginationContainer}
+	class="hrg-table__nav"
 	aria-label={`Navigation pagination, showing items ${from} to ${to} of total ${totalItems} items`}
 >
 	<button
-		class={classes.paginationButtons}
+		class="hrg-table__nav-btn"
 		type="button"
 		on:click={firstPage}
 		disabled={!enabled.firstPage}
@@ -32,7 +27,7 @@
 		aria-label="First page">First</button
 	>
 	<button
-		class={classes.paginationButtons}
+		class="hrg-table__nav-btn"
 		type="button"
 		on:click={prevPage}
 		disabled={!enabled.prevPage}
@@ -40,11 +35,11 @@
 		aria-label="Previous page"
 		data-testid="previous-button">Prev</button
 	>
-	<p class={classes.paginationInfo} aria-hidden="true">
+	<p class="hrg-table__nav-info" aria-hidden="true">
 		{`${from}-${to} of ${totalItems}`}
 	</p>
 	<button
-		class={classes.paginationButtons}
+		class="hrg-table__nav-btn"
 		type="button"
 		on:click={nextPage}
 		disabled={!enabled.nextPage}
@@ -53,7 +48,7 @@
 		data-testid="next-button">Next</button
 	>
 	<button
-		class={classes.paginationButtons}
+		class="hrg-table__nav-btn"
 		type="button"
 		on:click={lastPage}
 		disabled={!enabled.lastPage}
@@ -61,3 +56,11 @@
 		aria-label="Last page">Last</button
 	>
 </nav>
+
+<style>
+	nav {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+</style>
