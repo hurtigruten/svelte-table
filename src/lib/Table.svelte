@@ -132,52 +132,63 @@
 <div class="hrg-table__container {$$props.class}">
 	<table style="--cols-length:{columns.length}" class="hrg-table" cellspacing="0">
 		<thead class="hrg-table__thead">
-			<tr class="hrg-table__thead-tr">
-				{#each columns as column, columnIndex}
-					{@const ariaSort =
-						lastSortedTitle === column.title
-							? sortDescending
-								? 'descending'
-								: 'ascending'
-							: 'none'}
-					<th
-						scope="col"
-						aria-sort={ariaSort}
-						on:click={(event) => {
-							dispatch('clickCol', { event, column, columnIndex });
-						}}
-					>
-						{#if $$slots.head}
-							<slot
-								name="head"
-								{column}
-								isSorted={lastSortedTitle === column.title}
-								{sortDescending}
-								sortable={isSortable && column.sortable !== false}
-							/>
-						{:else if isSortable && column.sortable !== false}
-							{#if $$slots.sortButton}
+			{#if $$slots.headTr}
+				<slot
+					name="headTr"
+					{columns}
+					{lastSortedTitle}
+					{sortDescending}
+					{isSortable}
+					{sortRowsBy}
+				/>
+			{:else}
+				<tr class="hrg-table__thead-tr">
+					{#each columns as column, columnIndex}
+						{@const ariaSort =
+							lastSortedTitle === column.title
+								? sortDescending
+									? 'descending'
+									: 'ascending'
+								: 'none'}
+						<th
+							scope="col"
+							aria-sort={ariaSort}
+							on:click={(event) => {
+								dispatch('clickCol', { event, column, columnIndex });
+							}}
+						>
+							{#if $$slots.head}
 								<slot
-									name="sortButton"
+									name="head"
 									{column}
-									{sortDescending}
 									isSorted={lastSortedTitle === column.title}
+									{sortDescending}
+									sortable={isSortable && column.sortable !== false}
 								/>
+							{:else if isSortable && column.sortable !== false}
+								{#if $$slots.sortButton}
+									<slot
+										name="sortButton"
+										{column}
+										{sortDescending}
+										isSorted={lastSortedTitle === column.title}
+									/>
+								{:else}
+									<button
+										type="button"
+										aria-label="Sort by {column.title}"
+										on:click={() => sortRowsBy(column.title)}
+										>{column.title}
+										<SortIcon isSorted={lastSortedTitle === column.title} {sortDescending} />
+									</button>
+								{/if}
 							{:else}
-								<button
-									type="button"
-									aria-label="Sort by {column.title}"
-									on:click={() => sortRowsBy(column.title)}
-									>{column.title}
-									<SortIcon isSorted={lastSortedTitle === column.title} {sortDescending} />
-								</button>
+								<span>{column.title}</span>
 							{/if}
-						{:else}
-							<span>{column.title}</span>
-						{/if}
-					</th>
-				{/each}
-			</tr>
+						</th>
+					{/each}
+				</tr>
+			{/if}
 		</thead>
 		<tbody class="hrg-table__tbody">
 			{#each filteredRows as row, rowIndex}
