@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Column, RowClickEvent, CellClickEvent, ColumnClickEvent } from './types';
+	import './reset.css';
 
 	import Pagination from './Pagination.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -267,58 +268,3 @@
 		{/if}
 	{/if}
 </div>
-
-<style>
-	*,
-	*::after,
-	*::before {
-		border: 0;
-		background: none;
-		border-spacing: 0;
-		border-collapse: collapse;
-		font-family: sans-serif;
-		font-weight: 400;
-		font-size: 1rem;
-		padding: 0;
-		margin: 0;
-	}
-
-	table {
-		display: grid;
-		border-collapse: collapse;
-		min-width: 100%;
-		grid-template-columns: repeat(var(--cols-length), auto);
-	}
-
-	thead,
-	tbody,
-	tr {
-		display: contents;
-	}
-
-	td {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	button {
-		background: transparent;
-		border: none;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-	th {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		position: sticky;
-		top: 0;
-		text-align: left;
-	}
-
-	tbody {
-		height: var(--height);
-	}
-</style>

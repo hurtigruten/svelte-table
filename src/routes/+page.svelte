@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Table from '../lib/Table.svelte';
+	import './index.css';
 
 	const columns = [
 		{ key: (x) => x.name, title: 'Name' },
@@ -35,8 +36,8 @@
 <Table
 	{columns}
 	{rows}
+	class="table"
 	rowsPerPage={2}
 	on:clickCol={(x) => x.detail}
-	--height="50px"
 	bind:sortRowsBy
 />
