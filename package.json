@@ -1,6 +1,6 @@
 {
 	"name": "@hurtigruten/svelte-table",
-	"version": "3.0.4",
+	"version": "3.0.5",
 	"author": "Hurtigruten",
 	"license": "MIT",
 	"description": "A simple, sortable svelte table component",
