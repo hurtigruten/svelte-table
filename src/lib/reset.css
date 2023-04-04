@@ -1,6 +1,4 @@
-*,
-*::after,
-*::before {
+.hrg-table__container :is(*, *::after, *::before) {
 	border: 0;
 	background: none;
 	border-spacing: 0;
@@ -12,39 +10,37 @@
 	margin: 0;
 }
 
-nav {
+.hrg-table__container nav {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-table {
+.hrg-table__container table {
 	display: grid;
 	border-collapse: collapse;
 	min-width: 100%;
 	grid-template-columns: repeat(var(--cols-length), auto);
 }
 
-thead,
-tbody,
-tr {
+.hrg-table__container :is(thead, tbody, tr) {
 	display: contents;
 }
 
-td {
+.hrg-table__container td {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-button {
+.hrg-table__container button {
 	background: transparent;
 	border: none;
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 }
-th {
+.hrg-table__container th {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -53,6 +49,6 @@ th {
 	text-align: left;
 }
 
-tbody {
+.hrg-table__container tbody {
 	height: var(--height);
 }
