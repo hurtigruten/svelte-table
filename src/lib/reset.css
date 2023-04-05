@@ -1,4 +1,4 @@
-.hrg-table__container :is(*, *::after, *::before) {
+.hrg-table__container :where(*, *::after, *::before) {
 	border: 0;
 	background: none;
 	border-spacing: 0;
@@ -23,7 +23,7 @@
 	grid-template-columns: repeat(var(--cols-length), auto);
 }
 
-.hrg-table__container :is(thead, tbody, tr) {
+.hrg-table__container :where(thead, tbody, tr) {
 	display: contents;
 }
 
