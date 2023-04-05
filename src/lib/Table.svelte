@@ -153,6 +153,7 @@
 								: 'none'}
 						<th
 							scope="col"
+							class="hrg-table__th"
 							aria-sort={ariaSort}
 							on:click={(event) => {
 								dispatch('clickCol', { event, column, columnIndex });
@@ -176,6 +177,7 @@
 									/>
 								{:else}
 									<button
+										class="hrg-table__th-btn"
 										type="button"
 										aria-label="Sort by {column.title}"
 										on:click={() => sortRowsBy(column.title)}
