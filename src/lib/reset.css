@@ -1,6 +1,4 @@
 .hrg-table__container :where(*, *::after, *::before) {
-	border: 0;
-	background: none;
 	border-spacing: 0;
 	border-collapse: collapse;
 	font-family: inherit;
@@ -38,7 +36,7 @@
 
 .hrg-table__th-btn,
 .hrg-table__nav-btn {
-	background: transparent;
+	background: none;
 	border: none;
 	display: flex;
 	align-items: center;
