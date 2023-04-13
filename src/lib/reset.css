@@ -21,7 +21,6 @@
 }
 
 .hrg-table__td {
-	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
@@ -40,7 +39,6 @@
 }
 
 .hrg-table__th {
-	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	position: sticky;

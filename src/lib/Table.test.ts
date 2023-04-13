@@ -18,9 +18,9 @@ describe('Table', () => {
 		] as const;
 
 		const columns: readonly Column<(typeof rows)[number]>[] = [
-			{ key: (x) => x.name, title: 'Name' },
-			{ key: (x) => x.location, title: 'Place' },
-			{ key: (x) => x.age, title: 'Years' }
+			{ content: (x) => x.name, title: 'Name' },
+			{ content: (x) => x.location, title: 'Place' },
+			{ content: (x) => x.age, title: 'Years' }
 		];
 
 		const { getAllByRole } = render(Table, {
@@ -47,9 +47,9 @@ describe('Table', () => {
 		] as const;
 
 		const columns: readonly Column<(typeof rows)[number]>[] = [
-			{ key: (x) => x.name, title: 'Name' },
-			{ key: (x) => x.location, title: 'Place' },
-			{ key: (x) => x.age, title: 'Years' }
+			{ content: (x) => x.name, title: 'Name' },
+			{ content: (x) => x.location, title: 'Place' },
+			{ content: (x) => x.age, title: 'Years' }
 		];
 
 		const { getAllByRole, getByText } = render(Table, {

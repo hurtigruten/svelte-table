@@ -2,7 +2,8 @@ import { compareBool } from './compareBool';
 import { compareNum } from './compareNum';
 import { compareString } from './compareString';
 
-export const compareDyn = <T extends number | boolean | string>(a: T, b: T) => {
+export const compareDyn = <T>(a: T, b: T) => {
+	if (a instanceof Date && b instanceof Date) return compareNum(Number(a), Number(b));
 	if (typeof a === 'boolean') return compareBool(a);
 	if (typeof a === 'number' && typeof b === 'number') return compareNum(a, b);
 

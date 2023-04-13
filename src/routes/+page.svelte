@@ -1,13 +1,14 @@
 <script lang="ts">
 	import Table from '../lib/Table.svelte';
+	import type { Column } from '../lib/types';
 	import './index.css';
 
-	const columns = [
-		{ key: (x) => x.name, title: 'Name' },
-		{ key: (x) => x.age, title: 'Age' },
-		{ key: (x) => x.country, title: 'Country', sortable: false },
-		{ key: (x) => x.active, title: 'Active' }
-	] as const;
+	const columns: Column<(typeof rows)[number]>[] = [
+		{ content: (x) => x.name, title: 'Name' },
+		{ content: (x) => x.age, title: 'Age' },
+		{ content: (x) => x.country, title: 'Country', sortable: false },
+		{ content: (x) => x.active, title: 'Active' }
+	];
 
 	let rows: Readonly<{ name: string; age: number; country: string; active: boolean }[]> = [
 		{ name: 'Bartek', age: 29, country: 'Norway', active: true },

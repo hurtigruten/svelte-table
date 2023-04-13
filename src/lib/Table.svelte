@@ -93,8 +93,8 @@
 
 		if (columnData.sort) {
 			rows = toSorted(rows, columnData.sort);
-		} else if (columnData.key) {
-			rows = sortWith(rows, columnData.key);
+		} else if (columnData.content) {
+			rows = sortWith(rows, columnData.content);
 		}
 
 		if (sortDescending) {
@@ -216,7 +216,7 @@
 										columnIndex,
 										row,
 										rowIndex,
-										cell: column.key(row)
+										cell: column.content(row)
 									});
 								}
 							}}
@@ -228,14 +228,14 @@
 									columnIndex,
 									row,
 									rowIndex,
-									cell: column.key(row)
+									cell: column.content(row)
 								});
 							}}
 						>
 							{#if $$slots.cell}
-								<slot name="cell" {row} {column} cell={column.key(row)} />
+								<slot name="cell" {row} {column} cell={column.content(row)} />
 							{:else}
-								{column.key(row)}
+								{column.content(row)}
 							{/if}
 						</td>
 					{/each}

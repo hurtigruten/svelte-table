@@ -3,7 +3,7 @@ import { compareDyn } from './compareDyn';
 
 export const sortWith = <T>(
 	collection: readonly T[],
-	predicate: (a: T) => number | string | boolean
+	predicate: (a: T) => unknown
 ) => {
 	return toSorted(collection, (a, b) => compareDyn(predicate(a), predicate(b)));
 };
