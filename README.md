@@ -7,7 +7,7 @@
 ## Quick start
 
 ```bash
-npm i @hurtigruten/svelte-table --save
+npm i @hurtigruten/svelte-table@2.0.4 --save
 ```
 
 ### Simple example
