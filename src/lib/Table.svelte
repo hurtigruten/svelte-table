@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Column, RowClickEvent, CellClickEvent, ColumnClickEvent } from './types';
+	import type { RowClickEvent, CellClickEvent, ColumnClickEvent } from './types';
 	import './reset.css';
 
 	import Pagination from './Pagination.svelte';
@@ -11,15 +11,67 @@
 	import SortIcon from './SortIcon.svelte';
 
 	type Row = $$Generic;
+	type Column = $$Generic<{
+		title: string;
+		content: (a: Row) => string | number | boolean | Date;
+		sort?: (a: Row, b: Row) => number;
+		sortable?: boolean;
+		key?: string;
+	}>;
 	type $$Events = {
 		clickCol: ColumnClickEvent<Row>;
 		clickRow: RowClickEvent<Row>;
 		clickCell: CellClickEvent<Row>;
 	};
+
+	type $$Slots = {
+		headTr: {
+			columns: readonly Column[];
+			lastSortedTitle: typeof lastSortedTitle;
+			sortDescending: boolean;
+			isSortable: boolean;
+			sortRowsBy: typeof sortRowsBy;
+		};
+		head: {
+			column: Column;
+			isSorted: boolean;
+			sortDescending: boolean;
+			sortable: boolean;
+			sortRowsBy: typeof sortRowsBy;
+		};
+		sortButton: {
+			column: Column;
+			sortDescending: boolean;
+			isSorted: boolean;
+		};
+		cell: {
+			row: Row;
+			column: Column;
+			cell: string | number | boolean | Date;
+		};
+		expanded: {
+			row: Row;
+		};
+		pagination: {
+			rows: readonly Row[];
+			firstPage: () => void;
+			lastPage: () => void;
+			prevPage: () => void;
+			nextPage: () => void;
+			enabled: typeof enabled;
+			totalPages: number;
+			currentPage: number;
+			totalItems: number;
+			from: number;
+			to: number;
+			goTo: typeof goTo;
+		};
+		empty: object;
+	};
 	const dispatch = createEventDispatcher();
 
 	export let rows: readonly (Row & { isExpanded?: boolean })[] = [];
-	export let columns: readonly Column<Row>[] = [];
+	export let columns: readonly Column[] = [];
 
 	export let isSortable = true;
 	export let asyncPagination = false;
@@ -163,6 +215,7 @@
 								<slot
 									name="head"
 									{column}
+									{sortRowsBy}
 									isSorted={lastSortedTitle === column.title}
 									{sortDescending}
 									sortable={isSortable && column.sortable !== false}
@@ -241,7 +294,7 @@
 					{/each}
 				</tr>
 				{#if row.isExpanded}
-					<slot name="expanded" handleClick={() => dispatch('clickRow', { row, rowIndex })} {row} />
+					<slot name="expanded" {row} />
 				{/if}
 			{:else}
 				<slot name="empty" />
