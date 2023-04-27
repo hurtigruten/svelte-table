@@ -1,6 +1,6 @@
 {
 	"name": "@hurtigruten/svelte-table",
-	"version": "3.0.8-rc8",
+	"version": "3.0.8-rc10",
 	"author": "Hurtigruten",
 	"license": "MIT",
 	"description": "A simple, sortable svelte table component",
@@ -39,6 +39,7 @@
 	"devDependencies": {
 		"@semantic-release/git": "10.0.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-static": "2.0.2",
 		"@sveltejs/kit": "^1.5.0",
 		"@sveltejs/package": "^2.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
