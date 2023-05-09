@@ -17,7 +17,7 @@
 		{ name: 'Tibor', age: 35, country: 'Hungary Some place somewheres', active: false }
 	];
 
-	let sortRowsBy = () => {};
+	let sortRowsBy = (k: string) => {};
 </script>
 
 <h1>Welcome to your library project</h1>

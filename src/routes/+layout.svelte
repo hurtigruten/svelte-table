@@ -1,5 +1,8 @@
 <div class="base">
 	<nav class="nav">
+		<h1>Hurtigruten's Svelte Table</h1>
+		<a href="https://github.com/hurtigruten/svelte-table">GitHub</a>
+		<a href="https://www.npmjs.com/package/@hurtigruten/svelte-table">NPM</a>
 		<ul>
 			<li>
 				<h5>Getting started</h5>
@@ -66,12 +69,38 @@
 		display: flex;
 	}
 
+	h1 {
+		font-size: 1rem;
+	}
+
 	.nav {
+		padding: 1rem;
 		position: sticky;
+		top: 0;
 		bottom: 0;
 		height: 100vh;
 		width: max-content;
 		margin-right: 2rem;
+		background: #232323;
+		color: white;
+	}
+
+	.nav > ul > li {
+		border-top: 1px solid lightgray;
+		margin-top: 2rem;
+	}
+
+	.nav ul {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.nav a {
+		color: inherit;
 	}
 
 	.main {
