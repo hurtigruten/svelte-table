@@ -8,10 +8,10 @@
 				<h5>Getting started</h5>
 				<ul>
 					<li>
-						<a href="/">Introduction</a>
+						<a href="/getting-started/introduction/">Introduction</a>
 					</li>
 					<li>
-						<a href="/">Quick start</a>
+						<a href="/getting-started/quick-start">Quick start</a>
 					</li>
 				</ul>
 			</li>
@@ -19,19 +19,19 @@
 				<h5>Guides</h5>
 				<ul>
 					<li>
-						<a href="/">Simple usage</a>
+						<a href="/guides/simple-usage">Simple usage</a>
 					</li>
 					<li>
-						<a href="/">Types</a>
+						<a href="/guides/types">Types</a>
 					</li>
 					<li>
-						<a href="/">Events</a>
+						<a href="/guides/events">Events</a>
 					</li>
 					<li>
-						<a href="/">Customization and CSS</a>
+						<a href="/guides/customization">Customization and CSS</a>
 					</li>
 					<li>
-						<a href="/">Pagination</a>
+						<a href="/guides/pagination">Pagination</a>
 					</li>
 				</ul>
 			</li>
@@ -39,19 +39,19 @@
 				<h5>Examples</h5>
 				<ul>
 					<li>
-						<a href="/">Static data</a>
+						<a href="/examples/static">Static data</a>
 					</li>
 					<li>
-						<a href="/">Sorting</a>
+						<a href="/examples/sorting">Sorting</a>
 					</li>
 					<li>
-						<a href="/">Slots</a>
+						<a href="/examples/slots">Slots</a>
 					</li>
 					<li>
-						<a href="/">Customization</a>
+						<a href="/examples/customization">Customization</a>
 					</li>
 					<li>
-						<a href="/">Pagination</a>
+						<a href="/examples/pagination">Pagination</a>
 					</li>
 				</ul>
 			</li>
@@ -111,5 +111,29 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 2rem;
+	}
+
+	:global(pre) {
+		padding: 0.5rem;
+		background-color: black;
+		font-size: 1rem;
+
+		color: rgba(200, 255, 200);
+	}
+
+	:global(code) {
+		background-color: #fafafa;
+		padding: 0.5rem;
+		display: inline-block;
+	}
+
+	:global(p) {
+		max-width: 60ch;
+	}
+
+	:global(body) {
+		font-family: sans-serif;
+		padding: 0;
+		margin: 0;
 	}
 </style>
